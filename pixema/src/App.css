@@ -1,0 +1,26 @@
+.App {
+  --text-primary-color: #000000;
+  --text-secondary-color: #80858B;
+
+  --input-background-color: #AFB2B6;
+  --form-background-color: #FFFFFF;
+  
+
+  --button-bg-primary-color: #7B61FF;
+  --button-text-color: #FFFFFF;
+
+  &.dark {
+    --text-primary-color: #FFFFFF;
+    --text-secondary-color: #80858B;
+
+    --input-background-color: #323537;
+    --form-background-color: #242426;
+
+    --button-bg-primary-color: #7B61FF;
+    --button-text-color: #FFFFFF;
+  }
+  
+  & a {
+    all: unset;
+  }
+}
