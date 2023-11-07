@@ -57,6 +57,7 @@ const SiteMenuText = styled.p`
   text-transform: capitalize;
   color: var(--text-secondary-color);
   font-weight: 600;
+  transition: 0.3s;
 
   &:hover {
     color: var(--text-acctive-color);

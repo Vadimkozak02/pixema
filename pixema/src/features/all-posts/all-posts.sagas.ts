@@ -29,3 +29,22 @@ export function* allPostsSaga() {
     }
   );
 }
+
+// export function* allPostsSaga() {
+//   yield takeLatest(
+//     getAllPosts,
+//     function* allPostsHundler({ payload: { page } }) {
+//       const pageOne = yield* call(api.getAllPosts, page);
+//       const a = pageOne.Search;
+//       const b = [];
+//       b.push(a);
+//       console.log('b', b);
+//       try {
+//         const data = yield* call(api.getAllPosts, page);
+//         yield put(getAllPostsSuccess(data));
+//       } catch {
+//         yield put(getAllPostsFailure());
+//       }
+//     }
+//   );
+// }
