@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useAppSelector } from '../../hooks';
 
 type Props = {
   id?: string;
@@ -9,8 +10,8 @@ type Props = {
 
 export const MovieCard: React.FC<Props> = ({ id, title, img, onClick }) => {
   return (
-    <MovieCardWrapper id={id}>
-      <MovieCardImg onClick={() => onClick()}>{img}</MovieCardImg>
+    <MovieCardWrapper id={id} onClick={() => onClick()}>
+      <MovieCardImg>{img}</MovieCardImg>
       <MovieCardInfoWrapper>
         <MovieCardTitle>
           <MovieCardText>{title}</MovieCardText>
@@ -28,6 +29,7 @@ const MovieCardWrapper = styled.div`
 const MovieCardImg = styled.div`
   width: 205px;
   height: 307px;
+  cursor: pointer;
 
   & img {
     width: 100%;
@@ -41,4 +43,10 @@ const MovieCardTitle = styled.div``;
 const MovieCardText = styled.p`
   color: var(--text-primary-color);
   font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    color: var(--text-acctive-color);
+  }
 `;

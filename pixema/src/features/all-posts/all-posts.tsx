@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getAllPosts } from './all-posts.slice';
+import { changeCurrentPage, getAllPosts } from './all-posts.slice';
 import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from '../selected-movie/selected-movie.slice';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +25,13 @@ export const AllPosts: React.FC = () => {
       navigate('/posts/selectedPost');
     }
   }, [dispatch, isLoading, navigate]);
+
+  // useEffect(() => {
+  //   dispatch(getAllPosts({ page: page }));
+  //   if (isLoading) {
+  //     navigate('/posts/selectedPost');
+  //   }
+  // }, [dispatch, isLoading, navigate, page]);
 
   return (
     <AllPostsWrapper>
@@ -55,7 +62,7 @@ export const AllPosts: React.FC = () => {
             ></MovieCard>
           ))}
         </AllPostContent>
-        <ShowMoreBtn onClick={() => console.log('show more')}>
+        <ShowMoreBtn onClick={() => dispatch(changeCurrentPage())}>
           Show more
           <img src={spinnerImg} alt="spinner" />
         </ShowMoreBtn>
