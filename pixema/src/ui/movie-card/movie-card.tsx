@@ -47,6 +47,6 @@ const MovieCardText = styled.p`
   transition: 0.3s;
 
   &:hover {
-    color: var(--text-acctive-color);
+    color: var(--text-active-color);
   }
 `;

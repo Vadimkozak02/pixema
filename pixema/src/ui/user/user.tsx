@@ -64,13 +64,13 @@ const UserInitials = styled.div`
 const UserNameWrapper = styled.div`
   position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   z-index: 10;
 `;
 
 const UserName = styled.button`
-  width: 180px;
+  width: 170px;
   border: none;
   background-color: transparent;
   color: var(--text-primary-color);
@@ -79,7 +79,7 @@ const UserName = styled.button`
   outline: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const UserNameArrow = styled.div``;
@@ -108,6 +108,11 @@ const UserEditProfile = styled.button`
   font-weight: 500;
   background-color: transparent;
   color: var(--text-primary-color);
+  transition: 0.3s;
+
+  &:hover {
+    color: var(--text-active-color);
+  }
 `;
 
 const UserLogOut = styled.button`
@@ -119,4 +124,9 @@ const UserLogOut = styled.button`
   display: block;
   background-color: transparent;
   color: var(--text-primary-color);
+  transition: 0.3s;
+
+  &:hover {
+    color: var(--text-active-color);
+  }
 `;

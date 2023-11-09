@@ -13,9 +13,9 @@ function Root() {
     <div className="App dark">
       <Routes>
         {/* <Route path="/" element={< />}></Route> */}
+        <Route path="/" element={<AllPosts />}></Route>
         <Route path="/sign-in" element={<SingInForm />}></Route>
-        <Route path="/posts" element={<AllPosts />}></Route>
-        <Route path="/posts/selectedPost" element={<SelectedMovie />}></Route>
+        <Route path="/:postId" element={<SelectedMovie />}></Route>
         <Route
           path="/auth"
           element={<AuthTemplate title={'hi'} body={'body'} />}

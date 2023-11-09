@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCurrentPage, getAllPosts } from './all-posts.slice';
 import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from '../selected-movie/selected-movie.slice';
-import { useNavigate } from 'react-router-dom';
-import { SiteLogo } from '../../ui/site-logo/site-logo';
-import { SiteMenu } from '../../ui/site-menu/site-menu';
-import { SiteRights } from '../../ui/site-rights/site-rights';
+import { Link, useNavigate } from 'react-router-dom';
 import { SearchMenu } from '../search/search-menu';
 import spinnerImg from './img/spinner.svg';
 import { User } from '../../ui/user/user';
+import { MainTemplate } from '../../ui/templates/main-template/main-template';
+import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,47 +18,32 @@ export const AllPosts: React.FC = () => {
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const isLoading = useAppSelector((state) => state.selectedMovie.isLoading);
 
-  useEffect(() => {
-    dispatch(getAllPosts({ pages: [1, 2] }));
-    if (isLoading) {
-      navigate('/posts/selectedPost');
-    }
-  }, [dispatch, isLoading, navigate]);
+  const newPosts = useAppSelector((state) => state.allPosts.newPosts);
+  const currentPage = useAppSelector((state) => state.allPosts.currentPage);
+  console.log('newPosts', newPosts);
 
-  // useEffect(() => {
-  //   dispatch(getAllPosts({ page: page }));
-  //   if (isLoading) {
-  //     navigate('/posts/selectedPost');
-  //   }
-  // }, [dispatch, isLoading, navigate, page]);
+  useEffect(() => {
+    dispatch(getAllPosts({ page: currentPage }));
+  }, [dispatch, currentPage]);
 
   return (
     <AllPostsWrapper>
-      <AllPostMenuWrapper>
-        <SiteTopWrapper>
-          <SiteLogo />
-          <SiteMenu />
-        </SiteTopWrapper>
-        <SiteBottomWrapper>
-          <SiteRights />
-        </SiteBottomWrapper>
-      </AllPostMenuWrapper>
+      <MainTemplate />
       <AllPostContentWrapper>
-        <AllPostHeaderWrapper>
-          <SearchMenu />
-          <User name="Vadim Kozak" />
-        </AllPostHeaderWrapper>
+        <HeaderTemplate />
         <AllPostContent>
           {allPosts.Search?.map((item, index) => (
-            <MovieCard
-              key={index}
-              id={item.imdbID}
-              title={item.Title}
-              img={<img src={item.Poster} alt="movie" />}
-              onClick={() =>
-                dispatch(setSelectedMovie({ imdbID: item.imdbID }))
-              }
-            ></MovieCard>
+            <Link to={`/${item.imdbID}`} key={index}>
+              <MovieCard
+                key={index}
+                id={item.imdbID}
+                title={item.Title}
+                img={<img src={item.Poster} alt="movie" />}
+                onClick={() =>
+                  dispatch(setSelectedMovie({ imdbID: item.imdbID }))
+                }
+              ></MovieCard>
+            </Link>
           ))}
         </AllPostContent>
         <ShowMoreBtn onClick={() => dispatch(changeCurrentPage())}>
@@ -77,29 +61,8 @@ const AllPostsWrapper = styled.div`
   padding-left: 50px;
 `;
 
-const AllPostMenuWrapper = styled.div`
-  min-width: 200px;
-  margin-right: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-const SiteTopWrapper = styled.div`
-  margin-top: 15px;
-`;
-const SiteBottomWrapper = styled.div`
-  margin-bottom: 15px;
-`;
-
 const AllPostContentWrapper = styled.div`
   margin: 25px 0 60px;
-`;
-
-const AllPostHeaderWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 50px;
 `;
 
 const AllPostContent = styled.div`

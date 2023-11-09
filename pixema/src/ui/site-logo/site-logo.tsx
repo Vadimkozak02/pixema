@@ -1,13 +1,20 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const SiteLogo: React.FC = () => {
   return (
-    <SiteLogoWrapper>
-      <SiteNameStart>pix</SiteNameStart>
-      <SiteNameEnd>ema</SiteNameEnd>
-    </SiteLogoWrapper>
+    <LogoLink to="/">
+      <SiteLogoWrapper>
+        <SiteNameStart>pix</SiteNameStart>
+        <SiteNameEnd>ema</SiteNameEnd>
+      </SiteLogoWrapper>
+    </LogoLink>
   );
 };
+
+const LogoLink = styled(Link)`
+  cursor: pointer;
+`;
 
 const SiteLogoWrapper = styled.div`
   max-width: 158px;

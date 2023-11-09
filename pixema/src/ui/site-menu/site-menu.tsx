@@ -3,63 +3,42 @@ import homeImg from './img/site-menu-home.png';
 import trendsImg from './img/site-menu-trends.png';
 import favoritesImg from './img/site-menu-favorites.png';
 import settingsImg from './img/site-menu-settings.png';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setActiveTab } from './site-menu.slice';
+import { SiteItem } from './site-item';
 
 export const SiteMenu: React.FC = () => {
+  const items = [
+    { id: '1', title: 'Home', img: homeImg },
+    { id: '2', title: 'Trends', img: trendsImg },
+    { id: '3', title: 'Favorites', img: favoritesImg },
+    { id: '4', title: 'Settings', img: settingsImg },
+  ];
+
+  const dispatch = useAppDispatch();
+  const activeId = useAppSelector((state) => state.tabsMenu.activeTab) || '1';
+
   return (
-    <SiteMenuWrapper>
-      <SiteMenuList>
-        <SiteMenuItem>
-          <SiteMenuImg src={homeImg} alt="home" />
-          <SiteMenuText>home</SiteMenuText>
-        </SiteMenuItem>
-        <SiteMenuItem>
-          <SiteMenuImg src={trendsImg} alt="trends" />
-          <SiteMenuText>trends</SiteMenuText>
-        </SiteMenuItem>
-        <SiteMenuItem>
-          <SiteMenuImg src={favoritesImg} alt="favorites" />
-          <SiteMenuText>favorites</SiteMenuText>
-        </SiteMenuItem>
-        <SiteMenuItem>
-          <SiteMenuImg src={settingsImg} alt="setting" />
-          <SiteMenuText>setting</SiteMenuText>
-        </SiteMenuItem>
-      </SiteMenuList>
-    </SiteMenuWrapper>
+    <>
+      <SiteMenuWrapper>
+        {items.map(({ id, title, img }) => (
+          <SiteItem
+            key={id}
+            title={title}
+            image={<img src={img} alt="img"></img>}
+            setActive={() => dispatch(setActiveTab(id))}
+            active={activeId === id}
+          ></SiteItem>
+        ))}
+      </SiteMenuWrapper>
+    </>
   );
 };
 
-const SiteMenuWrapper = styled.div``;
-const SiteMenuList = styled.ul`
-  list-style-type: none;
-  padding: 0;
-
-  li {
-    padding: 0 0 0 5px;
-    &:last-child {
-      padding: 0;
-    }
-  }
-`;
-const SiteMenuItem = styled.li`
+const SiteMenuWrapper = styled.div`
   display: flex;
-  align-items: center;
-`;
-
-const SiteMenuImg = styled.img`
-  cursor: pointer;
-  margin-right: 15px;
-`;
-
-const SiteMenuText = styled.p`
-  cursor: pointer;
-  text-align: end;
-  text-transform: capitalize;
-  color: var(--text-secondary-color);
-  font-weight: 600;
-  transition: 0.3s;
-
-  &:hover {
-    color: var(--text-acctive-color);
-  }
+  flex-direction: column;
+  align-items: flex-start;
+  height: 216px;
+  justify-content: space-between;
 `;

@@ -1,7 +1,8 @@
 .App {
   --text-primary-color: #000000;
   --text-secondary-color: #AFB2B6;
-  --text-acctive-color: #7B61FF;
+  --text-active-color: #7B61FF;
+  --text-genre-color: #AFB2B6;
 
   --site-background-color: #FFFFFF;
   --input-background-color: #FFFFFF;
@@ -15,12 +16,15 @@
   --button-text-color: #FFFFFF;
   --button-showMore-color: #AFB2B6;
 
+  --rating-bg-color: #00A340;
+
   --select-color: #FFFFFF;
 
   &.dark {
     --text-primary-color: #FFFFFF;
     --text-secondary-color: #AFB2B6;
-    --text-acctive-color: #7B61FF;
+    --text-active-color: #7B61FF;
+    --text-genre-color: #AFB2B6;
 
     --site-background-color: #000000;
     --input-background-color: #323537;
@@ -33,6 +37,10 @@
     --button-bg-primary-color: #7B61FF;
     --button-text-color: #FFFFFF;
     --button-showMore-color: #323537;
+
+    --rating-bg-color: #00A340;
+
+    --select-color: #FFFFFF;
   }
   
   & a {
