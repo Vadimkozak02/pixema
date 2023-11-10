@@ -29,8 +29,10 @@ export const User: React.FC<Props> = ({ name }) => {
       </UserNameWrapper>
       <UserSelect
         style={{
-          top: editMenu ? '65px' : '-55px',
+          // top: editMenu ? '65px' : '-55px',
+          transform: editMenu ? 'translateY(10px)' : 'translateY(0)',
           visibility: editMenu ? 'visible' : 'hidden',
+          opacity: editMenu ? '1' : '0',
         }}
       >
         <UserEditProfile>Edit profile</UserEditProfile>
@@ -86,7 +88,7 @@ const UserNameArrow = styled.div``;
 
 const UserSelect = styled.div`
   position: absolute;
-  top: -55px;
+  top: 55px;
   right: 0;
   background-color: var(--form-background-color);
   height: 112px;
@@ -94,7 +96,9 @@ const UserSelect = styled.div`
   border-radius: 10px;
   border: 2px solid var(--input-border-color);
   overflow: hidden;
+  opacity: 0;
   transition: 0.3s;
+  transform: translateY(-10px);
   visibility: hidden;
 `;
 

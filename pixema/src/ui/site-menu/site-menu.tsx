@@ -6,8 +6,12 @@ import settingsImg from './img/site-menu-settings.png';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setActiveTab } from './site-menu.slice';
 import { SiteItem } from './site-item';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const SiteMenu: React.FC = () => {
+  const navigate = useNavigate();
+
   const items = [
     { id: '1', title: 'Home', img: homeImg },
     { id: '2', title: 'Trends', img: trendsImg },
@@ -17,6 +21,16 @@ export const SiteMenu: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const activeId = useAppSelector((state) => state.tabsMenu.activeTab) || '1';
+
+  // useEffect(() => {
+  //   if (activeId === '3') {
+  //     navigate('/favorites');
+  //   }
+  // }, [navigate, activeId]);
+
+  // if (activeId === '3') {
+  //   navigate('/favorites');
+  // }
 
   return (
     <>

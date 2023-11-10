@@ -14,6 +14,7 @@ export const SelectedMovie: React.FC = () => {
 
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const dispatch = useAppDispatch();
+  console.log('selected', selectedPost);
   // const searchArr = allPosts.Search;
   // console.log('searchArr', searchArr);
   // const index = searchArr.findIndex((el) => el.imdbID === selectedPost.imdbID);

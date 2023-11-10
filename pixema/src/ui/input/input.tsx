@@ -20,8 +20,9 @@ const Label = styled.label`
 `;
 
 const LabelText = styled.div`
+  font-weight: 600;
   text-align: start;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   text-transform: capitalize;
 `;
 
@@ -32,7 +33,7 @@ const InputWrapper = styled.input`
   width: 495px;
   line-height: 56px;
   background-color: var(--input-background-color);
-  padding: 5pxp 10px;
+  padding: 5px 15px;
   margin-bottom: 24px;
 
   &::placeholder {
