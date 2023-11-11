@@ -5,12 +5,14 @@ export const SelectedMovieSlice = createSlice({
   name: 'SelectedMovieSlice',
   initialState: {
     selectedMovie: {} as SelectedMovieResponse,
+    idSelectedMovie: '',
     isLoading: false,
   },
   reducers: {
-    setSelectedMovie(state, action: { payload: { imdbID: string } }) {
+    setSelectedMovie(state, action: { payload: string }) {
       state.isLoading = true;
-      console.log(action.payload);
+      state.idSelectedMovie = action.payload;
+      console.log('action.payload', action.payload);
     },
     setSelectedMovieSuccess(state, action: { payload: SelectedMovieResponse }) {
       state.isLoading = false;

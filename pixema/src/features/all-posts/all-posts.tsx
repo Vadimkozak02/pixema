@@ -39,9 +39,7 @@ export const AllPosts: React.FC = () => {
                 id={item.imdbID}
                 title={item.Title}
                 img={<img src={item.Poster} alt="movie" />}
-                onClick={() =>
-                  dispatch(setSelectedMovie({ imdbID: item.imdbID }))
-                }
+                onClick={() => dispatch(setSelectedMovie(item.imdbID))}
               ></MovieCard>
             </Link>
           ))}

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
-import arrowDown from './img/arrowDown.png';
+import arrowDown from './img/arrowDownSvg.svg';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type Props = {
   name: string;
@@ -35,8 +36,12 @@ export const User: React.FC<Props> = ({ name }) => {
           opacity: editMenu ? '1' : '0',
         }}
       >
-        <UserEditProfile>Edit profile</UserEditProfile>
-        <UserLogOut>Log Out</UserLogOut>
+        <UserEditProfile>
+          <Link to="/settingsPage">Edit profile</Link>
+        </UserEditProfile>
+        <UserLogOut>
+          <Link to="/sign-in">Log Out</Link>
+        </UserLogOut>
       </UserSelect>
     </UserWrapper>
   );

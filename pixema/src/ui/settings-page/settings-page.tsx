@@ -76,11 +76,13 @@ const ProfileContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: var(--form-background-color);
+  border: 2px solid var(--input-border-color);
   border-radius: 10px;
   padding: 60px 40px 20px;
 
   input {
     width: 360px;
+    border: 2px solid var(--input-border-color);
   }
 `;
 
@@ -96,11 +98,13 @@ const PasswordContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: var(--form-background-color);
+  border: 2px solid var(--input-border-color);
   border-radius: 10px;
   padding: 50px 40px 20px;
 
   input {
     width: 360px;
+    border: 2px solid var(--input-border-color);
   }
 `;
 
@@ -117,6 +121,7 @@ const ColorModeInfoWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: var(--form-background-color);
+  border: 2px solid var(--input-border-color);
   border-radius: 10px;
   padding: 20px 40px 20px;
 `;

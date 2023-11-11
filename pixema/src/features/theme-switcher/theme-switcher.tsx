@@ -1,6 +1,4 @@
 import styled from 'styled-components';
-import activeIco from './img/activeIco.svg';
-import offIco from './img/offIco.svg';
 import { useEffect, useState } from 'react';
 
 export const ThemeSwitcher: React.FC = () => {
@@ -15,15 +13,34 @@ export const ThemeSwitcher: React.FC = () => {
   }, [isDark]);
 
   return (
-    <ThemeSwitcherWrapper>
-      <div onClick={() => setIsDark(true)}>
-        <img src={isDark ? activeIco : offIco} alt="dark mode" />
-      </div>
-      <div onClick={() => setIsDark(false)}>
-        <img src={isDark ? offIco : activeIco} alt="light mode" />
-      </div>
+    <ThemeSwitcherWrapper
+      onClick={() => setIsDark(!isDark)}
+      style={{
+        backgroundColor: isDark
+          ? 'var(--button-colorMode-active)'
+          : 'var(--button-colorMode-off)',
+      }}
+    >
+      <div style={{ transform: isDark ? 'translateX(15px)' : '' }}></div>
     </ThemeSwitcherWrapper>
   );
 };
 
-const ThemeSwitcherWrapper = styled.div``;
+const ThemeSwitcherWrapper = styled.div`
+  width: 32px;
+  height: 17px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  cursor: pointer;
+
+  div {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--circle-colorMode-color);
+    transition: 0.3s;
+  }
+`;

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import favIco from './img/fav-ico.svg';
 import shareIco from './img/share-ico.svg';
 import imdbIco from './img/imdb-ico.svg';
-import leftArrow from './img/left-arrow-ico.svg';
-import rightArrow from './img/right-arrow-ico.svg';
+import leftArrowGrey from './img/left-arrow-grey.svg';
+import leftArrowWhite from './img/left-arrow-white.svg';
+import rightArrowGrey from './img/right-arrow-grey.svg';
+import rightArrowWhite from './img/right-arrow-white.svg';
 
 type Props = {
   img: React.ReactNode;
@@ -22,6 +24,8 @@ type Props = {
   director: React.ReactNode;
   writers: React.ReactNode;
   recommendationMovie: React.ReactNode;
+  offset: number;
+  maxOffset: number;
   leftTap: () => void;
   rightTap: () => void;
 };
@@ -42,9 +46,12 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
   director,
   writers,
   recommendationMovie,
+  offset,
+  maxOffset,
   leftTap,
   rightTap,
 }) => {
+  console.log('max', maxOffset);
   return (
     <SelectedMovieWrapper>
       <SelectedMovieImgWrapper>
@@ -98,15 +105,29 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
             </RecommendationsMovieTitle>
             <RecommendationsArrow>
               <LeftArrow onClick={() => leftTap()}>
-                <img src={leftArrow} alt="left arrow" />
+                <img
+                  style={{
+                    transform: offset === 0 ? 'scale(1)' : '',
+                  }}
+                  src={offset === 0 ? leftArrowGrey : leftArrowWhite}
+                  alt="left arrow"
+                />
               </LeftArrow>
               <RightArrow onClick={() => rightTap()}>
-                <img src={rightArrow} alt="right arrow" />
+                <img
+                  style={{
+                    transform: offset === maxOffset ? 'scale(1)' : '',
+                  }}
+                  src={offset === maxOffset ? rightArrowGrey : rightArrowWhite}
+                  alt="right arrow"
+                />
               </RightArrow>
             </RecommendationsArrow>
           </RecommendationsHeader>
           <RecommendationsContentWrapper>
-            <RecommendationsContent>
+            <RecommendationsContent
+              style={{ transform: `translateX(${offset}px)` }}
+            >
               {recommendationMovie}
             </RecommendationsContent>
           </RecommendationsContentWrapper>
@@ -146,7 +167,7 @@ const SelectedMovieImgFavorites = styled.button`
   width: 50%;
   background-color: var(--button-showMore-color);
   border: var(--input-border-color);
-  border-right: 1px solid black;
+  border-right: 1px solid var(--site-background-color);
   height: 46px;
   border-radius: 10px 0 0 10px;
 
@@ -222,7 +243,7 @@ const MovieRatingIMDb = styled.div`
   align-items: center;
   width: 79px;
   height: 28px;
-  background-color: var(--input-background-color);
+  background-color: var(--button-showMore-color);
   border-radius: 6px;
 
   img {
@@ -235,7 +256,7 @@ const MovieRuntime = styled.div`
   align-items: center;
   width: 73px;
   height: 28px;
-  background-color: var(--input-background-color);
+  background-color: var(--button-showMore-color);
   border-radius: 6px;
 `;
 
@@ -298,12 +319,31 @@ const RecommendationsArrow = styled.div`
 
 const LeftArrow = styled.button`
   border: none;
-  background-color: transparent;
+  background-color: var(--slider-arrow-color);
+  border-radius: 10px;
+
+  img {
+    &:active {
+      transform: scale(0.9);
+    }
+  }
 `;
 
 const RightArrow = styled.button`
+  height: 18px;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: none;
-  background-color: transparent;
+  background-color: var(--slider-arrow-color);
+  border-radius: 10px;
+
+  img {
+    &:active {
+      transform: scale(0.9);
+    }
+  }
 `;
 
 const RecommendationsContentWrapper = styled.div`
@@ -313,5 +353,5 @@ const RecommendationsContentWrapper = styled.div`
 const RecommendationsContent = styled.div`
   position: relative;
   display: flex;
-  /* right: 480px; */
+  transition: 0.4s;
 `;

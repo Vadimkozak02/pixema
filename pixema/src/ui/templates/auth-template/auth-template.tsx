@@ -26,6 +26,7 @@ export const AuthTemplate: React.FC<Props> = ({ title, body }) => {
 };
 
 const AuthTemplateWrapper = styled.div``;
+
 const SiteLogo = styled.div`
   position: absolute;
   top: 0;
@@ -38,25 +39,33 @@ const SiteLogo = styled.div`
 
 const Main = styled.div`
   position: relative;
-  width: 575px;
-  height: 540px;
+  width: 500px;
+  /* height: 540px; */
   background-color: var(--form-background-color);
-  margin: 100px auto 0;
+  margin: 100px auto 20px;
   border-radius: 10px;
+  padding: 30px 20px;
 `;
 
 const TitleContainer = styled.div`
-  width: 495px;
+  width: 410px;
   margin: auto;
 `;
 
 const BodyContainer = styled.div`
-  width: 495px;
+  width: 410px;
   margin: auto;
 `;
 
 const Footer = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: -80px;
   width: 158px;
   margin: auto;
+  left: 50%;
+  transform: translateX(-50%);
+
+  p {
+    color: var(--text-primary-color);
+  }
 `;

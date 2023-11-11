@@ -5,26 +5,53 @@ import { MainTemplate } from '../../ui/templates/main-template/main-template';
 import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
 import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from './selected-movie.slice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export const SelectedMovie: React.FC = () => {
   const selectedPost = useAppSelector(
     (state) => state.selectedMovie.selectedMovie
   );
+  const idSelectedPost = useAppSelector(
+    (state) => state.selectedMovie.idSelectedMovie
+  );
 
-  const allPosts = useAppSelector((state) => state.allPosts.allPosts);
+  let allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const dispatch = useAppDispatch();
-  console.log('selected', selectedPost);
-  // const searchArr = allPosts.Search;
-  // console.log('searchArr', searchArr);
-  // const index = searchArr.findIndex((el) => el.imdbID === selectedPost.imdbID);
-  // console.log('index', index);
-  // const postsWithoutSelected = searchArr.splice(index, 1);
-  // console.log('without', postsWithoutSelected);
 
-  // useEffect(() => {
+  let allPostsWithoutSelected = Array.from(allPosts.Search);
+  const indexSelectedPost = allPostsWithoutSelected.findIndex(
+    (el) => el.imdbID === selectedPost.imdbID
+  );
+  allPostsWithoutSelected.splice(indexSelectedPost, 1);
 
-  // })
+  const pageWidth = 240;
+  const [offset, setOffset] = useState(0);
+  const maxOffset = -pageWidth * (allPosts.Search.length - 5);
+
+  const leftTap = () => {
+    setOffset((currentOffset) => {
+      const newOffset = currentOffset + pageWidth;
+
+      return Math.min(newOffset, 0);
+    });
+
+    return;
+  };
+
+  const rightTap = () => {
+    setOffset((currentOffset) => {
+      const newOffset = currentOffset - pageWidth;
+
+      return Math.max(newOffset, maxOffset);
+    });
+  };
+
+  console.log('idSelectedPost', idSelectedPost);
+
+  useEffect(() => {
+    dispatch(setSelectedMovie(idSelectedPost));
+  }, [dispatch, idSelectedPost]);
 
   return (
     <SelectedMovieWrapper>
@@ -46,18 +73,20 @@ export const SelectedMovie: React.FC = () => {
           actors={selectedPost.Actors}
           director={selectedPost.Director}
           writers={selectedPost.Writer}
-          leftTap={() => console.log('left')}
-          rightTap={() => console.log('right')}
-          recommendationMovie={allPosts.Search?.map((item, index) => (
-            <MovieCard
-              key={index}
-              id={item.imdbID}
-              title={item.Title}
-              img={<img src={item.Poster} alt="movie" />}
-              onClick={() =>
-                dispatch(setSelectedMovie({ imdbID: item.imdbID }))
-              }
-            ></MovieCard>
+          offset={offset}
+          maxOffset={maxOffset}
+          leftTap={() => leftTap()}
+          rightTap={() => rightTap()}
+          recommendationMovie={allPostsWithoutSelected.map((item, index) => (
+            <Link to={`/${item.imdbID}`} key={index}>
+              <MovieCard
+                key={index}
+                id={item.imdbID}
+                title={item.Title}
+                img={<img src={item.Poster} alt="movie" />}
+                onClick={() => dispatch(setSelectedMovie(item.imdbID))}
+              ></MovieCard>
+            </Link>
           ))}
         ></SelectedMovieTemplate>
       </SelectedMovieContentWrapper>

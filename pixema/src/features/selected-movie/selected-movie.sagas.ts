@@ -9,7 +9,7 @@ import { api } from './api';
 export function* selectedMovieSaga() {
   yield takeLatest(
     setSelectedMovie,
-    function* selectedMovieHundler({ payload: { imdbID } }) {
+    function* selectedMovieHundler({ payload: imdbID }) {
       try {
         const data = yield* call(api.getSelectedMovie, imdbID);
         yield put(setSelectedMovieSuccess(data));

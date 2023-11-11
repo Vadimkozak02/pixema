@@ -30,11 +30,12 @@ const InputWrapper = styled.input`
   all: unset;
   border: 1px solid transparent;
   border-radius: 10px;
-  width: 495px;
+  width: 380px;
   line-height: 56px;
   background-color: var(--input-background-color);
   padding: 5px 15px;
   margin-bottom: 24px;
+  cursor: pointer;
 
   &::placeholder {
     color: var(--text-secondary-color);

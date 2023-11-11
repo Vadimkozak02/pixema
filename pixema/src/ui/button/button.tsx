@@ -17,16 +17,21 @@ export const Button: React.FC<Props> = ({ children, disabled, onClick }) => {
 const ButtonWrapper = styled.button`
   all: unset;
   cursor: pointer;
-  width: 495px;
+  width: 410px;
   height: 56px;
   text-align: center;
   color: var(--button-text-color);
   background-color: var(--button-bg-primary-color);
   border-radius: 10px;
+  transition: 0.3s;
 
   &:disabled {
     cursor: none;
     opacity: 0.67;
     color: var(--input-background-color);
+  }
+
+  &:hover {
+    background-color: var(--text-hover-color);
   }
 `;
