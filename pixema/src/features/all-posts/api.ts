@@ -22,7 +22,7 @@ import { AllPostsResponse } from './types';
 export const api = {
   getAllPosts: (page: number): Promise<AllPostsResponse> => {
     return fetch(
-      `https://www.omdbapi.com/?s=one&apiKey=3709edfe&page=${page}&limit=50`,
+      `https://www.omdbapi.com/?s=love&apiKey=3709edfe&page=${page}&limit=50`,
       {
         method: 'GET',
         headers: {

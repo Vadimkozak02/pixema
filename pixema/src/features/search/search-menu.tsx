@@ -1,13 +1,58 @@
 import styled from 'styled-components';
 import filterImg from './img/menu-search.svg';
+import { useEffect, useRef, useState } from 'react';
+import { Filters } from '../../ui/filters/filters';
 
 export const SearchMenu: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const isOpenRef = useRef<HTMLInputElement>(null);
+
+  console.log('ref', isOpenRef.current);
+
+  // useEffect(() => {
+  //   if (!isOpen) return;
+
+  //   // const handleClick = (event: Event) => {
+  //   //   if (!isOpenRef.current) return;
+  //   //   if (
+  //   //     !isOpenRef.current.contains(
+  //   //       (event.target as Node) || setIsOpen(!isOpen)
+  //   //     )
+  //   //   ) {
+  //   //     setIsOpen(!isOpen);
+  //   //   }
+  //   // };
+
+  //   const handleClick = (e: Event) => {
+  //     if (!isOpenRef.current) return;
+  //     if (!isOpenRef.current.contains(e.target as null)) {
+  //       setIsOpen(!isOpen);
+  //     }
+  //     console.log('isOpen', isOpen);
+  //   };
+
+  //   document.addEventListener('click', handleClick);
+
+  //   return () => {
+  //     document.removeEventListener('click', handleClick);
+  //   };
+  // }, [isOpen, setIsOpen]);
+
   return (
     <SearchMenuWrapper>
       <SearchMenuInput type="input" placeholder="Search"></SearchMenuInput>
-      <SearchMenuFilter>
+      <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
         <img src={filterImg} alt="menuFilter" />
       </SearchMenuFilter>
+      <FiltersWrapper ref={isOpenRef}>
+        <Filters isActive={isOpen} closeFilter={() => setIsOpen(!isOpen)} />
+      </FiltersWrapper>
+      <DarkBg
+        style={{
+          opacity: isOpen ? '0.8' : '0',
+          zIndex: isOpen ? '5' : '-1',
+        }}
+      ></DarkBg>
     </SearchMenuWrapper>
   );
 };
@@ -42,4 +87,18 @@ const SearchMenuFilter = styled.button`
   border: none;
   cursor: pointer;
   background-color: transparent;
+`;
+
+const FiltersWrapper = styled.div``;
+
+const DarkBg = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  opacity: 0.5;
+  z-index: -1;
+  transition: 0.3s;
 `;

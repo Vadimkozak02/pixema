@@ -33,9 +33,9 @@ const InputWrapper = styled.input`
   width: 380px;
   line-height: 56px;
   background-color: var(--input-background-color);
+  border: 2px solid var(--input-border-color);
   padding: 5px 15px;
   margin-bottom: 24px;
-  cursor: pointer;
 
   &::placeholder {
     color: var(--text-secondary-color);

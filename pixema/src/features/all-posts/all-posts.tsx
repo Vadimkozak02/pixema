@@ -20,7 +20,7 @@ export const AllPosts: React.FC = () => {
 
   const newPosts = useAppSelector((state) => state.allPosts.newPosts);
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
-  console.log('newPosts', newPosts);
+  console.log('allPosts', allPosts);
 
   useEffect(() => {
     dispatch(getAllPosts({ page: currentPage }));

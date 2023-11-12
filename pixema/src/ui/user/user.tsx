@@ -73,7 +73,6 @@ const UserNameWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  z-index: 10;
 `;
 
 const UserName = styled.button`

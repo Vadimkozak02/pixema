@@ -28,6 +28,8 @@
 
   --slider-arrow-color: #323537;
 
+  --filter-background-color: #80858B;
+
   &.dark {
     --text-primary-color: #FFFFFF;
     --text-secondary-color: #80858B;
@@ -57,6 +59,8 @@
     --select-color: #FFFFFF;
 
     --slider-arrow-color: transparent;
+
+    --filter-background-color: #242426;
   }
   
   & a {
