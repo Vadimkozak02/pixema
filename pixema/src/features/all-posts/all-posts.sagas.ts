@@ -4,7 +4,7 @@ import {
   getAllPostsFailure,
   getAllPostsSuccess,
 } from './all-posts.slice';
-import { api } from './api';
+import { kinopoiskApi } from './api';
 
 // export function* allPostsSaga() {
 //   yield takeLatest(
@@ -30,12 +30,30 @@ import { api } from './api';
 //   );
 // }
 
+// export function* allPostsSaga() {
+//   yield takeLatest(
+//     getAllPosts,
+//     function* allPostsHundler({ payload: { page } }) {
+//       try {
+//         const data = yield* call(api.getAllPosts, page);
+//         yield put(getAllPostsSuccess(data));
+//       } catch {
+//         yield put(getAllPostsFailure());
+//       }
+//     }
+//   );
+// }
+
+// --------------------
+//  Kinopoisk
+// --------------------
+
 export function* allPostsSaga() {
   yield takeLatest(
     getAllPosts,
     function* allPostsHundler({ payload: { page } }) {
       try {
-        const data = yield* call(api.getAllPosts, page);
+        const data = yield* call(kinopoiskApi.getAllPosts, page);
         yield put(getAllPostsSuccess(data));
       } catch {
         yield put(getAllPostsFailure());

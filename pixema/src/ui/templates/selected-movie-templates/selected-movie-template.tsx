@@ -234,7 +234,7 @@ const MovieRating = styled.div`
   align-items: center;
   width: 37px;
   height: 28px;
-  background-color: var(--rating-bg-color);
+  background-color: var(--rating-green-color);
   border-radius: 6px;
 `;
 const MovieRatingIMDb = styled.div`

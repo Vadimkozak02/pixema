@@ -10,6 +10,7 @@ import spinnerImg from './img/spinner.svg';
 import { User } from '../../ui/user/user';
 import { MainTemplate } from '../../ui/templates/main-template/main-template';
 import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
+import pointIco from './img/pointIco.svg';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,15 @@ export const AllPosts: React.FC = () => {
 
   const newPosts = useAppSelector((state) => state.allPosts.newPosts);
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
-  console.log('allPosts', allPosts);
+  console.log('allPosts', allPosts.items);
+  // console.log(
+  //   'ratingKinopoisk',
+  //   allPosts.items.map((el) => el.ratingKinopoisk)
+  // );
+  // console.log(
+  //   'ratingImdb',
+  //   allPosts.items.map((el) => el.ratingImdb)
+  // );
 
   useEffect(() => {
     dispatch(getAllPosts({ page: currentPage }));
@@ -32,7 +41,7 @@ export const AllPosts: React.FC = () => {
       <AllPostContentWrapper>
         <HeaderTemplate />
         <AllPostContent>
-          {allPosts.Search?.map((item, index) => (
+          {/* {allPosts.Search?.map((item, index) => (
             <Link to={`/${item.imdbID}`} key={index}>
               <MovieCard
                 key={index}
@@ -40,6 +49,26 @@ export const AllPosts: React.FC = () => {
                 title={item.Title}
                 img={<img src={item.Poster} alt="movie" />}
                 onClick={() => dispatch(setSelectedMovie(item.imdbID))}
+              ></MovieCard>
+            </Link>
+          ))} */}
+
+          {/* Kinopoisk */}
+
+          {allPosts.items?.map((item, index) => (
+            <Link to={`/${item.kinopoiskId}`} key={index}>
+              <MovieCard
+                key={index}
+                id={item.kinopoiskId}
+                title={item.nameRu}
+                genre={item.genres.map((el) => ' - ' + el.genre)}
+                rating={
+                  item.ratingKinopoisk === null
+                    ? item.ratingImdb
+                    : item.ratingKinopoisk
+                }
+                img={<img src={item.posterUrl} alt="movie" />}
+                onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
               ></MovieCard>
             </Link>
           ))}

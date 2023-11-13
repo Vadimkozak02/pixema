@@ -5,9 +5,9 @@ import { Filters } from '../../ui/filters/filters';
 
 export const SearchMenu: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const isOpenRef = useRef<HTMLInputElement>(null);
+  // const isOpenRef = useRef<HTMLInputElement>(null);
 
-  console.log('ref', isOpenRef.current);
+  // console.log('ref', isOpenRef.current);
 
   // useEffect(() => {
   //   if (!isOpen) return;
@@ -44,7 +44,7 @@ export const SearchMenu: React.FC = () => {
       <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
         <img src={filterImg} alt="menuFilter" />
       </SearchMenuFilter>
-      <FiltersWrapper ref={isOpenRef}>
+      <FiltersWrapper /*ref={isOpenRef}*/>
         <Filters isActive={isOpen} closeFilter={() => setIsOpen(!isOpen)} />
       </FiltersWrapper>
       <DarkBg

@@ -22,7 +22,9 @@
   --button-colorMode-hoverColor: #917CFF;
   --circle-colorMode-color: #FFFFFF;
 
-  --rating-bg-color: #00A340;
+  --rating-green-color: #00A340;
+  --rating-yellow-color: #F3A608;
+  --rating-orange-color: #F45D2D;
 
   --select-color: #FFFFFF;
 

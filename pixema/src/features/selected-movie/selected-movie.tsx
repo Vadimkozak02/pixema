@@ -12,6 +12,18 @@ export const SelectedMovie: React.FC = () => {
   const selectedPost = useAppSelector(
     (state) => state.selectedMovie.selectedMovie
   );
+
+  const objOfReleasesMovie = useAppSelector(
+    (state) => state.selectedMovie.releasesOfMovie
+  );
+  const arrOfAllRelease = Array.from(objOfReleasesMovie.items);
+  let release = '';
+  arrOfAllRelease.map((el) => {
+    if (el.type === 'WORLD_PREMIER') {
+      release = el.date;
+    }
+  });
+
   const idSelectedPost = useAppSelector(
     (state) => state.selectedMovie.idSelectedMovie
   );
@@ -19,15 +31,15 @@ export const SelectedMovie: React.FC = () => {
   let allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const dispatch = useAppDispatch();
 
-  let allPostsWithoutSelected = Array.from(allPosts.Search);
+  let allPostsWithoutSelected = Array.from(allPosts.items);
   const indexSelectedPost = allPostsWithoutSelected.findIndex(
-    (el) => el.imdbID === selectedPost.imdbID
+    (el) => el.kinopoiskId === selectedPost.kinopoiskId
   );
   allPostsWithoutSelected.splice(indexSelectedPost, 1);
 
   const pageWidth = 240;
   const [offset, setOffset] = useState(0);
-  const maxOffset = -pageWidth * (allPosts.Search.length - 5);
+  const maxOffset = -pageWidth * (allPosts.items.length - 5);
 
   const leftTap = () => {
     setOffset((currentOffset) => {
@@ -58,15 +70,19 @@ export const SelectedMovie: React.FC = () => {
       <MainTemplate />
       <SelectedMovieContentWrapper>
         <HeaderTemplate />
-        <SelectedMovieTemplate
-          img={<img src={selectedPost.Poster} alt="movieImg" />}
-          genre={selectedPost.Genre}
-          title={selectedPost.Title}
-          description={selectedPost.Plot}
-          rating={selectedPost.imdbRating}
-          runtime={selectedPost.Runtime}
-          year={selectedPost.Year}
-          released={selectedPost.Released}
+        {/* <SelectedMovieTemplate
+          img={<img src={selectedPost.posterUrl} alt="movieImg" />}
+          genre={selectedPost.genres.map((el) => el.genre)}
+          title={selectedPost.nameRu}
+          description={selectedPost.description}
+          rating={
+            selectedPost.ratingKinopoisk === null
+              ? selectedPost.ratingImdb
+              : selectedPost.ratingKinopoisk
+          }
+          runtime={selectedPost.filmLength}
+          year={selectedPost.year}
+          released={release}
           boxOffice={selectedPost.BoxOffice}
           country={selectedPost.Country}
           production={selectedPost.Production}
@@ -88,7 +104,7 @@ export const SelectedMovie: React.FC = () => {
               ></MovieCard>
             </Link>
           ))}
-        ></SelectedMovieTemplate>
+        ></SelectedMovieTemplate> */}
       </SelectedMovieContentWrapper>
     </SelectedMovieWrapper>
   );
