@@ -120,3 +120,13 @@ export type BoxOfficeOfMovie = {
     }
   ];
 };
+
+export type StaffOfMovie = {
+  staffId: number;
+  nameRu: string;
+  nameEn: string;
+  description: null;
+  posterUrl: string;
+  professionText: string;
+  professionKey: string;
+};

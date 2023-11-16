@@ -13,16 +13,35 @@ export const SelectedMovie: React.FC = () => {
     (state) => state.selectedMovie.selectedMovie
   );
 
+  // Releases of the movie
   const objOfReleasesMovie = useAppSelector(
     (state) => state.selectedMovie.releasesOfMovie
   );
-  const arrOfAllRelease = Array.from(objOfReleasesMovie.items);
+
   let release = '';
-  arrOfAllRelease.map((el) => {
+  objOfReleasesMovie.items?.map((el) => {
     if (el.type === 'WORLD_PREMIER') {
       release = el.date;
     }
   });
+
+  // BoxOffice of the movie
+  const objOfBoxOffice = useAppSelector(
+    (state) => state.selectedMovie.boxOfficeOfMovie
+  );
+
+  let worldBoxOffice;
+  let rusBoxOffice;
+  objOfBoxOffice.items?.map((el) => {
+    if (el.type === 'WORLD') {
+      worldBoxOffice = el.amount;
+    } else if (el.type === 'RUS') {
+      rusBoxOffice = el.amount;
+    }
+  });
+
+  // Actors, Director, Writers
+  const staff = useAppSelector((state) => state.selectedMovie.staffOfMovie);
 
   const idSelectedPost = useAppSelector(
     (state) => state.selectedMovie.idSelectedMovie
@@ -61,18 +80,14 @@ export const SelectedMovie: React.FC = () => {
 
   console.log('idSelectedPost', idSelectedPost);
 
-  useEffect(() => {
-    dispatch(setSelectedMovie(idSelectedPost));
-  }, [dispatch, idSelectedPost]);
-
   return (
     <SelectedMovieWrapper>
       <MainTemplate />
       <SelectedMovieContentWrapper>
         <HeaderTemplate />
-        {/* <SelectedMovieTemplate
+        <SelectedMovieTemplate
           img={<img src={selectedPost.posterUrl} alt="movieImg" />}
-          genre={selectedPost.genres.map((el) => el.genre)}
+          genre={selectedPost.genres?.map((el) => el.genre + ' ')}
           title={selectedPost.nameRu}
           description={selectedPost.description}
           rating={
@@ -80,31 +95,37 @@ export const SelectedMovie: React.FC = () => {
               ? selectedPost.ratingImdb
               : selectedPost.ratingKinopoisk
           }
-          runtime={selectedPost.filmLength}
+          runtime={selectedPost.filmLength + ' min'}
           year={selectedPost.year}
-          released={release}
-          boxOffice={selectedPost.BoxOffice}
-          country={selectedPost.Country}
-          production={selectedPost.Production}
-          actors={selectedPost.Actors}
-          director={selectedPost.Director}
-          writers={selectedPost.Writer}
+          released={release ? release : '2019-15-08'}
+          boxOffice={worldBoxOffice ? `$${worldBoxOffice}` : `$${rusBoxOffice}`}
+          country={selectedPost.countries?.map((el) => el.country + ' ')}
+          // production={selectedPost.Production}
+          // actors={selectedPost.Actors}
+          // director={selectedPost.Director}
+          // writers={selectedPost.Writer}
           offset={offset}
           maxOffset={maxOffset}
           leftTap={() => leftTap()}
           rightTap={() => rightTap()}
           recommendationMovie={allPostsWithoutSelected.map((item, index) => (
-            <Link to={`/${item.imdbID}`} key={index}>
+            <Link to={`/${item.kinopoiskId}`} key={index}>
               <MovieCard
                 key={index}
-                id={item.imdbID}
-                title={item.Title}
-                img={<img src={item.Poster} alt="movie" />}
-                onClick={() => dispatch(setSelectedMovie(item.imdbID))}
+                id={item.kinopoiskId}
+                title={item.nameRu}
+                genre={item.genres.map((el) => ' - ' + el.genre)}
+                rating={
+                  item.ratingKinopoisk === null
+                    ? item.ratingImdb
+                    : item.ratingKinopoisk
+                }
+                img={<img src={item.posterUrl} alt="movie" />}
+                onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
               ></MovieCard>
             </Link>
           ))}
-        ></SelectedMovieTemplate> */}
+        ></SelectedMovieTemplate>
       </SelectedMovieContentWrapper>
     </SelectedMovieWrapper>
   );

@@ -3,6 +3,7 @@ import {
   BoxOfficeOfMovie,
   ReleasesOfSelectedMovie,
   SelectedKinopoiskMovieReesponse,
+  StaffOfMovie,
 } from './types';
 
 export const SelectedMovieSlice = createSlice({
@@ -11,8 +12,9 @@ export const SelectedMovieSlice = createSlice({
     selectedMovie: {} as SelectedKinopoiskMovieReesponse,
     releasesOfMovie: {} as ReleasesOfSelectedMovie,
     boxOfficeOfMovie: {} as BoxOfficeOfMovie,
+    staffOfMovie: {} as StaffOfMovie,
     idSelectedMovie: 0,
-    isLoading: false,
+    isLoading: true,
   },
   reducers: {
     setSelectedMovie(state, action: { payload: number }) {
@@ -26,6 +28,7 @@ export const SelectedMovieSlice = createSlice({
     ) {
       state.isLoading = false;
       state.selectedMovie = action.payload;
+      console.log('selectedMovie', state.selectedMovie);
     },
     setSelectedMovieFailure(state) {
       state.isLoading = false;
@@ -47,6 +50,13 @@ export const SelectedMovieSlice = createSlice({
     getBoxOfficeOfMovieFailure(state) {
       state.isLoading = false;
     },
+    getStaffSuccess(state, action: { payload: StaffOfMovie }) {
+      state.isLoading = false;
+      state.staffOfMovie = action.payload;
+    },
+    getStaffFailure(state) {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -59,6 +69,8 @@ export const {
     getReleasesOfMovieFailure,
     getBoxOfficeOfMovieSuccess,
     getBoxOfficeOfMovieFailure,
+    getStaffSuccess,
+    getStaffFailure,
   },
   reducer: SelectedMovieReducer,
 } = SelectedMovieSlice;

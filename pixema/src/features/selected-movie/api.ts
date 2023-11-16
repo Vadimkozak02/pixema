@@ -3,6 +3,7 @@ import {
   BoxOfficeOfMovie,
   ReleasesOfSelectedMovie,
   SelectedKinopoiskMovieReesponse,
+  StaffOfMovie,
 } from './types';
 
 export const api = {
@@ -50,6 +51,20 @@ export const api = {
         },
       }
     ).then((response) => {
+      if (!response.ok) {
+        throw new Error('SERVER_ERROR');
+      }
+      return response.json();
+    });
+  },
+  getStaffOfMOvie: (kinopoiskId: number): Promise<StaffOfMovie> => {
+    return fetch(kinopoiskBaseUrl + `api/v1/staff?filmId=${kinopoiskId}`, {
+      method: 'GET',
+      headers: {
+        'X-API-KEY': X_API_KEY,
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
       if (!response.ok) {
         throw new Error('SERVER_ERROR');
       }

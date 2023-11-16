@@ -19,11 +19,11 @@ type Props = {
   released: React.ReactNode;
   boxOffice: React.ReactNode;
   country: React.ReactNode;
-  production: React.ReactNode;
-  actors: React.ReactNode;
-  director: React.ReactNode;
-  writers: React.ReactNode;
-  recommendationMovie: React.ReactNode;
+  production?: React.ReactNode;
+  actors?: React.ReactNode;
+  director?: React.ReactNode;
+  writers?: React.ReactNode;
+  recommendationMovie?: React.ReactNode;
   offset: number;
   maxOffset: number;
   leftTap: () => void;
