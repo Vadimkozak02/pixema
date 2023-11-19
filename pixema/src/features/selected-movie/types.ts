@@ -1,36 +1,38 @@
-export type SelectedMovieResponse = {
-  Title: string;
-  Year: string;
-  Rated: string;
-  Released: string;
-  Runtime: string;
-  Genre: string;
-  Director: string;
-  Writer: string;
-  Actors: string;
-  Plot: string;
-  Language: string;
-  Country: string;
-  Awards: string;
-  Poster: string;
-  Ratings: [
-    { Sourse: string; Value: string },
-    { Sourse: string; Value: string },
-    { Sourse: string; Value: string }
-  ];
-  Metascore: string;
-  imdbRating: string;
-  imdbVotes: string;
-  imdbID: string;
-  Type: string;
-  DVD: string;
-  BoxOffice: string;
-  Production: string;
-  Website: string;
-  Response: string;
-};
+// export type SelectedMovieResponse = {
+//   Title: string;
+//   Year: string;
+//   Rated: string;
+//   Released: string;
+//   Runtime: string;
+//   Genre: string;
+//   Director: string;
+//   Writer: string;
+//   Actors: string;
+//   Plot: string;
+//   Language: string;
+//   Country: string;
+//   Awards: string;
+//   Poster: string;
+//   Ratings: [
+//     { Sourse: string; Value: string },
+//     { Sourse: string; Value: string },
+//     { Sourse: string; Value: string }
+//   ];
+//   Metascore: string;
+//   imdbRating: string;
+//   imdbVotes: string;
+//   imdbID: string;
+//   Type: string;
+//   DVD: string;
+//   BoxOffice: string;
+//   Production: string;
+//   Website: string;
+//   Response: string;
+// };
 
-export type SelectedKinopoiskMovieReesponse = {
+export type ArrOfSelectedKinopoinskMovie = [SelectedKinopoiskMovieResponse];
+
+export type SelectedKinopoiskMovieResponse = {
   kinopoiskId: number;
   kinopoiskHDId: string;
   imdbId: string;
@@ -121,11 +123,13 @@ export type BoxOfficeOfMovie = {
   ];
 };
 
-export type StaffOfMovie = {
+export type StaffOfMovie = [Staff];
+
+export type Staff = {
   staffId: number;
   nameRu: string;
   nameEn: string;
-  description: null;
+  description: null | string;
   posterUrl: string;
   professionText: string;
   professionKey: string;

@@ -2,33 +2,31 @@ import { createSlice } from '@reduxjs/toolkit';
 import {
   BoxOfficeOfMovie,
   ReleasesOfSelectedMovie,
-  SelectedKinopoiskMovieReesponse,
+  SelectedKinopoiskMovieResponse,
   StaffOfMovie,
 } from './types';
 
 export const SelectedMovieSlice = createSlice({
   name: 'SelectedMovieSlice',
   initialState: {
-    selectedMovie: {} as SelectedKinopoiskMovieReesponse,
+    selectedMovie: {} as SelectedKinopoiskMovieResponse,
     releasesOfMovie: {} as ReleasesOfSelectedMovie,
     boxOfficeOfMovie: {} as BoxOfficeOfMovie,
-    staffOfMovie: {} as StaffOfMovie,
-    idSelectedMovie: 0,
+    staffOfMovie: [] as StaffOfMovie[],
+    idSelectedMovie: Number(localStorage.getItem('id')),
     isLoading: true,
   },
   reducers: {
     setSelectedMovie(state, action: { payload: number }) {
       state.isLoading = true;
       state.idSelectedMovie = action.payload;
-      console.log('action.payload', action.payload);
     },
     setSelectedMovieSuccess(
       state,
-      action: { payload: SelectedKinopoiskMovieReesponse }
+      action: { payload: SelectedKinopoiskMovieResponse }
     ) {
       state.isLoading = false;
       state.selectedMovie = action.payload;
-      console.log('selectedMovie', state.selectedMovie);
     },
     setSelectedMovieFailure(state) {
       state.isLoading = false;
@@ -50,7 +48,7 @@ export const SelectedMovieSlice = createSlice({
     getBoxOfficeOfMovieFailure(state) {
       state.isLoading = false;
     },
-    getStaffSuccess(state, action: { payload: StaffOfMovie }) {
+    getStaffSuccess(state, action: { payload: StaffOfMovie[] }) {
       state.isLoading = false;
       state.staffOfMovie = action.payload;
     },

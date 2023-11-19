@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../hooks';
+import favAcitveIco from './img/favAcitveIco.svg';
 
 type Props = {
   id: number;
@@ -7,6 +8,7 @@ type Props = {
   genre: React.ReactNode;
   rating: number;
   img: React.ReactNode;
+  isAdded: boolean;
   onClick: () => void;
 };
 
@@ -16,13 +18,35 @@ export const MovieCard: React.FC<Props> = ({
   genre,
   rating,
   img,
+  isAdded,
   onClick,
 }) => {
   return (
     <MovieCardWrapper id={`${id}`} onClick={() => onClick()}>
       <MovieCardImgWrapper>
-        <MovieCardImg>{img}</MovieCardImg>
-        <MovieCardRating>{rating ? rating : 7.1}</MovieCardRating>
+        <MovieCardImg>
+          {img}
+          <AddedToFavorite
+            style={{
+              transform: isAdded ? 'translateY(10px)' : 'translateY(0)',
+              visibility: isAdded ? 'visible' : 'hidden',
+              opacity: isAdded ? '1' : '0',
+            }}
+            // onClick={() => addToFavorite()}
+          >
+            <img src={favAcitveIco} alt="added to favorites" />
+          </AddedToFavorite>
+        </MovieCardImg>
+        <MovieCardRating
+        // style={{
+        //   backgroundColor:
+        //     rating > 7
+        //       ? 'var(--rating-green-color)'
+        //       : 'var(--rating-yellow-color)',
+        // }}
+        >
+          {rating ? rating : 7.1}
+        </MovieCardRating>
       </MovieCardImgWrapper>
       <MovieCardInfoWrapper>
         <MovieCardTitle>
@@ -54,6 +78,34 @@ const MovieCardImg = styled.div`
   }
 `;
 
+const AddedToFavorite = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 28px;
+  background-color: var(--button-showMore-color);
+  border: var(--input-border-color);
+  border-right: 1px solid var(--site-background-color);
+  border-radius: 6px;
+  opacity: 0;
+  transition: 0.3s;
+  transform: translateY(-10px);
+  visibility: hidden;
+
+  img {
+    width: 12px;
+    opacity: 0.6;
+    transition: 0.3s;
+  }
+
+  &:hover {
+    img {
+      opacity: 1;
+    }
+  }
+`;
+
 const MovieCardInfoWrapper = styled.div``;
 
 const MovieCardRating = styled.div`
@@ -62,12 +114,12 @@ const MovieCardRating = styled.div`
   left: 10px;
   width: 30px;
   height: 23px;
-  background-color: var(--rating-green-color);
   border-radius: 6px;
   color: var(--text-primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--rating-green-color);
 `;
 
 const MovieCardTitle = styled.div``;

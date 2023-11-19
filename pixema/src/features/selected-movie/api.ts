@@ -2,14 +2,14 @@ import { X_API_KEY, kinopoiskBaseUrl } from '../../api/constans';
 import {
   BoxOfficeOfMovie,
   ReleasesOfSelectedMovie,
-  SelectedKinopoiskMovieReesponse,
+  SelectedKinopoiskMovieResponse,
   StaffOfMovie,
 } from './types';
 
 export const api = {
   getSelectedMovie: (
     kinopoiskId: number
-  ): Promise<SelectedKinopoiskMovieReesponse> => {
+  ): Promise<SelectedKinopoiskMovieResponse> => {
     return fetch(kinopoiskBaseUrl + `api/v2.2/films/${kinopoiskId}`, {
       method: 'GET',
       headers: {

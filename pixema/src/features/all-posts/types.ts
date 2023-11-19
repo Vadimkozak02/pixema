@@ -40,3 +40,30 @@ export type KinopoinskAllPostsResponse = {
     posterUrlPreview: string;
   }>;
 };
+
+export type allPostsItem = Array<{
+  kinopoiskId: number;
+  imdbId: string;
+  nameRu: string;
+  nameEn: null;
+  nameOriginal: string;
+  countries: [
+    {
+      country: string;
+    }
+  ];
+  genres: [
+    {
+      genre: string;
+    },
+    {
+      genre: string;
+    }
+  ];
+  ratingKinopoisk: number;
+  ratingImdb: number;
+  year: number;
+  type: number;
+  posterUrl: string;
+  posterUrlPreview: string;
+}>;

@@ -6,12 +6,28 @@ import { HeaderTemplate } from '../../ui/templates/header-template/header-templa
 import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from './selected-movie.slice';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { Staff } from './types';
+import {
+  addIdPage,
+  addToFav,
+  isAddedToFav,
+} from '../all-posts/addToFavorites/addToFavorites.slice';
 
 export const SelectedMovie: React.FC = () => {
+  const [isClicked, setIsClicked] = useState(false);
+
+  const { postId } = useParams();
+  console.log('id', postId);
   const selectedPost = useAppSelector(
     (state) => state.selectedMovie.selectedMovie
   );
+
+  const idSelectedMovie = useAppSelector(
+    (state) => state.selectedMovie.idSelectedMovie
+  );
+
+  const dispatch = useAppDispatch();
 
   // Releases of the movie
   const objOfReleasesMovie = useAppSelector(
@@ -43,14 +59,45 @@ export const SelectedMovie: React.FC = () => {
   // Actors, Director, Writers
   const staff = useAppSelector((state) => state.selectedMovie.staffOfMovie);
 
-  const idSelectedPost = useAppSelector(
-    (state) => state.selectedMovie.idSelectedMovie
+  let director = '';
+  let actors: Array<Staff> = [];
+  let writers: Array<Staff> = [];
+  let producers: Array<Staff> = [];
+  staff[0]?.map((el) => {
+    if (el.professionKey === 'DIRECTOR') {
+      director = el.nameRu;
+    } else if (el.professionKey === 'ACTOR') {
+      actors.push(el);
+      actors.splice(3, actors.length - 3);
+    } else if (el.professionKey === 'WRITER') {
+      writers.push(el);
+      writers.splice(3, writers.length - 3);
+    } else if (el.professionKey === 'PRODUCER') {
+      producers.push(el);
+      producers.splice(3, producers.length - 3);
+    }
+  });
+
+  let addToFavorite = () => {
+    setIsClicked(!isClicked);
+    dispatch(addToFav(selectedPost));
+    dispatch(addIdPage(Number(postId)));
+  };
+
+  const addedToFav = useAppSelector(
+    (state) => state.addToFav.arrofFavoritesMovie
   );
+  let isAdded = false;
+  addedToFav.map((el) => {
+    if (el.kinopoiskId === Number(postId)) {
+      isAdded = true;
+    }
+  });
+  console.log('isAdded', isAdded);
 
   let allPosts = useAppSelector((state) => state.allPosts.allPosts);
-  const dispatch = useAppDispatch();
 
-  let allPostsWithoutSelected = Array.from(allPosts.items);
+  let allPostsWithoutSelected = Array.from(allPosts?.items);
   const indexSelectedPost = allPostsWithoutSelected.findIndex(
     (el) => el.kinopoiskId === selectedPost.kinopoiskId
   );
@@ -78,7 +125,14 @@ export const SelectedMovie: React.FC = () => {
     });
   };
 
-  console.log('idSelectedPost', idSelectedPost);
+  useEffect(() => {
+    localStorage.setItem('id', JSON.stringify(idSelectedMovie));
+  }, [idSelectedMovie]);
+
+  useEffect(() => {
+    const id = localStorage.getItem('id');
+    dispatch(setSelectedMovie(Number(id)));
+  }, [dispatch]);
 
   return (
     <SelectedMovieWrapper>
@@ -86,32 +140,35 @@ export const SelectedMovie: React.FC = () => {
       <SelectedMovieContentWrapper>
         <HeaderTemplate />
         <SelectedMovieTemplate
-          img={<img src={selectedPost.posterUrl} alt="movieImg" />}
-          genre={selectedPost.genres?.map((el) => el.genre + ' ')}
-          title={selectedPost.nameRu}
-          description={selectedPost.description}
+          img={<img src={selectedPost?.posterUrl} alt="movieImg" />}
+          isAdded={isAdded}
+          genre={selectedPost?.genres?.map((el) => el.genre + ' ')}
+          title={selectedPost?.nameRu}
+          description={selectedPost?.description}
           rating={
-            selectedPost.ratingKinopoisk === null
+            selectedPost?.ratingKinopoisk === null
               ? selectedPost.ratingImdb
               : selectedPost.ratingKinopoisk
           }
-          runtime={selectedPost.filmLength + ' min'}
-          year={selectedPost.year}
+          runtime={selectedPost?.filmLength + ' min'}
+          year={selectedPost?.year}
           released={release ? release : '2019-15-08'}
           boxOffice={worldBoxOffice ? `$${worldBoxOffice}` : `$${rusBoxOffice}`}
-          country={selectedPost.countries?.map((el) => el.country + ' ')}
-          // production={selectedPost.Production}
-          // actors={selectedPost.Actors}
-          // director={selectedPost.Director}
-          // writers={selectedPost.Writer}
+          country={selectedPost?.countries?.map((el) => el.country + ' ')}
+          producers={producers.map((el) => el.nameRu + ' ')}
+          actors={actors.map((el) => el.nameRu + ' ')}
+          director={director}
+          writers={writers.map((el) => el.nameRu)}
           offset={offset}
           maxOffset={maxOffset}
+          addToFavorite={() => addToFavorite()}
           leftTap={() => leftTap()}
           rightTap={() => rightTap()}
           recommendationMovie={allPostsWithoutSelected.map((item, index) => (
             <Link to={`/${item.kinopoiskId}`} key={index}>
               <MovieCard
                 key={index}
+                isAdded={false}
                 id={item.kinopoiskId}
                 title={item.nameRu}
                 genre={item.genres.map((el) => ' - ' + el.genre)}

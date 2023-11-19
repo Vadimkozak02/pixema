@@ -21,15 +21,6 @@ export const AllPosts: React.FC = () => {
 
   const newPosts = useAppSelector((state) => state.allPosts.newPosts);
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
-  console.log('allPosts', allPosts.items);
-  // console.log(
-  //   'ratingKinopoisk',
-  //   allPosts.items.map((el) => el.ratingKinopoisk)
-  // );
-  // console.log(
-  //   'ratingImdb',
-  //   allPosts.items.map((el) => el.ratingImdb)
-  // );
 
   useEffect(() => {
     dispatch(getAllPosts({ page: currentPage }));
@@ -41,24 +32,11 @@ export const AllPosts: React.FC = () => {
       <AllPostContentWrapper>
         <HeaderTemplate />
         <AllPostContent>
-          {/* {allPosts.Search?.map((item, index) => (
-            <Link to={`/${item.imdbID}`} key={index}>
-              <MovieCard
-                key={index}
-                id={item.imdbID}
-                title={item.Title}
-                img={<img src={item.Poster} alt="movie" />}
-                onClick={() => dispatch(setSelectedMovie(item.imdbID))}
-              ></MovieCard>
-            </Link>
-          ))} */}
-
-          {/* Kinopoisk */}
-
           {allPosts.items?.map((item, index) => (
             <Link to={`/${item.kinopoiskId}`} key={index}>
               <MovieCard
                 key={index}
+                isAdded={false}
                 id={item.kinopoiskId}
                 title={item.nameRu}
                 genre={item.genres.map((el) => ' - ' + el.genre)}

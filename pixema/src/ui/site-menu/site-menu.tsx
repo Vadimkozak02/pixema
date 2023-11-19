@@ -28,6 +28,10 @@ export const SiteMenu: React.FC = () => {
   //   }
   // }, [navigate, activeId]);
 
+  // if (activeId === '1') {
+  //   navigate('/');
+  // }
+
   // if (activeId === '3') {
   //   navigate('/favorites');
   // }

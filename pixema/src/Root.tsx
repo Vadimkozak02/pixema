@@ -9,6 +9,7 @@ import { SettingsPage } from './ui/settings-page/settings-page';
 import { SignIn } from './pages/sign-in';
 import { SignUp } from './pages/sign-up';
 import { Filters } from './ui/filters/filters';
+import { Trends } from './ui/trends/trends';
 
 function Root() {
   return (
@@ -16,6 +17,7 @@ function Root() {
       <Routes>
         <Route path="/" element={<AllPosts />}></Route>
         <Route path="/:postId" element={<SelectedMovie />}></Route>
+        <Route path="/trends" element={<Trends />}></Route>
         <Route path="/favorites" element={<FavoriteMovies />}></Route>
         <Route path="/settingsPage" element={<SettingsPage />}></Route>
         <Route path="/sign-in" element={<SignIn />}></Route>

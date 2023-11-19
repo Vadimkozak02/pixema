@@ -3,12 +3,12 @@ import { MainTemplate } from '../templates/main-template/main-template';
 import { HeaderTemplate } from '../templates/header-template/header-template';
 import emptyFav from './img/emptyFavorites.png';
 import { useAppSelector } from '../../hooks';
+import { AddToFavorites } from '../../features/all-posts/addToFavorites/addToFavorites';
 
 export const FavoriteMovies: React.FC = () => {
-  const activeTab = useAppSelector((state) => state.tabsMenu.activeTab);
-  const numericActiveTab = Number(activeTab);
-  const isTrue = numericActiveTab === 3;
-  console.log('active', isTrue);
+  // const activeTab = useAppSelector((state) => state.tabsMenu.activeTab);
+  const favArr = useAppSelector((state) => state.addToFav.arrofFavoritesMovie);
+  const isEmpty = favArr.length > 0;
 
   return (
     <>
@@ -16,10 +16,14 @@ export const FavoriteMovies: React.FC = () => {
         <MainTemplate />
         <FavoriteMoviesContentWrapper>
           <HeaderTemplate />
-          <EmptyFavorites>
-            <img src={emptyFav} alt="empty favorites" />
-            <p>No favorite movies</p>
-          </EmptyFavorites>
+          {isEmpty ? (
+            <AddToFavorites />
+          ) : (
+            <EmptyFavorites>
+              <img src={emptyFav} alt="empty favorites" />
+              <p>No favorite movies</p>
+            </EmptyFavorites>
+          )}
         </FavoriteMoviesContentWrapper>
       </FavoriteMoviesWrappes>
     </>
@@ -30,11 +34,14 @@ const FavoriteMoviesWrappes = styled.div`
   display: flex;
   background-color: var(--site-background-color);
   padding-left: 50px;
+  background-size: cover;
 `;
 
 const FavoriteMoviesContentWrapper = styled.div`
   width: 1200px;
   margin: 25px 0 60px;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const EmptyFavorites = styled.div`

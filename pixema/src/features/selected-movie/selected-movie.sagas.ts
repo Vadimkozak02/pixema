@@ -24,7 +24,7 @@ export function* selectedMovieSaga() {
         yield put(setSelectedMovieSuccess(data));
         yield put(getReleasesOfMovieSuccess(releases));
         yield put(getBoxOfficeOfMovieSuccess(boxOffice));
-        yield put(getStaffSuccess(staff));
+        yield put(getStaffSuccess([staff]));
       } catch {
         yield put(setSelectedMovieFailure());
         yield put(getReleasesOfMovieFailure());

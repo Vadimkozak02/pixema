@@ -50,6 +50,7 @@ export const User: React.FC<Props> = ({ name }) => {
 const UserWrapper = styled.div`
   position: relative;
   width: 240px;
+  z-index: 1;
 `;
 
 const UserInitials = styled.div`
