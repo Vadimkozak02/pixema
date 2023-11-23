@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { reset } from '../../features/search/search.slice';
+import { useAppDispatch } from '../../hooks';
 
 export const SiteLogo: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   return (
-    <LogoLink to="/">
+    <LogoLink to="/" onClick={() => dispatch(reset())}>
       <SiteLogoWrapper>
         <SiteNameStart>pix</SiteNameStart>
         <SiteNameEnd>ema</SiteNameEnd>
@@ -21,6 +25,12 @@ const SiteLogoWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 40px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:active {
+    transform: scale(0.98);
+  }
 `;
 const SiteNameStart = styled.h1`
   font-size: 46px;

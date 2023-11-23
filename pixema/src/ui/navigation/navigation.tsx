@@ -4,28 +4,32 @@ import trendsIco from './img/site-menu-trends.png';
 import favoritesIco from './img/site-menu-favorites.png';
 import settingsIco from './img/site-menu-settings.png';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { reset } from '../../features/search/search.slice';
 
 export const Navigation: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   return (
     <NavigationWrapper>
       <NavigationList>
-        <NavigationLink to="/">
+        <NavigationLink to="/" onClick={() => dispatch(reset())}>
           <HomeItem>
             <img src={homeIco} alt="home ico" />
             <p>Home</p>
           </HomeItem>
         </NavigationLink>
-        <NavigationLink to="/trends">
+        <NavigationLink to="/trends" onClick={() => dispatch(reset())}>
           <TrendsItem>
             <img src={trendsIco} alt="trends ico" /> <p>Trends</p>
           </TrendsItem>
         </NavigationLink>
-        <NavigationLink to="/favorites">
+        <NavigationLink to="/favorites" onClick={() => dispatch(reset())}>
           <FavoritesItem>
             <img src={favoritesIco} alt="favorites ico" /> <p>Favorites</p>
           </FavoritesItem>
         </NavigationLink>
-        <NavigationLink to="/settingsPage">
+        <NavigationLink to="/settingsPage" onClick={() => dispatch(reset())}>
           <SettingsItem>
             <img src={settingsIco} alt="settings ico" /> <p>Settings</p>
           </SettingsItem>

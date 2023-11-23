@@ -3,15 +3,20 @@ import { MainTemplate } from '../templates/main-template/main-template';
 import { HeaderTemplate } from '../templates/header-template/header-template';
 import { Input } from '../input/input';
 import { ThemeSwitcher } from '../../features/theme-switcher/theme-switcher';
+import { useAppSelector } from '../../hooks';
+import { SearchTemplate } from '../templates/search-template/search-template';
 
 export const SettingsPage: React.FC = () => {
+  const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
+  const searchedText = useAppSelector((state) => state.search.searchedText);
+
   return (
     <SettingsWrapper>
       <MainTemplate />
       <SettingsContentWrapper>
         <HeaderTemplate />
         <SettingsBlocks>
-          <ProfileWrapper>
+          {/* <ProfileWrapper>
             <ProfileTitle>Profile</ProfileTitle>
             <ProfileContentWrapper>
               <Input labelText="Name"></Input>
@@ -44,7 +49,56 @@ export const SettingsPage: React.FC = () => {
               </ColorInfo>
               <ThemeSwitcher />
             </ColorModeInfoWrapper>
-          </ColorModeWrapper>
+          </ColorModeWrapper> */}
+
+          {searchedMovies.films.length === 0 ? (
+            <>
+              <ProfileWrapper>
+                <ProfileTitle>Profile</ProfileTitle>
+                <ProfileContentWrapper>
+                  <Input labelText="Name"></Input>
+                  <Input labelText="Email"></Input>
+                </ProfileContentWrapper>
+              </ProfileWrapper>
+              <PasswordWrapper>
+                <PasswordTitle>Password</PasswordTitle>
+                <PasswordContentWrapper>
+                  <Input
+                    labelText="Password"
+                    placeholder="Your password"
+                  ></Input>
+                  <div>
+                    <Input
+                      labelText="New password"
+                      placeholder="New password"
+                    ></Input>
+                    <Input
+                      labelText="Confirm password"
+                      placeholder="Confirm password"
+                    ></Input>
+                  </div>
+                </PasswordContentWrapper>
+              </PasswordWrapper>
+
+              <ColorModeWrapper>
+                <ColorModeTitle>Color mode</ColorModeTitle>
+                <ColorModeInfoWrapper>
+                  <ColorInfo>
+                    <ColorModeText>Dark</ColorModeText>
+                    <ColorModeDescription>Use dark thema</ColorModeDescription>
+                  </ColorInfo>
+                  <ThemeSwitcher />
+                </ColorModeInfoWrapper>
+              </ColorModeWrapper>
+            </>
+          ) : (
+            <>
+              <SearchTemplate
+                movie={searchedMovies}
+                searchedString={searchedText}
+              ></SearchTemplate>
+            </>
+          )}
         </SettingsBlocks>
       </SettingsContentWrapper>
     </SettingsWrapper>

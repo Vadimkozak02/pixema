@@ -11,6 +11,7 @@ export const SignIn: React.FC = () => {
 };
 
 const SignInWrapper = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;

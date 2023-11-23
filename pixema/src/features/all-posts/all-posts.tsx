@@ -11,6 +11,7 @@ import { User } from '../../ui/user/user';
 import { MainTemplate } from '../../ui/templates/main-template/main-template';
 import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
 import pointIco from './img/pointIco.svg';
+import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,13 @@ export const AllPosts: React.FC = () => {
   const newPosts = useAppSelector((state) => state.allPosts.newPosts);
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
 
+  const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
+  const searchedText = useAppSelector((state) => state.search.searchedText);
+
+  const filterArr = useAppSelector((state) => state.filter.filtersMovie);
+
+  console.log('filterArr', filterArr);
+
   useEffect(() => {
     dispatch(getAllPosts({ page: currentPage }));
   }, [dispatch, currentPage]);
@@ -31,8 +39,12 @@ export const AllPosts: React.FC = () => {
       <MainTemplate />
       <AllPostContentWrapper>
         <HeaderTemplate />
-        <AllPostContent>
-          {allPosts.items?.map((item, index) => (
+        <AllPostContent
+        // style={{
+        //   display: searchedMovies.films.length === 0 ? 'flex' : 'none',
+        // }}
+        >
+          {/* {allPosts.items?.map((item, index) => (
             <Link to={`/${item.kinopoiskId}`} key={index}>
               <MovieCard
                 key={index}
@@ -49,7 +61,53 @@ export const AllPosts: React.FC = () => {
                 onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
               ></MovieCard>
             </Link>
-          ))}
+          ))} */}
+
+          {searchedMovies.films.length === 0 ? (
+            <>
+              {searchedMovies.searchFilmsCountResult === 0 &&
+              searchedText.length > 0 ? (
+                <div
+                  style={{
+                    color: 'var(--text-primary-color)',
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    marginBottom: '40px',
+                  }}
+                >
+                  No movies were found for this request
+                </div>
+              ) : (
+                <>
+                  {allPosts.items?.map((item, index) => (
+                    <Link to={`/${item.kinopoiskId}`} key={index}>
+                      <MovieCard
+                        key={index}
+                        isAdded={false}
+                        id={item.kinopoiskId}
+                        title={item.nameRu}
+                        genre={item.genres.map((el) => ' - ' + el.genre)}
+                        rating={
+                          item.ratingKinopoisk === null
+                            ? item.ratingImdb
+                            : item.ratingKinopoisk
+                        }
+                        img={<img src={item.posterUrl} alt="movie" />}
+                        onClick={() =>
+                          dispatch(setSelectedMovie(item.kinopoiskId))
+                        }
+                      ></MovieCard>
+                    </Link>
+                  ))}
+                </>
+              )}
+            </>
+          ) : (
+            <SearchTemplate
+              movie={searchedMovies}
+              searchedString={searchedText}
+            ></SearchTemplate>
+          )}
         </AllPostContent>
         <ShowMoreBtn onClick={() => dispatch(changeCurrentPage())}>
           Show more

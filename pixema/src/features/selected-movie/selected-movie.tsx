@@ -96,12 +96,15 @@ export const SelectedMovie: React.FC = () => {
   console.log('isAdded', isAdded);
 
   let allPosts = useAppSelector((state) => state.allPosts.allPosts);
+  const isLoading = useAppSelector((state) => state.allPosts.isLoading);
 
-  let allPostsWithoutSelected = Array.from(allPosts?.items);
-  const indexSelectedPost = allPostsWithoutSelected.findIndex(
-    (el) => el.kinopoiskId === selectedPost.kinopoiskId
-  );
-  allPostsWithoutSelected.splice(indexSelectedPost, 1);
+  let allPostsWithoutSelected = Array.from(allPosts.items);
+  if (isLoading === false) {
+    const indexSelectedPost = allPostsWithoutSelected.findIndex(
+      (el) => el.kinopoiskId === selectedPost.kinopoiskId
+    );
+    allPostsWithoutSelected.splice(indexSelectedPost, 1);
+  }
 
   const pageWidth = 240;
   const [offset, setOffset] = useState(0);
@@ -140,21 +143,21 @@ export const SelectedMovie: React.FC = () => {
       <SelectedMovieContentWrapper>
         <HeaderTemplate />
         <SelectedMovieTemplate
-          img={<img src={selectedPost?.posterUrl} alt="movieImg" />}
+          img={<img src={selectedPost.posterUrl} alt="movieImg" />}
           isAdded={isAdded}
-          genre={selectedPost?.genres?.map((el) => el.genre + ' ')}
-          title={selectedPost?.nameRu}
-          description={selectedPost?.description}
+          genre={selectedPost.genres?.map((el) => el.genre + ' ')}
+          title={selectedPost.nameRu}
+          description={selectedPost.description}
           rating={
-            selectedPost?.ratingKinopoisk === null
+            selectedPost.ratingKinopoisk === null
               ? selectedPost.ratingImdb
               : selectedPost.ratingKinopoisk
           }
-          runtime={selectedPost?.filmLength + ' min'}
-          year={selectedPost?.year}
+          runtime={selectedPost.filmLength + ' min'}
+          year={selectedPost.year}
           released={release ? release : '2019-15-08'}
           boxOffice={worldBoxOffice ? `$${worldBoxOffice}` : `$${rusBoxOffice}`}
-          country={selectedPost?.countries?.map((el) => el.country + ' ')}
+          country={selectedPost.countries?.map((el) => el.country + ' ')}
           producers={producers.map((el) => el.nameRu + ' ')}
           actors={actors.map((el) => el.nameRu + ' ')}
           director={director}

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { Input } from '../input/input';
+import { Input } from '../../ui/input/input';
 import closeIco from './img/closeFiltersIco.svg';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getFilters } from './filters.slice';
 
 type Props = {
   isActive: boolean;
@@ -27,6 +29,15 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
   //     };
   //   }, [isActive, closeFilter]);
 
+  const [order, setOrder] = useState('RATING');
+  const [keyword, setKeyword] = useState('');
+  const [ratingFrom, setRatingFrom] = useState(0);
+  const [ratingTo, setRatingTo] = useState(10);
+  const [yearFrom, setYearFrom] = useState(1000);
+  const [yearTo, setYearTo] = useState(3000);
+
+  const dispatch = useAppDispatch();
+
   return (
     <FiltersWrapper
       style={{
@@ -45,38 +56,114 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
         <TypeOfFiltersWrapper>
           <TypeOfFiltersTitle>Sort by</TypeOfFiltersTitle>
           <TypeOfFiltersBtnWrap>
-            <RatingBtn>Rating</RatingBtn>
-            <YearBtn>Year</YearBtn>
+            <RatingWrapper>
+              <RatingBtn
+                id="radioRating"
+                type="radio"
+                value="RATING"
+                onChange={({ currentTarget }) => setOrder(currentTarget.value)}
+                checked={order === 'RATING'}
+              />
+              <label
+                htmlFor="radioRating"
+                style={{
+                  backgroundColor:
+                    order === 'RATING'
+                      ? 'var(--filter-background-color)'
+                      : 'var(--button-showMore-color)',
+                }}
+              >
+                Rating
+              </label>
+            </RatingWrapper>
+            <YearWrapper>
+              <YearBtn
+                id="radioYear"
+                type="radio"
+                value="YEAR"
+                checked={order === 'YEAR'}
+                onChange={({ currentTarget }) => setOrder(currentTarget.value)}
+              />
+              <label
+                htmlFor="radioYear"
+                style={{
+                  backgroundColor:
+                    order === 'YEAR'
+                      ? 'var(--filter-background-color)'
+                      : 'var(--button-showMore-color)',
+                }}
+              >
+                Year
+              </label>
+            </YearWrapper>
           </TypeOfFiltersBtnWrap>
           <TypeOfFiltersLine></TypeOfFiltersLine>
         </TypeOfFiltersWrapper>
         <FilterByShortNameWrapper>
           <ByShortNameTitle>Full or short movie name</ByShortNameTitle>
-          <Input labelText="" placeholder="Your text" type="text" />
+          <Input
+            labelText=""
+            placeholder="Your text"
+            type="text"
+            onChange={({ currentTarget }) => setKeyword(currentTarget.value)}
+          />
         </FilterByShortNameWrapper>
-        <FiltersByGenreWrapper>
+        {/* <FiltersByGenreWrapper>
           <GenreTitle>Genre</GenreTitle>
           <GenreTextArea></GenreTextArea>
-        </FiltersByGenreWrapper>
+        </FiltersByGenreWrapper> */}
         <FiltersByYearWrapper>
           <FiltersByYearTitle>Years</FiltersByYearTitle>
           <FiltersByYearInputWrapper>
-            <Input labelText="" placeholder="From" />
-            <Input labelText="" placeholder="To" />
+            <Input
+              labelText=""
+              placeholder="From"
+              onChange={({ currentTarget }) =>
+                setYearFrom(+currentTarget.value)
+              }
+            />
+            <Input
+              labelText=""
+              placeholder="To"
+              onChange={({ currentTarget }) => setYearTo(+currentTarget.value)}
+            />
           </FiltersByYearInputWrapper>
         </FiltersByYearWrapper>
         <FiltersByRatingWrapper>
           <FiltersByRatingTitle>Rating</FiltersByRatingTitle>
           <FiltersByRatingInputWrapper>
-            <Input labelText="" placeholder="From" />
-            <Input labelText="" placeholder="To" />
+            <Input
+              labelText=""
+              placeholder="From"
+              onChange={({ currentTarget }) =>
+                setRatingFrom(+currentTarget.value)
+              }
+            />
+            <Input
+              labelText=""
+              placeholder="To"
+              onChange={({ currentTarget }) =>
+                setRatingTo(+currentTarget.value)
+              }
+            />
           </FiltersByRatingInputWrapper>
         </FiltersByRatingWrapper>
         <FooterBtnWrapper>
-          <ClearFilter onClick={() => console.log('clear filter')}>
-            Clear filter
-          </ClearFilter>
-          <ShowResults onClick={() => console.log('show results')}>
+          <ClearFilter onClick={() => closeFilter()}>Clear filter</ClearFilter>
+          <ShowResults
+            onClick={() =>
+              dispatch(
+                getFilters({
+                  order: order,
+                  keyword: keyword,
+                  ratingFrom: ratingFrom,
+                  ratingTo: ratingTo,
+                  yearFrom: yearFrom,
+                  yearTo: yearTo,
+                })
+              )
+            }
+          >
             Show results
           </ShowResults>
         </FooterBtnWrapper>
@@ -154,38 +241,66 @@ const TypeOfFiltersBtnWrap = styled.div`
   margin-bottom: 25px;
   padding: 2px;
 `;
-const RatingBtn = styled.button`
-  width: 50%;
-  height: 100%;
-  border-radius: 10px 0 0 10px;
-  transition: 0.2s;
-  background-color: var(--button-showMore-color);
-  border: 2px solid var(--input-border-color);
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary-color);
 
-  &:focus {
+const RatingWrapper = styled.div`
+  input {
+    display: none;
+  }
+
+  label {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    width: 169px;
+    height: 100%;
+    border-radius: 10px 0 0 10px;
+    transition: 0.2s;
+    background-color: var(--button-showMore-color);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary-color);
+    padding: 0px 15px;
+    line-height: 55px;
+    border: 1px solid var(--input-border-color);
+    text-align: center;
+  }
+
+  /* input:checked + label {
     background-color: var(--filter-background-color);
-    color: var(--text-secondary-color);
+  } */
+`;
+
+const RatingBtn = styled.input``;
+
+const YearWrapper = styled.div`
+  input {
+    display: none;
+  }
+
+  label {
+    display: inline-block;
+    cursor: pointer;
+    user-select: none;
+    width: 169px;
+    height: 100%;
+    border-radius: 0 10px 10px 0;
+    transition: 0.2s;
+    background-color: var(--button-showMore-color);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary-color);
+    padding: 0px 15px;
+    line-height: 55px;
+    border: 1px solid var(--input-border-color);
+    text-align: center;
+  }
+
+  input:checked + label {
+    background-color: var(--filter-background-color);
   }
 `;
-const YearBtn = styled.button`
-  width: 50%;
-  height: 100%;
-  border-radius: 0 10px 10px 0;
-  transition: 0.2s;
-  background-color: var(--button-showMore-color);
-  border: 2px solid var(--input-border-color);
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary-color);
 
-  &:focus {
-    background-color: var(--filter-background-color);
-    color: var(--text-secondary-color);
-  }
-`;
+const YearBtn = styled.input``;
 
 const TypeOfFiltersLine = styled.div`
   border-bottom: 2px solid var(--button-showMore-color);

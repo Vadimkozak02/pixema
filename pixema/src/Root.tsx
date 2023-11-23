@@ -8,8 +8,8 @@ import { FavoriteMovies } from './ui/favorite-movies/favorite-movies';
 import { SettingsPage } from './ui/settings-page/settings-page';
 import { SignIn } from './pages/sign-in';
 import { SignUp } from './pages/sign-up';
-import { Filters } from './ui/filters/filters';
-import { Trends } from './ui/trends/trends';
+import { Filters } from './features/filters/filters';
+import { Trends } from './features/trends/trends';
 
 function Root() {
   return (

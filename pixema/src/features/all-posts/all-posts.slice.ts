@@ -46,7 +46,11 @@ import { AllPostsResponse, KinopoinskAllPostsResponse } from './types';
 const AllPostsSlice = createSlice({
   name: 'AllPosts',
   initialState: {
-    allPosts: {} as KinopoinskAllPostsResponse,
+    allPosts: {
+      total: 0,
+      totalPages: 0,
+      items: [],
+    } as KinopoinskAllPostsResponse,
     currentPage: 1,
     isLoading: false,
     newPosts: {} as AllPostsResponse,

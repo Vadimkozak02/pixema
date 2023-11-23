@@ -2,13 +2,17 @@ import styled from 'styled-components';
 import { MainTemplate } from '../templates/main-template/main-template';
 import { HeaderTemplate } from '../templates/header-template/header-template';
 import emptyFav from './img/emptyFavorites.png';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AddToFavorites } from '../../features/all-posts/addToFavorites/addToFavorites';
+import { SearchTemplate } from '../templates/search-template/search-template';
 
 export const FavoriteMovies: React.FC = () => {
   // const activeTab = useAppSelector((state) => state.tabsMenu.activeTab);
   const favArr = useAppSelector((state) => state.addToFav.arrofFavoritesMovie);
   const isEmpty = favArr.length > 0;
+
+  const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
+  const searchedText = useAppSelector((state) => state.search.searchedText);
 
   return (
     <>
@@ -16,13 +20,33 @@ export const FavoriteMovies: React.FC = () => {
         <MainTemplate />
         <FavoriteMoviesContentWrapper>
           <HeaderTemplate />
-          {isEmpty ? (
+          {/* {isEmpty ? (
             <AddToFavorites />
           ) : (
             <EmptyFavorites>
               <img src={emptyFav} alt="empty favorites" />
               <p>No favorite movies</p>
             </EmptyFavorites>
+          )} */}
+
+          {searchedMovies.films.length === 0 ? (
+            <>
+              {isEmpty ? (
+                <AddToFavorites />
+              ) : (
+                <EmptyFavorites>
+                  <img src={emptyFav} alt="empty favorites" />
+                  <p>No favorite movies</p>
+                </EmptyFavorites>
+              )}
+            </>
+          ) : (
+            <>
+              <SearchTemplate
+                movie={searchedMovies}
+                searchedString={searchedText}
+              ></SearchTemplate>
+            </>
           )}
         </FavoriteMoviesContentWrapper>
       </FavoriteMoviesWrappes>

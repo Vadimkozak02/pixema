@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import filterImg from './img/menu-search.svg';
 import { useEffect, useRef, useState } from 'react';
-import { Filters } from '../../ui/filters/filters';
+import { Filters } from '../filters/filters';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { search, setSearchedText } from './search.slice';
+import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 
 export const SearchMenu: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
   // const isOpenRef = useRef<HTMLInputElement>(null);
 
   // console.log('ref', isOpenRef.current);
@@ -38,9 +40,23 @@ export const SearchMenu: React.FC = () => {
   //   };
   // }, [isOpen, setIsOpen]);
 
+  const [isOpen, setIsOpen] = useState(false);
+  // const [searchedText, setSearchedText] = useState<string>('');
+
+  const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
+
+  const dispatch = useAppDispatch();
+
   return (
     <SearchMenuWrapper>
-      <SearchMenuInput type="input" placeholder="Search"></SearchMenuInput>
+      <SearchMenuInput
+        type="input"
+        placeholder="Search"
+        onChange={(event) => {
+          dispatch(setSearchedText(event.currentTarget.value));
+          dispatch(search({ search: event.currentTarget.value, page: 1 }));
+        }}
+      ></SearchMenuInput>
       <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
         <img src={filterImg} alt="menuFilter" />
       </SearchMenuFilter>
@@ -53,6 +69,10 @@ export const SearchMenu: React.FC = () => {
           zIndex: isOpen ? '5' : '-1',
         }}
       ></DarkBg>
+      {/* <SearchTemplate
+        movie={searchedMovies}
+        // searchedString={searchedText}
+      ></SearchTemplate> */}
     </SearchMenuWrapper>
   );
 };

@@ -46,7 +46,7 @@ import { AllPostsResponse, KinopoinskAllPostsResponse } from './types';
 export const kinopoiskApi = {
   getAllPosts: (page: number): Promise<KinopoinskAllPostsResponse> => {
     return fetch(
-      `${kinopoiskBaseUrl}api/v2.2/films/collections?type=TOP_POPULAR_MOVIES&page=${page}`,
+      `${kinopoiskBaseUrl}api/v2.2/films/collections?type=TOP_250_MOVIES&page=${page}`,
       {
         method: 'GET',
         headers: {
