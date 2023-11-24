@@ -12,6 +12,7 @@ import { MainTemplate } from '../../ui/templates/main-template/main-template';
 import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
 import pointIco from './img/pointIco.svg';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
+import { ShowMore } from '../show-more-btn/show-more-btn';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,6 @@ export const AllPosts: React.FC = () => {
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const isLoading = useAppSelector((state) => state.selectedMovie.isLoading);
 
-  const newPosts = useAppSelector((state) => state.allPosts.newPosts);
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
@@ -79,26 +79,53 @@ export const AllPosts: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  {allPosts.items?.map((item, index) => (
-                    <Link to={`/${item.kinopoiskId}`} key={index}>
-                      <MovieCard
-                        key={index}
-                        isAdded={false}
-                        id={item.kinopoiskId}
-                        title={item.nameRu}
-                        genre={item.genres.map((el) => ' - ' + el.genre)}
-                        rating={
-                          item.ratingKinopoisk === null
-                            ? item.ratingImdb
-                            : item.ratingKinopoisk
-                        }
-                        img={<img src={item.posterUrl} alt="movie" />}
-                        onClick={() =>
-                          dispatch(setSelectedMovie(item.kinopoiskId))
-                        }
-                      ></MovieCard>
-                    </Link>
-                  ))}
+                  {filterArr.items.length > 0 ? (
+                    <>
+                      {filterArr.items?.map((item, index) => (
+                        <Link to={`/${item.kinopoiskId}`} key={index}>
+                          <MovieCard
+                            key={index}
+                            isAdded={false}
+                            id={item.kinopoiskId}
+                            title={item.nameRu}
+                            genre={item.genres.map((el) => ' - ' + el.genre)}
+                            rating={
+                              item.ratingKinopoisk === null
+                                ? item.ratingImdb
+                                : item.ratingKinopoisk
+                            }
+                            img={<img src={item.posterUrl} alt="movie" />}
+                            onClick={() =>
+                              dispatch(setSelectedMovie(item.kinopoiskId))
+                            }
+                          ></MovieCard>
+                        </Link>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {allPosts.items?.map((item, index) => (
+                        <Link to={`/${item.kinopoiskId}`} key={index}>
+                          <MovieCard
+                            key={index}
+                            isAdded={false}
+                            id={item.kinopoiskId}
+                            title={item.nameRu}
+                            genre={item.genres.map((el) => ' - ' + el.genre)}
+                            rating={
+                              item.ratingKinopoisk === null
+                                ? item.ratingImdb
+                                : item.ratingKinopoisk
+                            }
+                            img={<img src={item.posterUrl} alt="movie" />}
+                            onClick={() =>
+                              dispatch(setSelectedMovie(item.kinopoiskId))
+                            }
+                          ></MovieCard>
+                        </Link>
+                      ))}
+                    </>
+                  )}
                 </>
               )}
             </>
@@ -109,6 +136,7 @@ export const AllPosts: React.FC = () => {
             ></SearchTemplate>
           )}
         </AllPostContent>
+        {/* <ShowMore changeCurrentPage={changeCurrentPage} /> */}
         <ShowMoreBtn onClick={() => dispatch(changeCurrentPage())}>
           Show more
           <img src={spinnerImg} alt="spinner" />

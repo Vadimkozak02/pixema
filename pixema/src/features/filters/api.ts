@@ -1,11 +1,10 @@
-import { X_API_KEY } from '../../api/constans';
-import { kinopoiskApi } from '../all-posts/api';
+import { X_API_KEY, kinopoiskBaseUrl } from '../../api/constans';
 import { FilterRequest, FilterResponse } from './types';
 
 export const api = {
   getFiltersArr: (payload: FilterRequest): Promise<FilterResponse> => {
     return fetch(
-      `${kinopoiskApi}api/v2.2/films?order=${payload.order}&ratingFrom=${payload.ratingFrom}&ratingTo=${payload.ratingTo}&yearFrom=${payload.yearFrom}&yearTo=${payload.yearTo}&keyword=${payload.keyword}&page=1`,
+      `${kinopoiskBaseUrl}api/v2.2/films?order=${payload.order}&type=ALL&ratingFrom=${payload.ratingFrom}&ratingTo=${payload.ratingTo}&yearFrom=${payload.yearFrom}&yearTo=${payload.yearTo}&keyword=${payload.keyword}&page=${payload.page}`,
       {
         method: 'GET',
         headers: {

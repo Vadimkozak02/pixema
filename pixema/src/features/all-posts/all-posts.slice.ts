@@ -53,18 +53,15 @@ const AllPostsSlice = createSlice({
     } as KinopoinskAllPostsResponse,
     currentPage: 1,
     isLoading: false,
-    newPosts: {} as AllPostsResponse,
   },
   reducers: {
-    // getAllPosts(state, action: { payload: { pages: [number, number] } }) {
-    //   state.isLoading = true;
-    // },
     getAllPosts(state, action: { payload: { page: number } }) {
       state.isLoading = true;
     },
     getAllPostsSuccess(state, action: { payload: typeof state.allPosts }) {
       state.isLoading = false;
-      state.allPosts = action.payload;
+      const itemsArr = [...state.allPosts.items, ...action.payload.items];
+      state.allPosts = { ...state.allPosts, items: itemsArr };
     },
     getAllPostsFailure(state) {
       state.isLoading = false;

@@ -4,9 +4,13 @@ import { KinopoinskAllPostsResponse } from '../all-posts/types';
 const TrendsSlice = createSlice({
   name: 'TrendsSLice',
   initialState: {
-    trendsMovie: {} as KinopoinskAllPostsResponse,
+    trendsMovie: {
+      total: 0,
+      totalPages: 0,
+      items: [],
+    } as KinopoinskAllPostsResponse,
     currentPage: 1,
-    isLoading: true,
+    isLoading: false,
   },
   reducers: {
     getTrendsMovie(state, action: { payload: { page: number } }) {
@@ -17,13 +21,24 @@ const TrendsSlice = createSlice({
       action: { payload: typeof state.trendsMovie }
     ) {
       state.isLoading = false;
-      state.trendsMovie = action.payload;
+      const itemsArr = [...state.trendsMovie.items, ...action.payload.items];
+      state.trendsMovie = { ...state.trendsMovie, items: itemsArr };
     },
-    getTrendsMovieFailure(state) {},
+    getTrendsMovieFailure(state) {
+      state.isLoading = false;
+    },
+    changeCurrentPage(state) {
+      state.currentPage = state.currentPage + 1;
+    },
   },
 });
 
 export const {
-  actions: { getTrendsMovie, getTrendsMovieSuccess, getTrendsMovieFailure },
+  actions: {
+    getTrendsMovie,
+    getTrendsMovieSuccess,
+    getTrendsMovieFailure,
+    changeCurrentPage,
+  },
   reducer: TrendsReducer,
 } = TrendsSlice;

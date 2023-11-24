@@ -122,6 +122,14 @@ const UserEditProfile = styled.button`
   &:hover {
     color: var(--text-active-color);
   }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const UserLogOut = styled.button`
@@ -137,5 +145,13 @@ const UserLogOut = styled.button`
 
   &:hover {
     color: var(--text-active-color);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 `;

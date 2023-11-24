@@ -45,6 +45,8 @@ export const SearchMenu: React.FC = () => {
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
 
+  const filterIsAcive = useAppSelector((state) => state.filter.filterIsActive);
+
   const dispatch = useAppDispatch();
 
   return (
@@ -59,6 +61,13 @@ export const SearchMenu: React.FC = () => {
       ></SearchMenuInput>
       <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
         <img src={filterImg} alt="menuFilter" />
+        <SearchMenuCircle
+          style={{
+            transform: filterIsAcive ? 'translateY(0)' : 'translateY(0)',
+            visibility: filterIsAcive ? 'visible' : 'hidden',
+            opacity: filterIsAcive ? '1' : '0',
+          }}
+        ></SearchMenuCircle>
       </SearchMenuFilter>
       <FiltersWrapper /*ref={isOpenRef}*/>
         <Filters isActive={isOpen} closeFilter={() => setIsOpen(!isOpen)} />
@@ -107,6 +116,20 @@ const SearchMenuFilter = styled.button`
   border: none;
   cursor: pointer;
   background-color: transparent;
+`;
+
+const SearchMenuCircle = styled.div`
+  position: absolute;
+  bottom: 1px;
+  left: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--button-colorMode-active);
+  opacity: 0;
+  transition: 0.3s;
+  transform: translateY(-10px);
+  visibility: hidden;
 `;
 
 const FiltersWrapper = styled.div``;

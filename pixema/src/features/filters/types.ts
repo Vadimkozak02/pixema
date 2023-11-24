@@ -5,6 +5,7 @@ export type FilterRequest = {
   ratingTo: number;
   yearFrom: number;
   yearTo: number;
+  page: number;
 };
 
 export type FilterResponse = {

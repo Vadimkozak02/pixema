@@ -3,7 +3,7 @@ import { Input } from '../../ui/input/input';
 import closeIco from './img/closeFiltersIco.svg';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getFilters } from './filters.slice';
+import { getFilters, resetFilter, setFilterIsActive } from './filters.slice';
 
 type Props = {
   isActive: boolean;
@@ -35,6 +35,8 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
   const [ratingTo, setRatingTo] = useState(10);
   const [yearFrom, setYearFrom] = useState(1000);
   const [yearTo, setYearTo] = useState(3000);
+
+  const currentPage = useAppSelector((state) => state.filter.currentPage);
 
   const dispatch = useAppDispatch();
 
@@ -149,9 +151,17 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
           </FiltersByRatingInputWrapper>
         </FiltersByRatingWrapper>
         <FooterBtnWrapper>
-          <ClearFilter onClick={() => closeFilter()}>Clear filter</ClearFilter>
+          <ClearFilter
+            onClick={() => {
+              closeFilter();
+              dispatch(resetFilter());
+              dispatch(setFilterIsActive(false));
+            }}
+          >
+            Clear filter
+          </ClearFilter>
           <ShowResults
-            onClick={() =>
+            onClick={() => {
               dispatch(
                 getFilters({
                   order: order,
@@ -160,9 +170,12 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
                   ratingTo: ratingTo,
                   yearFrom: yearFrom,
                   yearTo: yearTo,
+                  page: currentPage,
                 })
-              )
-            }
+              );
+              closeFilter();
+              dispatch(setFilterIsActive(true));
+            }}
           >
             Show results
           </ShowResults>
