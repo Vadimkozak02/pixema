@@ -51,6 +51,11 @@ const AllPostsSlice = createSlice({
       totalPages: 0,
       items: [],
     } as KinopoinskAllPostsResponse,
+    recommendationMovies: {
+      total: 0,
+      totalPages: 0,
+      items: [],
+    } as KinopoinskAllPostsResponse,
     currentPage: 1,
     isLoading: false,
   },
@@ -69,6 +74,20 @@ const AllPostsSlice = createSlice({
     changeCurrentPage(state) {
       state.currentPage = state.currentPage + 1;
     },
+    getRecommendationMovies(
+      state,
+      action: { payload: typeof state.recommendationMovies }
+    ) {
+      state.isLoading = false;
+      const itemsArr = [
+        ...state.recommendationMovies.items,
+        ...action.payload.items,
+      ];
+      state.recommendationMovies = {
+        ...state.recommendationMovies,
+        items: itemsArr,
+      };
+    },
   },
 });
 
@@ -78,6 +97,7 @@ export const {
     getAllPostsSuccess,
     getAllPostsFailure,
     changeCurrentPage,
+    getRecommendationMovies,
   },
   reducer: AllPostsReducer,
 } = AllPostsSlice;

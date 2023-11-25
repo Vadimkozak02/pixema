@@ -13,6 +13,7 @@ import { HeaderTemplate } from '../../ui/templates/header-template/header-templa
 import pointIco from './img/pointIco.svg';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 import { ShowMore } from '../show-more-btn/show-more-btn';
+import { changeSearchCurrentPage } from '../search/search.slice';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,15 +21,12 @@ export const AllPosts: React.FC = () => {
 
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const isLoading = useAppSelector((state) => state.selectedMovie.isLoading);
-
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
 
   const filterArr = useAppSelector((state) => state.filter.filtersMovie);
-
-  console.log('filterArr', filterArr);
 
   useEffect(() => {
     dispatch(getAllPosts({ page: currentPage }));
@@ -98,6 +96,7 @@ export const AllPosts: React.FC = () => {
                             onClick={() =>
                               dispatch(setSelectedMovie(item.kinopoiskId))
                             }
+                            removeFromFav={() => null}
                           ></MovieCard>
                         </Link>
                       ))}
@@ -121,6 +120,7 @@ export const AllPosts: React.FC = () => {
                             onClick={() =>
                               dispatch(setSelectedMovie(item.kinopoiskId))
                             }
+                            removeFromFav={() => null}
                           ></MovieCard>
                         </Link>
                       ))}
@@ -137,7 +137,12 @@ export const AllPosts: React.FC = () => {
           )}
         </AllPostContent>
         {/* <ShowMore changeCurrentPage={changeCurrentPage} /> */}
-        <ShowMoreBtn onClick={() => dispatch(changeCurrentPage())}>
+        <ShowMoreBtn
+          style={{
+            display: searchedMovies.films.length > 0 ? 'none' : 'block',
+          }}
+          onClick={() => dispatch(changeCurrentPage())}
+        >
           Show more
           <img src={spinnerImg} alt="spinner" />
         </ShowMoreBtn>

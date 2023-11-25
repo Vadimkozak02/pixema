@@ -10,6 +10,7 @@ type Props = {
   img: React.ReactNode;
   isAdded: boolean;
   onClick: () => void;
+  removeFromFav: () => void;
 };
 
 export const MovieCard: React.FC<Props> = ({
@@ -20,6 +21,7 @@ export const MovieCard: React.FC<Props> = ({
   img,
   isAdded,
   onClick,
+  removeFromFav,
 }) => {
   return (
     <MovieCardWrapper id={`${id}`} onClick={() => onClick()}>
@@ -32,7 +34,11 @@ export const MovieCard: React.FC<Props> = ({
               visibility: isAdded ? 'visible' : 'hidden',
               opacity: isAdded ? '1' : '0',
             }}
-            // onClick={() => addToFavorite()}
+            onClick={(event) => {
+              removeFromFav();
+              event.stopPropagation();
+              event.preventDefault();
+            }}
           >
             <img src={favAcitveIco} alt="added to favorites" />
           </AddedToFavorite>

@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { changeCurrentPage, getTrendsMovie } from './trends.slice';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 import spinnerImg from './img/spinner.svg';
+import { changeFiltersCurrentPage } from '../filters/filters.slice';
 
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
@@ -17,6 +18,8 @@ export const Trends: React.FC = () => {
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
+
+  const filterArr = useAppSelector((state) => state.filter.filtersMovie);
 
   const dispatch = useAppDispatch();
 
@@ -51,24 +54,55 @@ export const Trends: React.FC = () => {
 
           {searchedMovies.films.length === 0 ? (
             <>
-              {trendsPosts.items?.map((item, index) => (
-                <Link to={`/${item.kinopoiskId}`} key={index}>
-                  <MovieCard
-                    key={index}
-                    isAdded={false}
-                    id={item.kinopoiskId}
-                    title={item.nameRu}
-                    genre={item.genres.map((el) => ' - ' + el.genre)}
-                    rating={
-                      item.ratingKinopoisk === null
-                        ? item.ratingImdb
-                        : item.ratingKinopoisk
-                    }
-                    img={<img src={item.posterUrl} alt="movie" />}
-                    onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
-                  ></MovieCard>
-                </Link>
-              ))}
+              {filterArr.items.length > 0 ? (
+                <>
+                  {filterArr.items?.map((item, index) => (
+                    <Link to={`/${item.kinopoiskId}`} key={index}>
+                      <MovieCard
+                        key={index}
+                        isAdded={false}
+                        id={item.kinopoiskId}
+                        title={item.nameRu}
+                        genre={item.genres.map((el) => ' - ' + el.genre)}
+                        rating={
+                          item.ratingKinopoisk === null
+                            ? item.ratingImdb
+                            : item.ratingKinopoisk
+                        }
+                        img={<img src={item.posterUrl} alt="movie" />}
+                        onClick={() =>
+                          dispatch(setSelectedMovie(item.kinopoiskId))
+                        }
+                        removeFromFav={() => null}
+                      ></MovieCard>
+                    </Link>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {trendsPosts.items?.map((item, index) => (
+                    <Link to={`/${item.kinopoiskId}`} key={index}>
+                      <MovieCard
+                        key={index}
+                        isAdded={false}
+                        id={item.kinopoiskId}
+                        title={item.nameRu}
+                        genre={item.genres.map((el) => ' - ' + el.genre)}
+                        rating={
+                          item.ratingKinopoisk === null
+                            ? item.ratingImdb
+                            : item.ratingKinopoisk
+                        }
+                        img={<img src={item.posterUrl} alt="movie" />}
+                        onClick={() =>
+                          dispatch(setSelectedMovie(item.kinopoiskId))
+                        }
+                        removeFromFav={() => null}
+                      ></MovieCard>
+                    </Link>
+                  ))}
+                </>
+              )}
             </>
           ) : (
             <>
@@ -79,7 +113,12 @@ export const Trends: React.FC = () => {
             </>
           )}
         </TrendsAllPosts>
-        <ShowMoreBtn onClick={() => dispatch(changeCurrentPage())}>
+        <ShowMoreBtn
+          style={{
+            display: searchedMovies.films.length > 0 ? 'none' : 'block',
+          }}
+          onClick={() => dispatch(changeCurrentPage())}
+        >
           Show more
           <img src={spinnerImg} alt="spinner" />
         </ShowMoreBtn>

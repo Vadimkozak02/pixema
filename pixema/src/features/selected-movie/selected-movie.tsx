@@ -13,6 +13,7 @@ import {
   addToFav,
   isAddedToFav,
 } from '../all-posts/addToFavorites/addToFavorites.slice';
+import { getAllPosts } from '../all-posts/all-posts.slice';
 
 export const SelectedMovie: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -78,6 +79,7 @@ export const SelectedMovie: React.FC = () => {
     }
   });
 
+  // Favorite
   let addToFavorite = () => {
     setIsClicked(!isClicked);
     dispatch(addToFav(selectedPost));
@@ -93,12 +95,16 @@ export const SelectedMovie: React.FC = () => {
       isAdded = true;
     }
   });
-  console.log('isAdded', isAdded);
 
+  // Recommendations
   let allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const isLoading = useAppSelector((state) => state.allPosts.isLoading);
 
-  let allPostsWithoutSelected = Array.from(allPosts.items);
+  const recommendations = useAppSelector(
+    (state) => state.allPosts.recommendationMovies
+  );
+
+  let allPostsWithoutSelected = Array.from(recommendations.items);
   if (isLoading === false) {
     const indexSelectedPost = allPostsWithoutSelected.findIndex(
       (el) => el.kinopoiskId === selectedPost.kinopoiskId
@@ -106,9 +112,10 @@ export const SelectedMovie: React.FC = () => {
     allPostsWithoutSelected.splice(indexSelectedPost, 1);
   }
 
+  // Recommendation slider
   const pageWidth = 240;
   const [offset, setOffset] = useState(0);
-  const maxOffset = -pageWidth * (allPosts.items.length - 5);
+  const maxOffset = -pageWidth * (recommendations.items.length - 5);
 
   const leftTap = () => {
     setOffset((currentOffset) => {
@@ -136,6 +143,12 @@ export const SelectedMovie: React.FC = () => {
     const id = localStorage.getItem('id');
     dispatch(setSelectedMovie(Number(id)));
   }, [dispatch]);
+
+  const currentPage = useAppSelector((state) => state.allPosts.currentPage);
+
+  useEffect(() => {
+    dispatch(getAllPosts({ page: currentPage }));
+  }, [dispatch, currentPage]);
 
   return (
     <SelectedMovieWrapper>
@@ -182,6 +195,7 @@ export const SelectedMovie: React.FC = () => {
                 }
                 img={<img src={item.posterUrl} alt="movie" />}
                 onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
+                removeFromFav={() => null}
               ></MovieCard>
             </Link>
           ))}

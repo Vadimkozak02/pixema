@@ -3,6 +3,7 @@ import {
   getAllPosts,
   getAllPostsFailure,
   getAllPostsSuccess,
+  getRecommendationMovies,
 } from './all-posts.slice';
 import { kinopoiskApi } from './api';
 
@@ -52,9 +53,15 @@ export function* allPostsSaga() {
   yield takeLatest(
     getAllPosts,
     function* allPostsHundler({ payload: { page } }) {
+      const recPage = 10;
       try {
         const data = yield* call(kinopoiskApi.getAllPosts, page);
+        const recommendationMovies = yield* call(
+          kinopoiskApi.recommendationMovies,
+          recPage
+        );
         yield put(getAllPostsSuccess(data));
+        yield put(getRecommendationMovies(recommendationMovies));
       } catch {
         yield put(getAllPostsFailure());
       }

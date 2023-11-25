@@ -61,4 +61,23 @@ export const kinopoiskApi = {
       return response.json();
     });
   },
+  recommendationMovies: (
+    recPage: number
+  ): Promise<KinopoinskAllPostsResponse> => {
+    return fetch(
+      `${kinopoiskBaseUrl}api/v2.2/films/collections?type=TOP_POPULAR_MOVIES&page=${recPage}`,
+      {
+        method: 'GET',
+        headers: {
+          'X-API-KEY': X_API_KEY,
+          'Content-Type': 'application/json',
+        },
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        throw new Error('SERVER_ERROR');
+      }
+      return response.json();
+    });
+  },
 };

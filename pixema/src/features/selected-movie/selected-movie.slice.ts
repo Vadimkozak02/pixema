@@ -14,7 +14,7 @@ export const SelectedMovieSlice = createSlice({
     boxOfficeOfMovie: {} as BoxOfficeOfMovie,
     staffOfMovie: [] as StaffOfMovie[],
     idSelectedMovie: Number(localStorage.getItem('id')),
-    isLoading: true,
+    isLoading: false,
   },
   reducers: {
     setSelectedMovie(state, action: { payload: number }) {

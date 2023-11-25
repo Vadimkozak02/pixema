@@ -2,12 +2,18 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { MovieCard } from '../../../ui/movie-card/movie-card';
 import { setSelectedMovie } from '../../selected-movie/selected-movie.slice';
+import { addToFav } from './addToFavorites.slice';
 
 export const AddToFavorites: React.FC = () => {
   const favoritesMovie = useAppSelector(
     (state) => state.addToFav.arrofFavoritesMovie
   );
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
+  const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
+  const recommendations = useAppSelector(
+    (state) => state.allPosts.recommendationMovies
+  );
+
   const dispatch = useAppDispatch();
 
   let isTrue = false;
@@ -18,6 +24,23 @@ export const AddToFavorites: React.FC = () => {
       }
     });
   });
+
+  trendsPosts.items?.map((el) => {
+    favoritesMovie.map((item) => {
+      if (el.kinopoiskId === item.kinopoiskId) {
+        isTrue = true;
+      }
+    });
+  });
+
+  recommendations.items?.map((el) => {
+    favoritesMovie.map((item) => {
+      if (el.kinopoiskId === item.kinopoiskId) {
+        isTrue = true;
+      }
+    });
+  });
+
   return (
     <>
       {favoritesMovie.map((item, index) => (
@@ -35,6 +58,13 @@ export const AddToFavorites: React.FC = () => {
             }
             img={<img src={item.posterUrl} alt="movie" />}
             onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
+            removeFromFav={() =>
+              favoritesMovie.map((el) => {
+                if (item.kinopoiskId === el.kinopoiskId) {
+                  dispatch(addToFav(el));
+                }
+              })
+            }
           ></MovieCard>
         </Link>
       ))}

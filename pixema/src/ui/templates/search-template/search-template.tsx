@@ -34,6 +34,7 @@ export const SearchTemplate: React.FC<Props> = ({ movie, searchedString }) => {
               rating={+el.rating}
               img={<img src={el.posterUrl} alt="movie" />}
               onClick={() => dispatch(setSelectedMovie(el.filmId))}
+              removeFromFav={() => null}
             ></MovieCard>
           </Link>
         ))}

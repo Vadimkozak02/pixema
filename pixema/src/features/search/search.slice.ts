@@ -23,24 +23,31 @@ const searchSlice = createSlice({
       state.isInProgress = false;
       state.isCompleted = true;
       state.searchedPosts = action.payload;
-      console.log('state', state.searchedPosts);
     },
     searchFailure(state) {
       state.isInProgress = false;
     },
     setSearchedText(state, action: { payload: string }) {
       state.searchedText = action.payload;
-      console.log('searchedText', state.searchedText);
     },
     reset(state) {
       state.searchedText = '';
       state.searchedPosts.films = [];
-      console.log('resetText', state.searchedText);
+    },
+    changeSearchCurrentPage(state) {
+      state.searchCurrentPage = state.searchCurrentPage + 1;
     },
   },
 });
 
 export const {
-  actions: { search, searchSuccess, searchFailure, setSearchedText, reset },
+  actions: {
+    search,
+    searchSuccess,
+    searchFailure,
+    setSearchedText,
+    reset,
+    changeSearchCurrentPage,
+  },
   reducer: searchReducer,
 } = searchSlice;

@@ -36,9 +36,13 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
   const [yearFrom, setYearFrom] = useState(1000);
   const [yearTo, setYearTo] = useState(3000);
 
-  const currentPage = useAppSelector((state) => state.filter.currentPage);
+  const filtersCurrentPage = useAppSelector(
+    (state) => state.filter.filtersCurrentPage
+  );
 
   const dispatch = useAppDispatch();
+
+  const clearResults = () => {};
 
   return (
     <FiltersWrapper
@@ -104,6 +108,7 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
         <FilterByShortNameWrapper>
           <ByShortNameTitle>Full or short movie name</ByShortNameTitle>
           <Input
+            className="yourText"
             labelText=""
             placeholder="Your text"
             type="text"
@@ -156,6 +161,7 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
               closeFilter();
               dispatch(resetFilter());
               dispatch(setFilterIsActive(false));
+              clearResults();
             }}
           >
             Clear filter
@@ -170,7 +176,7 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
                   ratingTo: ratingTo,
                   yearFrom: yearFrom,
                   yearTo: yearTo,
-                  page: currentPage,
+                  page: filtersCurrentPage,
                 })
               );
               closeFilter();
