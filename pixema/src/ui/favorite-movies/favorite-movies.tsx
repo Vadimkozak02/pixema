@@ -5,6 +5,9 @@ import emptyFav from './img/emptyFavorites.png';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AddToFavorites } from '../../features/all-posts/addToFavorites/addToFavorites';
 import { SearchTemplate } from '../templates/search-template/search-template';
+import { useEffect } from 'react';
+import { getUserLS } from '../../api/user-localStorage';
+import { setUser } from '../../features/Auth/authorization.slice';
 
 export const FavoriteMovies: React.FC = () => {
   // const activeTab = useAppSelector((state) => state.tabsMenu.activeTab);
@@ -13,6 +16,15 @@ export const FavoriteMovies: React.FC = () => {
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const LSUser = getUserLS();
+    dispatch(
+      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+    );
+  }, [dispatch]);
 
   return (
     <>

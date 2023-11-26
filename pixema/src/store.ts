@@ -8,6 +8,7 @@ import { addToFavoritesReducer } from './features/all-posts/addToFavorites/addTo
 import { TrendsReducer } from './features/trends/trends.slice';
 import { searchReducer } from './features/search/search.slice';
 import { FilterReducer } from './features/filters/filters.slice';
+import { AuthorizationReducer } from './features/Auth/authorization.slice';
 
 let sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -16,6 +17,7 @@ export const store = configureStore({
   reducer: {
     addToFav: addToFavoritesReducer,
     allPosts: AllPostsReducer,
+    authorization: AuthorizationReducer,
     filter: FilterReducer,
     trendsPosts: TrendsReducer,
     search: searchReducer,

@@ -11,6 +11,8 @@ import { changeCurrentPage, getTrendsMovie } from './trends.slice';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 import spinnerImg from './img/spinner.svg';
 import { changeFiltersCurrentPage } from '../filters/filters.slice';
+import { getUserLS } from '../../api/user-localStorage';
+import { setUser } from '../Auth/authorization.slice';
 
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
@@ -25,6 +27,10 @@ export const Trends: React.FC = () => {
 
   useEffect(() => {
     dispatch(getTrendsMovie({ page: currentPage }));
+    const LSUser = getUserLS();
+    dispatch(
+      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+    );
   }, [dispatch, currentPage]);
 
   return (

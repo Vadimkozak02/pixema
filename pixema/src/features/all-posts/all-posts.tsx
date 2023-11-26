@@ -14,6 +14,8 @@ import pointIco from './img/pointIco.svg';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 import { ShowMore } from '../show-more-btn/show-more-btn';
 import { changeSearchCurrentPage } from '../search/search.slice';
+import { getUserLS, setUserLS } from '../../api/user-localStorage';
+import { setUser } from '../Auth/authorization.slice';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -30,6 +32,10 @@ export const AllPosts: React.FC = () => {
 
   useEffect(() => {
     dispatch(getAllPosts({ page: currentPage }));
+    const LSUser = getUserLS();
+    dispatch(
+      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+    );
   }, [dispatch, currentPage]);
 
   return (
@@ -141,7 +147,9 @@ export const AllPosts: React.FC = () => {
           style={{
             display: searchedMovies.films.length > 0 ? 'none' : 'block',
           }}
-          onClick={() => dispatch(changeCurrentPage())}
+          onClick={() => {
+            dispatch(changeCurrentPage());
+          }}
         >
           Show more
           <img src={spinnerImg} alt="spinner" />

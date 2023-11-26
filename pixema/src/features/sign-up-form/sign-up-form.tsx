@@ -2,12 +2,37 @@ import { useState } from 'react';
 import { Input } from '../../ui/input/input';
 import styled from 'styled-components';
 import { Button } from '../../ui/button/button';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useAppDispatch } from '../../hooks';
+import { setUser } from '../Auth/authorization.slice';
+import { useNavigate } from 'react-router-dom';
 
 export const SingUpForm: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleRegister = () => {
+    const auth = getAuth();
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(({ user }) => {
+        console.log('userSignUp', user);
+        dispatch(
+          setUser({
+            email: user.email,
+            id: user.uid,
+            token: user.refreshToken,
+          })
+        );
+        navigate('/sign-in');
+      })
+      .catch(console.error);
+  };
 
   return (
     <SignInFormWrapper>
@@ -41,7 +66,7 @@ export const SingUpForm: React.FC = () => {
           setConfirmPassword(currentTarget.value)
         }
       />
-      <Button onClick={() => console.log('click')}>Sign up</Button>
+      <Button onClick={() => handleRegister()}>Sign up</Button>
       <GoToSingUpWrapper>
         <p>Already have an account?</p>
         <a href="/sign-in">Sign In</a>

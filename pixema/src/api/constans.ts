@@ -5,3 +5,4 @@ export const kinopoiskBaseUrl = 'https://kinopoiskapiunofficial.tech/';
 // export const X_API_KEY = '923b524c-efdb-4e68-b1ab-72bcf18be01c'; // vadimkozak02@gmail.com
 // export const X_API_KEY = '9926c7d0-06e3-4a8a-9420-7e134af8c83e'; // vadim-kozak@mail.ru
 export const X_API_KEY = 'e4d29416-d9c3-4bbb-b55f-ccb0168afd33'; // vadimkozak02@mail.ru
+// export const X_API_KEY = 'fccfe7f2-6e97-47a2-ac64-f481033608cc'; // vmursen@bk.ru

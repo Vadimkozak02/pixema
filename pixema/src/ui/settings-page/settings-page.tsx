@@ -3,12 +3,28 @@ import { MainTemplate } from '../templates/main-template/main-template';
 import { HeaderTemplate } from '../templates/header-template/header-template';
 import { Input } from '../input/input';
 import { ThemeSwitcher } from '../../features/theme-switcher/theme-switcher';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector, useAuth } from '../../hooks';
 import { SearchTemplate } from '../templates/search-template/search-template';
+import { useEffect, useState } from 'react';
+import { getUserLS } from '../../api/user-localStorage';
+import { setUser } from '../../features/Auth/authorization.slice';
 
 export const SettingsPage: React.FC = () => {
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
+
+  const dispatch = useAppDispatch();
+
+  const [password, setPassword] = useState('');
+
+  const { isAuth, email } = useAuth();
+
+  useEffect(() => {
+    const LSUser = getUserLS();
+    dispatch(
+      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+    );
+  }, [dispatch]);
 
   return (
     <SettingsWrapper>
@@ -57,7 +73,16 @@ export const SettingsPage: React.FC = () => {
                 <ProfileTitle>Profile</ProfileTitle>
                 <ProfileContentWrapper>
                   <Input labelText="Name"></Input>
-                  <Input labelText="Email"></Input>
+                  <Input
+                    labelText="Email"
+                    // value={email}
+                    onChange={() => console.log('email')}
+                  ></Input>
+
+                  {/* <EmailContent>
+                    <EmailLabel>Email</EmailLabel>
+                    <EmailText>{email}</EmailText>
+                  </EmailContent> */}
                 </ProfileContentWrapper>
               </ProfileWrapper>
               <PasswordWrapper>
@@ -66,6 +91,10 @@ export const SettingsPage: React.FC = () => {
                   <Input
                     labelText="Password"
                     placeholder="Your password"
+                    value={password}
+                    onChange={({ currentTarget }) =>
+                      setPassword(currentTarget.value)
+                    }
                   ></Input>
                   <div>
                     <Input
@@ -138,6 +167,27 @@ const ProfileContentWrapper = styled.div`
     width: 360px;
     border: 2px solid var(--input-border-color);
   }
+`;
+
+const EmailContent = styled.div``;
+
+const EmailLabel = styled.div`
+  font-weight: 600;
+  text-align: start;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  color: var(--text-primary-color);
+`;
+
+const EmailText = styled.div`
+  border: 1px solid transparent;
+  border-radius: 10px;
+  width: 380px;
+  line-height: 56px;
+  background-color: var(--input-background-color);
+  border: 2px solid var(--input-border-color);
+  padding: 5px 15px;
+  margin-bottom: 24px;
 `;
 
 const PasswordWrapper = styled.div`

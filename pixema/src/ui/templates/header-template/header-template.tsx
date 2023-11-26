@@ -7,7 +7,7 @@ export const HeaderTemplate: React.FC = () => {
     <>
       <AllPostHeaderWrapper>
         <SearchMenu />
-        <User name="Vadim Kozak" />
+        <User />
       </AllPostHeaderWrapper>
     </>
   );
