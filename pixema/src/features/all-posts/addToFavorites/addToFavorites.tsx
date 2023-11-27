@@ -57,7 +57,10 @@ export const AddToFavorites: React.FC = () => {
                 : item.ratingKinopoisk
             }
             img={<img src={item.posterUrl} alt="movie" />}
-            onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
+            onClick={() => {
+              dispatch(setSelectedMovie(item.kinopoiskId));
+              window.scrollTo(0, 0);
+            }}
             removeFromFav={() =>
               favoritesMovie.map((el) => {
                 if (item.kinopoiskId === el.kinopoiskId) {

@@ -10,7 +10,6 @@ export function* filterSaga() {
   yield takeLatest(getFilters, function* filtersHundler({ payload }) {
     try {
       const data = yield* call(api.getFiltersArr, payload);
-      console.log('data', data);
 
       yield put(getFiltersSuccess(data));
     } catch {

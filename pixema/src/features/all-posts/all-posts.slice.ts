@@ -56,7 +56,8 @@ const AllPostsSlice = createSlice({
       totalPages: 0,
       items: [],
     } as KinopoinskAllPostsResponse,
-    currentPage: 1,
+    currentPage: 2,
+    currentScroll: 1300,
     isLoading: false,
   },
   reducers: {
@@ -88,6 +89,9 @@ const AllPostsSlice = createSlice({
         items: itemsArr,
       };
     },
+    getCurrentScroll(state) {
+      state.currentScroll += 1800;
+    },
   },
 });
 
@@ -98,6 +102,7 @@ export const {
     getAllPostsFailure,
     changeCurrentPage,
     getRecommendationMovies,
+    getCurrentScroll,
   },
   reducer: AllPostsReducer,
 } = AllPostsSlice;

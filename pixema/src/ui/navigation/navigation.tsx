@@ -21,6 +21,7 @@ export const Navigation: React.FC = () => {
             onClick={() => {
               dispatch(reset());
               setIsActive('1');
+              window.scrollTo(0, 0);
             }}
           >
             <HomeItem
@@ -43,6 +44,7 @@ export const Navigation: React.FC = () => {
             onClick={() => {
               dispatch(reset());
               setIsActive('2');
+              window.scrollTo(0, 0);
             }}
           >
             <TrendsItem
@@ -64,6 +66,7 @@ export const Navigation: React.FC = () => {
             onClick={() => {
               dispatch(reset());
               setIsActive('3');
+              window.scrollTo(0, 0);
             }}
           >
             <FavoritesItem
@@ -85,6 +88,7 @@ export const Navigation: React.FC = () => {
             onClick={() => {
               dispatch(reset());
               setIsActive('4');
+              window.scrollTo(0, 0);
             }}
           >
             <SettingsItem

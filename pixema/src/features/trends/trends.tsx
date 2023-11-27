@@ -26,12 +26,15 @@ export const Trends: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getTrendsMovie({ page: currentPage }));
     const LSUser = getUserLS();
     dispatch(
       setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
     );
   }, [dispatch, currentPage]);
+
+  if (trendsPosts.items.length === 0) {
+    dispatch(getTrendsMovie({ page: 1 }));
+  }
 
   return (
     <TrendsWrapper>
@@ -76,9 +79,10 @@ export const Trends: React.FC = () => {
                             : item.ratingKinopoisk
                         }
                         img={<img src={item.posterUrl} alt="movie" />}
-                        onClick={() =>
-                          dispatch(setSelectedMovie(item.kinopoiskId))
-                        }
+                        onClick={() => {
+                          dispatch(setSelectedMovie(item.kinopoiskId));
+                          window.scrollTo(0, 0);
+                        }}
                         removeFromFav={() => null}
                       ></MovieCard>
                     </Link>
@@ -100,9 +104,10 @@ export const Trends: React.FC = () => {
                             : item.ratingKinopoisk
                         }
                         img={<img src={item.posterUrl} alt="movie" />}
-                        onClick={() =>
-                          dispatch(setSelectedMovie(item.kinopoiskId))
-                        }
+                        onClick={() => {
+                          dispatch(setSelectedMovie(item.kinopoiskId));
+                          window.scrollTo(0, 0);
+                        }}
                         removeFromFav={() => null}
                       ></MovieCard>
                     </Link>
@@ -123,7 +128,10 @@ export const Trends: React.FC = () => {
           style={{
             display: searchedMovies.films.length > 0 ? 'none' : 'block',
           }}
-          onClick={() => dispatch(changeCurrentPage())}
+          onClick={() => {
+            dispatch(changeCurrentPage());
+            dispatch(getTrendsMovie({ page: currentPage }));
+          }}
         >
           Show more
           <img src={spinnerImg} alt="spinner" />

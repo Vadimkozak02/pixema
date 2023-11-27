@@ -144,12 +144,6 @@ export const SelectedMovie: React.FC = () => {
     dispatch(setSelectedMovie(Number(id)));
   }, [dispatch]);
 
-  const currentPage = useAppSelector((state) => state.allPosts.currentPage);
-
-  useEffect(() => {
-    dispatch(getAllPosts({ page: currentPage }));
-  }, [dispatch, currentPage]);
-
   return (
     <SelectedMovieWrapper>
       <MainTemplate />
@@ -194,7 +188,14 @@ export const SelectedMovie: React.FC = () => {
                     : item.ratingKinopoisk
                 }
                 img={<img src={item.posterUrl} alt="movie" />}
-                onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
+                onClick={() => {
+                  dispatch(setSelectedMovie(item.kinopoiskId));
+                  window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth',
+                  });
+                }}
                 removeFromFav={() => null}
               ></MovieCard>
             </Link>

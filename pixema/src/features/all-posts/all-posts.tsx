@@ -1,7 +1,11 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { changeCurrentPage, getAllPosts } from './all-posts.slice';
+import {
+  changeCurrentPage,
+  getAllPosts,
+  getCurrentScroll,
+} from './all-posts.slice';
 import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from '../selected-movie/selected-movie.slice';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,27 +20,39 @@ import { ShowMore } from '../show-more-btn/show-more-btn';
 import { changeSearchCurrentPage } from '../search/search.slice';
 import { getUserLS, setUserLS } from '../../api/user-localStorage';
 import { setUser } from '../Auth/authorization.slice';
+import { changeFiltersCurrentPage, getFilters } from '../filters/filters.slice';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
-  const isLoading = useAppSelector((state) => state.selectedMovie.isLoading);
+  let isLoading = useAppSelector((state) => state.selectedMovie.isLoading);
   const currentPage = useAppSelector((state) => state.allPosts.currentPage);
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
 
   const filterArr = useAppSelector((state) => state.filter.filtersMovie);
+  const filterIsActive = useAppSelector((state) => state.filter.filterIsActive);
+  const currentFilters = useAppSelector((state) => state.filter.currentFilters);
+  const filtersCurrentPage = useAppSelector(
+    (state) => state.filter.filtersCurrentPage
+  );
+  console.log('currentFilters', currentFilters);
 
   useEffect(() => {
-    dispatch(getAllPosts({ page: currentPage }));
     const LSUser = getUserLS();
     dispatch(
       setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
     );
   }, [dispatch, currentPage]);
+
+  let currentScroll = useAppSelector((state) => state.allPosts.currentScroll);
+
+  if (allPosts.items.length === 0) {
+    dispatch(getAllPosts({ page: 1 }));
+  }
 
   return (
     <AllPostsWrapper>
@@ -99,9 +115,10 @@ export const AllPosts: React.FC = () => {
                                 : item.ratingKinopoisk
                             }
                             img={<img src={item.posterUrl} alt="movie" />}
-                            onClick={() =>
-                              dispatch(setSelectedMovie(item.kinopoiskId))
-                            }
+                            onClick={() => {
+                              dispatch(setSelectedMovie(item.kinopoiskId));
+                              window.scrollTo(0, 0);
+                            }}
                             removeFromFav={() => null}
                           ></MovieCard>
                         </Link>
@@ -123,9 +140,10 @@ export const AllPosts: React.FC = () => {
                                 : item.ratingKinopoisk
                             }
                             img={<img src={item.posterUrl} alt="movie" />}
-                            onClick={() =>
-                              dispatch(setSelectedMovie(item.kinopoiskId))
-                            }
+                            onClick={() => {
+                              dispatch(setSelectedMovie(item.kinopoiskId));
+                              window.scrollTo(0, 0);
+                            }}
                             removeFromFav={() => null}
                           ></MovieCard>
                         </Link>
@@ -147,9 +165,33 @@ export const AllPosts: React.FC = () => {
           style={{
             display: searchedMovies.films.length > 0 ? 'none' : 'block',
           }}
-          onClick={() => {
-            dispatch(changeCurrentPage());
-          }}
+          onClick={
+            filterIsActive
+              ? () => {
+                  dispatch(changeFiltersCurrentPage());
+                  dispatch(
+                    getFilters({
+                      order: currentFilters.order,
+                      keyword: currentFilters.keyword,
+                      ratingFrom: currentFilters.ratingFrom,
+                      ratingTo: currentFilters.ratingTo,
+                      yearFrom: currentFilters.yearFrom,
+                      yearTo: currentFilters.yearTo,
+                      page: filtersCurrentPage,
+                    })
+                  );
+                }
+              : () => {
+                  dispatch(changeCurrentPage());
+                  dispatch(getAllPosts({ page: currentPage }));
+                  dispatch(getCurrentScroll());
+                  window.scrollTo({
+                    top: currentScroll,
+                    left: 0,
+                    behavior: 'smooth',
+                  });
+                }
+          }
         >
           Show more
           <img src={spinnerImg} alt="spinner" />

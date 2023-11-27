@@ -3,7 +3,12 @@ import { Input } from '../../ui/input/input';
 import closeIco from './img/closeFiltersIco.svg';
 import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getFilters, resetFilter, setFilterIsActive } from './filters.slice';
+import {
+  getFilters,
+  resetFilter,
+  resetFiltersCurrentPage,
+  setFilterIsActive,
+} from './filters.slice';
 
 type Props = {
   isActive: boolean;
@@ -35,10 +40,6 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
   const [ratingTo, setRatingTo] = useState(10);
   const [yearFrom, setYearFrom] = useState(1000);
   const [yearTo, setYearTo] = useState(3000);
-
-  const filtersCurrentPage = useAppSelector(
-    (state) => state.filter.filtersCurrentPage
-  );
 
   const dispatch = useAppDispatch();
 
@@ -176,11 +177,12 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
                   ratingTo: ratingTo,
                   yearFrom: yearFrom,
                   yearTo: yearTo,
-                  page: filtersCurrentPage,
+                  page: 1,
                 })
               );
               closeFilter();
               dispatch(setFilterIsActive(true));
+              dispatch(resetFiltersCurrentPage(2));
             }}
           >
             Show results

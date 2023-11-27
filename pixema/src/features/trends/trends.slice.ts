@@ -9,7 +9,7 @@ const TrendsSlice = createSlice({
       totalPages: 0,
       items: [],
     } as KinopoinskAllPostsResponse,
-    currentPage: 1,
+    currentPage: 2,
     isLoading: false,
   },
   reducers: {

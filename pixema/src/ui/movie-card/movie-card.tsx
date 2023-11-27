@@ -24,7 +24,7 @@ export const MovieCard: React.FC<Props> = ({
   removeFromFav,
 }) => {
   return (
-    <MovieCardWrapper id={`${id}`} onClick={() => onClick()}>
+    <MovieCardWrapper id={`${id}`} onClick={(event) => onClick()}>
       <MovieCardImgWrapper>
         <MovieCardImg>
           {img}
@@ -57,7 +57,14 @@ export const MovieCard: React.FC<Props> = ({
       <MovieCardInfoWrapper>
         <MovieCardTitle>
           <MovieCardText>{title}</MovieCardText>
-          <MovieCardGenre>{genre}</MovieCardGenre>
+          <MovieCardGenre
+            onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+            }}
+          >
+            {genre}
+          </MovieCardGenre>
         </MovieCardTitle>
       </MovieCardInfoWrapper>
     </MovieCardWrapper>
@@ -66,7 +73,7 @@ export const MovieCard: React.FC<Props> = ({
 
 const MovieCardWrapper = styled.div`
   width: 205px;
-  margin: 0 35px 45px 0;
+  padding: 0 35px 45px 0;
 `;
 
 const MovieCardImgWrapper = styled.div`
