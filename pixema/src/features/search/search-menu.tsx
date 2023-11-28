@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import filterImg from './img/menu-search.svg';
 import { useEffect, useRef, useState } from 'react';
-import { Filters } from '../../ui/filters/filters';
+import { Filters } from '../filters/filters';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { search, setSearchedText } from './search.slice';
+import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 
 export const SearchMenu: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const isOpenRef = useRef<HTMLInputElement>(null);
+  // const isOpenRef = useRef<HTMLInputElement>(null);
 
-  console.log('ref', isOpenRef.current);
+  // console.log('ref', isOpenRef.current);
 
   // useEffect(() => {
   //   if (!isOpen) return;
@@ -38,24 +40,78 @@ export const SearchMenu: React.FC = () => {
   //   };
   // }, [isOpen, setIsOpen]);
 
+  const [isOpen, setIsOpen] = useState(false);
+  // const [searchedText, setSearchedText] = useState<string>('');
+
+  const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
+  const searchedText = useAppSelector((state) => state.search.searchedText);
+  const searchCurrentPage = useAppSelector(
+    (state) => state.search.searchCurrentPage
+  );
+
+  const filterIsAcive = useAppSelector((state) => state.filter.filterIsActive);
+
+  const dispatch = useAppDispatch();
+
   return (
-    <SearchMenuWrapper>
-      <SearchMenuInput type="input" placeholder="Search"></SearchMenuInput>
-      <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
-        <img src={filterImg} alt="menuFilter" />
-      </SearchMenuFilter>
-      <FiltersWrapper ref={isOpenRef}>
-        <Filters isActive={isOpen} closeFilter={() => setIsOpen(!isOpen)} />
-      </FiltersWrapper>
-      <DarkBg
+    <SearchWrapper>
+      <SearchMenuWrapper>
+        <SearchMenuInput
+          type="input"
+          placeholder="Search"
+          onChange={(event) => {
+            dispatch(setSearchedText(event.currentTarget.value));
+            dispatch(
+              search({
+                search: event.currentTarget.value,
+                page: searchCurrentPage,
+              })
+            );
+          }}
+        ></SearchMenuInput>
+        <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
+          <img src={filterImg} alt="menuFilter" />
+          <SearchMenuCircle
+            style={{
+              transform: filterIsAcive ? 'translateY(0)' : 'translateY(0)',
+              visibility: filterIsAcive ? 'visible' : 'hidden',
+              opacity: filterIsAcive ? '1' : '0',
+            }}
+          ></SearchMenuCircle>
+        </SearchMenuFilter>
+        <FiltersWrapper /*ref={isOpenRef}*/>
+          <Filters isActive={isOpen} closeFilter={() => setIsOpen(!isOpen)} />
+        </FiltersWrapper>
+        <DarkBg
+          style={{
+            opacity: isOpen ? '0.8' : '0',
+            zIndex: isOpen ? '5' : '-1',
+          }}
+        ></DarkBg>
+      </SearchMenuWrapper>
+      {/* <SearchResultWrapper
         style={{
-          opacity: isOpen ? '0.8' : '0',
-          zIndex: isOpen ? '5' : '-1',
+          display: searchedMovies.films.length === 0 ? 'none' : 'block',
         }}
-      ></DarkBg>
-    </SearchMenuWrapper>
+      >
+        {searchedMovies.searchFilmsCountResult === 0 &&
+        searchedText.length > 0 ? (
+          <div>no results</div>
+        ) : (
+          <SearchTemplate
+            movie={searchedMovies}
+            searchedString={searchedText}
+          ></SearchTemplate>
+        )}
+      </SearchResultWrapper> */}
+    </SearchWrapper>
   );
 };
+
+const SearchWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const SearchMenuWrapper = styled.div`
   position: relative;
@@ -89,6 +145,20 @@ const SearchMenuFilter = styled.button`
   background-color: transparent;
 `;
 
+const SearchMenuCircle = styled.div`
+  position: absolute;
+  bottom: 1px;
+  left: 3px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--button-colorMode-active);
+  opacity: 0;
+  transition: 0.3s;
+  transform: translateY(-10px);
+  visibility: hidden;
+`;
+
 const FiltersWrapper = styled.div``;
 
 const DarkBg = styled.div`
@@ -101,4 +171,9 @@ const DarkBg = styled.div`
   opacity: 0.5;
   z-index: -1;
   transition: 0.3s;
+`;
+
+const SearchResultWrapper = styled.div`
+  margin-top: 50px;
+  max-width: 1200px;
 `;

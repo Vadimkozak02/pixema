@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { SiteLogo } from '../../site-logo/site-logo';
 import { SiteMenu } from '../../site-menu/site-menu';
 import { SiteRights } from '../../site-rights/site-rights';
+import { Navigation } from '../../navigation/navigation';
 
 export const MainTemplate: React.FC = () => {
   return (
@@ -9,7 +10,8 @@ export const MainTemplate: React.FC = () => {
       <AllPostMenuWrapper>
         <SiteTopWrapper>
           <SiteLogo />
-          <SiteMenu />
+          {/* <SiteMenu /> */}
+          <Navigation />
         </SiteTopWrapper>
         <SiteBottomWrapper>
           <SiteRights />

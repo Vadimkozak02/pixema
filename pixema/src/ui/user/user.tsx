@@ -1,36 +1,59 @@
 import styled from 'styled-components';
 import arrowDown from './img/arrowDownSvg.svg';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAuth } from '../../hooks';
+import { removeUser } from '../../features/Auth/authorization.slice';
+import userIco from './img/userIco.svg';
+import arrowRight from './img/arrowRightSvg.svg';
+import { setUserLS } from '../../api/user-localStorage';
 
-type Props = {
-  name: string;
-  // userEditMenu: () => void;
-};
-
-export const User: React.FC<Props> = ({ name }) => {
+export const User: React.FC = () => {
   const [editMenu, setEditMenu] = useState(false);
 
-  const nameOfUser = name.split(' ');
-  const arrOfInitials = nameOfUser.map((el) => el[0]);
-  const initials = arrOfInitials.join('');
+  const dispatch = useAppDispatch();
+
+  const { isAuth, email } = useAuth();
+
+  const navigate = useNavigate();
+
+  let name = '';
+  let nameOfUser: Array<string> = [];
+  if (email !== null) {
+    nameOfUser = email.split('');
+    let index = nameOfUser.findIndex((el) => el === '@');
+
+    nameOfUser.splice(index, nameOfUser.length - index);
+    name = nameOfUser.join('');
+  }
+  const initials = name[0];
 
   return (
     <UserWrapper>
       <UserNameWrapper>
         <UserInitials>
-          <p>{initials}</p>
+          {isAuth ? <p>{initials}</p> : <img src={userIco} alt="person logo" />}
         </UserInitials>
-        <UserName onClick={() => setEditMenu(!editMenu)}>
-          <p>{name}</p>
+
+        <UserName
+          onClick={() =>
+            isAuth ? setEditMenu(!editMenu) : navigate('/sign-in')
+          }
+        >
+          {isAuth ? <p>{name}</p> : <p>Sign In</p>}
+
           <UserNameArrow>
-            <img src={arrowDown} alt="arrow" />
+            {isAuth ? (
+              <img src={arrowDown} alt="arrow" />
+            ) : (
+              <img src={arrowRight} alt="right arrow" />
+            )}
           </UserNameArrow>
         </UserName>
       </UserNameWrapper>
       <UserSelect
         style={{
-          // top: editMenu ? '65px' : '-55px',
+          display: isAuth ? 'block' : 'none',
           transform: editMenu ? 'translateY(10px)' : 'translateY(0)',
           visibility: editMenu ? 'visible' : 'hidden',
           opacity: editMenu ? '1' : '0',
@@ -39,7 +62,16 @@ export const User: React.FC<Props> = ({ name }) => {
         <UserEditProfile>
           <Link to="/settingsPage">Edit profile</Link>
         </UserEditProfile>
-        <UserLogOut>
+        <UserLogOut
+          onClick={() => {
+            dispatch(removeUser());
+            setUserLS({
+              email: '',
+              token: '',
+              id: '',
+            });
+          }}
+        >
           <Link to="/sign-in">Log Out</Link>
         </UserLogOut>
       </UserSelect>
@@ -50,6 +82,7 @@ export const User: React.FC<Props> = ({ name }) => {
 const UserWrapper = styled.div`
   position: relative;
   width: 240px;
+  z-index: 1;
 `;
 
 const UserInitials = styled.div`
@@ -62,7 +95,8 @@ const UserInitials = styled.div`
   border-radius: 10px;
 
   p {
-    font-size: 20px;
+    text-transform: capitalize;
+    font-size: 23px;
     font-weight: 700;
     color: var(--text-primary-color);
   }
@@ -121,6 +155,14 @@ const UserEditProfile = styled.button`
   &:hover {
     color: var(--text-active-color);
   }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const UserLogOut = styled.button`
@@ -136,5 +178,13 @@ const UserLogOut = styled.button`
 
   &:hover {
     color: var(--text-active-color);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
   }
 `;

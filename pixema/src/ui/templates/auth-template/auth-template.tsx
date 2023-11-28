@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import authBg from './auth-img/auth-bg.png';
+import { SiteLogo } from '../../site-logo/site-logo';
 
 type Props = {
   title?: React.ReactNode;
@@ -10,9 +11,13 @@ export const AuthTemplate: React.FC<Props> = ({ title, body }) => {
   return (
     <>
       <AuthTemplateWrapper>
-        <SiteLogo>
+        <SiteLogoWrapper>
+          <SiteLogo />
+        </SiteLogoWrapper>
+
+        <SiteLogoBg>
           <img src={authBg} alt="movie"></img>
-        </SiteLogo>
+        </SiteLogoBg>
         <Main>
           <TitleContainer>{title}</TitleContainer>
           <BodyContainer>{body}</BodyContainer>
@@ -25,9 +30,18 @@ export const AuthTemplate: React.FC<Props> = ({ title, body }) => {
   );
 };
 
-const AuthTemplateWrapper = styled.div``;
+const AuthTemplateWrapper = styled.div`
+  /* position: relative; */
+`;
 
-const SiteLogo = styled.div`
+const SiteLogoWrapper = styled.div`
+  position: absolute;
+  top: 15px;
+  left: 50px;
+  z-index: 100;
+`;
+
+const SiteLogoBg = styled.div`
   position: absolute;
   top: 0;
   left: 0;

@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import favIco from './img/fav-ico.svg';
+import favAcitveIco from './img/favAcitveIco.svg';
 import shareIco from './img/share-ico.svg';
 import imdbIco from './img/imdb-ico.svg';
 import leftArrowGrey from './img/left-arrow-grey.svg';
 import leftArrowWhite from './img/left-arrow-white.svg';
 import rightArrowGrey from './img/right-arrow-grey.svg';
 import rightArrowWhite from './img/right-arrow-white.svg';
+import { useAppSelector } from '../../../hooks';
 
 type Props = {
   img: React.ReactNode;
+  isAdded: boolean;
   genre: React.ReactNode;
   title: React.ReactNode;
   description: React.ReactNode;
@@ -19,19 +22,21 @@ type Props = {
   released: React.ReactNode;
   boxOffice: React.ReactNode;
   country: React.ReactNode;
-  production: React.ReactNode;
+  producers: React.ReactNode;
   actors: React.ReactNode;
   director: React.ReactNode;
   writers: React.ReactNode;
   recommendationMovie: React.ReactNode;
   offset: number;
   maxOffset: number;
+  addToFavorite: () => void;
   leftTap: () => void;
   rightTap: () => void;
 };
 
 export const SelectedMovieTemplate: React.FC<Props> = ({
   img,
+  isAdded,
   genre,
   title,
   description,
@@ -41,24 +46,36 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
   released,
   boxOffice,
   country,
-  production,
+  producers,
   actors,
   director,
   writers,
   recommendationMovie,
   offset,
   maxOffset,
+  addToFavorite,
   leftTap,
   rightTap,
 }) => {
-  console.log('max', maxOffset);
   return (
     <SelectedMovieWrapper>
       <SelectedMovieImgWrapper>
-        <SelectedMovieImg>{img}</SelectedMovieImg>
+        <SelectedMovieImg>
+          {img}
+          <AddedToFavorite
+            style={{
+              transform: isAdded ? 'translateY(10px)' : 'translateY(0)',
+              visibility: isAdded ? 'visible' : 'hidden',
+              opacity: isAdded ? '1' : '0',
+            }}
+            onClick={() => addToFavorite()}
+          >
+            <img src={favAcitveIco} alt="added to favorites" />
+          </AddedToFavorite>
+        </SelectedMovieImg>
         <SelectedMovieImgBtn>
-          <SelectedMovieImgFavorites>
-            <img src={favIco} alt="add to favorites" />
+          <SelectedMovieImgFavorites onClick={() => addToFavorite()}>
+            <img src={isAdded ? favAcitveIco : favIco} alt="add to favorites" />
           </SelectedMovieImgFavorites>
           <SelectedMovieImgShare>
             <img src={shareIco} alt="share this movie" />
@@ -82,7 +99,7 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
             <div>Released</div>
             <div>BoxOffice</div>
             <div>Country</div>
-            <div>Production</div>
+            <div>Producers</div>
             <div>Actors</div>
             <div>Director</div>
             <div>Writers</div>
@@ -92,7 +109,7 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
             <div>{released}</div>
             <div>{boxOffice}</div>
             <div>{country}</div>
-            <div>{production}</div>
+            <div>{producers}</div>
             <div>{actors}</div>
             <div>{director}</div>
             <div>{writers}</div>
@@ -147,6 +164,7 @@ const SelectedMovieImgWrapper = styled.div`
 `;
 
 const SelectedMovieImg = styled.div`
+  position: relative;
   width: 205px;
   height: 307px;
   margin-bottom: 25px;
@@ -154,6 +172,34 @@ const SelectedMovieImg = styled.div`
   img {
     width: 100%;
     height: 100%;
+  }
+`;
+
+const AddedToFavorite = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 28px;
+  background-color: var(--button-showMore-color);
+  border: var(--input-border-color);
+  border-right: 1px solid var(--site-background-color);
+  border-radius: 6px;
+  opacity: 0;
+  transition: 0.3s;
+  transform: translateY(-10px);
+  visibility: hidden;
+
+  img {
+    width: 12px;
+    opacity: 0.6;
+    transition: 0.3s;
+  }
+
+  &:hover {
+    img {
+      opacity: 1;
+    }
   }
 `;
 
@@ -234,7 +280,7 @@ const MovieRating = styled.div`
   align-items: center;
   width: 37px;
   height: 28px;
-  background-color: var(--rating-bg-color);
+  background-color: var(--rating-green-color);
   border-radius: 6px;
 `;
 const MovieRatingIMDb = styled.div`

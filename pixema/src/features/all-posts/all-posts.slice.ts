@@ -1,30 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AllPostsResponse } from './types';
+import { KinopoinskAllPostsResponse } from './types';
 
 const AllPostsSlice = createSlice({
   name: 'AllPosts',
   initialState: {
-    allPosts: {} as AllPostsResponse,
-    currentPage: 1,
-    isLoading: false,
-    newPosts: {} as AllPostsResponse,
+    allPosts: {
+      total: 0,
+      totalPages: 0,
+      items: [],
+    } as KinopoinskAllPostsResponse,
+    currentPage: 2,
+    currentScroll: 1300,
+    allPostsIsLoading: false,
   },
   reducers: {
-    // getAllPosts(state, action: { payload: { pages: [number, number] } }) {
-    //   state.isLoading = true;
-    // },
     getAllPosts(state, action: { payload: { page: number } }) {
-      state.isLoading = true;
+      state.allPostsIsLoading = true;
     },
     getAllPostsSuccess(state, action: { payload: typeof state.allPosts }) {
-      state.isLoading = false;
-      state.allPosts = action.payload;
+      state.allPostsIsLoading = false;
+      const itemsArr = [...state.allPosts.items, ...action.payload.items];
+      state.allPosts = { ...state.allPosts, items: itemsArr };
     },
     getAllPostsFailure(state) {
-      state.isLoading = false;
+      state.allPostsIsLoading = false;
     },
     changeCurrentPage(state) {
       state.currentPage = state.currentPage + 1;
+    },
+    getCurrentScroll(state) {
+      state.currentScroll += 1800;
     },
   },
 });
@@ -35,6 +40,7 @@ export const {
     getAllPostsSuccess,
     getAllPostsFailure,
     changeCurrentPage,
+    getCurrentScroll,
   },
   reducer: AllPostsReducer,
 } = AllPostsSlice;
