@@ -14,14 +14,22 @@ import {
   isAddedToFav,
 } from '../all-posts/addToFavorites/addToFavorites.slice';
 import { getAllPosts } from '../all-posts/all-posts.slice';
+import { getUserLS } from '../../api/user-localStorage';
+import { setUser } from '../Auth/authorization.slice';
+import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
+import { getRecommendationMovies } from '../recommendation-movies/recommendation-movies.slice';
 
 export const SelectedMovie: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
 
   const { postId } = useParams();
-  console.log('id', postId);
+
   const selectedPost = useAppSelector(
     (state) => state.selectedMovie.selectedMovie
+  );
+
+  const isSelectedPostsLoading = useAppSelector(
+    (state) => state.selectedMovie.isLoading
   );
 
   const idSelectedMovie = useAppSelector(
@@ -98,14 +106,16 @@ export const SelectedMovie: React.FC = () => {
 
   // Recommendations
   let allPosts = useAppSelector((state) => state.allPosts.allPosts);
-  const isLoading = useAppSelector((state) => state.allPosts.isLoading);
+  const isAllPostsLoading = useAppSelector(
+    (state) => state.allPosts.allPostsIsLoading
+  );
 
   const recommendations = useAppSelector(
-    (state) => state.allPosts.recommendationMovies
+    (state) => state.recommendationMovies.recommendationMovies
   );
 
   let allPostsWithoutSelected = Array.from(recommendations.items);
-  if (isLoading === false) {
+  if (isAllPostsLoading === false) {
     const indexSelectedPost = allPostsWithoutSelected.findIndex(
       (el) => el.kinopoiskId === selectedPost.kinopoiskId
     );
@@ -144,65 +154,85 @@ export const SelectedMovie: React.FC = () => {
     dispatch(setSelectedMovie(Number(id)));
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getRecommendationMovies({ page: 10 }));
+    const LSUser = getUserLS();
+    dispatch(
+      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+    );
+  }, [dispatch]);
+
   return (
-    <SelectedMovieWrapper>
-      <MainTemplate />
-      <SelectedMovieContentWrapper>
-        <HeaderTemplate />
-        <SelectedMovieTemplate
-          img={<img src={selectedPost.posterUrl} alt="movieImg" />}
-          isAdded={isAdded}
-          genre={selectedPost.genres?.map((el) => el.genre + ' ')}
-          title={selectedPost.nameRu}
-          description={selectedPost.description}
-          rating={
-            selectedPost.ratingKinopoisk === null
-              ? selectedPost.ratingImdb
-              : selectedPost.ratingKinopoisk
-          }
-          runtime={selectedPost.filmLength + ' min'}
-          year={selectedPost.year}
-          released={release ? release : '2019-15-08'}
-          boxOffice={worldBoxOffice ? `$${worldBoxOffice}` : `$${rusBoxOffice}`}
-          country={selectedPost.countries?.map((el) => el.country + ' ')}
-          producers={producers.map((el) => el.nameRu + ' ')}
-          actors={actors.map((el) => el.nameRu + ' ')}
-          director={director}
-          writers={writers.map((el) => el.nameRu)}
-          offset={offset}
-          maxOffset={maxOffset}
-          addToFavorite={() => addToFavorite()}
-          leftTap={() => leftTap()}
-          rightTap={() => rightTap()}
-          recommendationMovie={allPostsWithoutSelected.map((item, index) => (
-            <Link to={`/${item.kinopoiskId}`} key={index}>
-              <MovieCard
-                key={index}
-                isAdded={false}
-                id={item.kinopoiskId}
-                title={item.nameRu}
-                genre={item.genres.map((el) => ' - ' + el.genre)}
-                rating={
-                  item.ratingKinopoisk === null
-                    ? item.ratingImdb
-                    : item.ratingKinopoisk
-                }
-                img={<img src={item.posterUrl} alt="movie" />}
-                onClick={() => {
-                  dispatch(setSelectedMovie(item.kinopoiskId));
-                  window.scrollTo({
-                    top: 0,
-                    left: 0,
-                    behavior: 'smooth',
-                  });
-                }}
-                removeFromFav={() => null}
-              ></MovieCard>
-            </Link>
-          ))}
-        ></SelectedMovieTemplate>
-      </SelectedMovieContentWrapper>
-    </SelectedMovieWrapper>
+    <>
+      <SelectedMovieWrapper>
+        <MainTemplate />
+        <SelectedMovieContentWrapper>
+          <HeaderTemplate />
+          {isSelectedPostsLoading ? (
+            <IsLoadingWrapper>
+              <ThreeDotsSpinner />
+            </IsLoadingWrapper>
+          ) : (
+            <SelectedMovieTemplate
+              img={<img src={selectedPost.posterUrl} alt="movieImg" />}
+              isAdded={isAdded}
+              genre={selectedPost.genres?.map((el) => el.genre + ' ')}
+              title={selectedPost.nameRu}
+              description={selectedPost.description}
+              rating={
+                selectedPost.ratingKinopoisk === null
+                  ? selectedPost.ratingImdb
+                  : selectedPost.ratingKinopoisk
+              }
+              runtime={selectedPost.filmLength + ' min'}
+              year={selectedPost.year}
+              released={release ? release : '2019-15-08'}
+              boxOffice={
+                worldBoxOffice ? `$${worldBoxOffice}` : `$${rusBoxOffice}`
+              }
+              country={selectedPost.countries?.map((el) => el.country + ' ')}
+              producers={producers.map((el) => el.nameRu + ' ')}
+              actors={actors.map((el) => el.nameRu + ' ')}
+              director={director}
+              writers={writers.map((el) => el.nameRu)}
+              offset={offset}
+              maxOffset={maxOffset}
+              addToFavorite={() => addToFavorite()}
+              leftTap={() => leftTap()}
+              rightTap={() => rightTap()}
+              recommendationMovie={allPostsWithoutSelected.map(
+                (item, index) => (
+                  <Link to={`/${item.kinopoiskId}`} key={index}>
+                    <MovieCard
+                      key={index}
+                      isAdded={false}
+                      id={item.kinopoiskId}
+                      title={item.nameRu}
+                      genre={item.genres.map((el) => ' - ' + el.genre)}
+                      rating={
+                        item.ratingKinopoisk === null
+                          ? item.ratingImdb
+                          : item.ratingKinopoisk
+                      }
+                      img={<img src={item.posterUrl} alt="movie" />}
+                      onClick={() => {
+                        dispatch(setSelectedMovie(item.kinopoiskId));
+                        window.scrollTo({
+                          top: 0,
+                          left: 0,
+                          behavior: 'smooth',
+                        });
+                      }}
+                      removeFromFav={() => null}
+                    ></MovieCard>
+                  </Link>
+                )
+              )}
+            ></SelectedMovieTemplate>
+          )}
+        </SelectedMovieContentWrapper>
+      </SelectedMovieWrapper>
+    </>
   );
 };
 
@@ -210,9 +240,14 @@ const SelectedMovieWrapper = styled.div`
   display: flex;
   background-color: var(--site-background-color);
   padding-left: 50px;
+  min-height: 1400px;
 `;
 
 const SelectedMovieContentWrapper = styled.div`
   width: 1200px;
   margin: 25px 0 60px;
+`;
+
+const IsLoadingWrapper = styled.div`
+  margin: 0 auto;
 `;

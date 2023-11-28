@@ -181,6 +181,7 @@ export const Filters: React.FC<Props> = ({ isActive, closeFilter }) => {
                 })
               );
               closeFilter();
+              dispatch(resetFilter());
               dispatch(setFilterIsActive(true));
               dispatch(resetFiltersCurrentPage(2));
             }}

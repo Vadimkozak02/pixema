@@ -32,19 +32,12 @@ export const FavoriteMovies: React.FC = () => {
         <MainTemplate />
         <FavoriteMoviesContentWrapper>
           <HeaderTemplate />
-          {/* {isEmpty ? (
-            <AddToFavorites />
-          ) : (
-            <EmptyFavorites>
-              <img src={emptyFav} alt="empty favorites" />
-              <p>No favorite movies</p>
-            </EmptyFavorites>
-          )} */}
-
           {searchedMovies.films.length === 0 ? (
             <>
               {isEmpty ? (
-                <AddToFavorites />
+                <FavoriteMoviesContent>
+                  <AddToFavorites />
+                </FavoriteMoviesContent>
               ) : (
                 <EmptyFavorites>
                   <img src={emptyFav} alt="empty favorites" />
@@ -70,19 +63,20 @@ const FavoriteMoviesWrappes = styled.div`
   display: flex;
   background-color: var(--site-background-color);
   padding-left: 50px;
-  background-size: cover;
+  /* padding-top: 0; */
+  min-height: 800px;
 `;
 
 const FavoriteMoviesContentWrapper = styled.div`
   width: 1200px;
   margin: 25px 0 60px;
-  display: flex;
-  flex-wrap: wrap;
+  /* display: flex;
+  flex-wrap: wrap; */
 `;
 
 const EmptyFavorites = styled.div`
   width: 925px;
-  margin: 180px 0;
+  margin: 90px 0;
 
   img {
     display: block;
@@ -95,4 +89,9 @@ const EmptyFavorites = styled.div`
     font-weight: 600;
     text-align: center;
   }
+`;
+
+const FavoriteMoviesContent = styled.div`
+  display: flex;
+  flex-wrap: wrap;
 `;

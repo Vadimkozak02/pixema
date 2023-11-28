@@ -11,7 +11,7 @@ export const AddToFavorites: React.FC = () => {
   const allPosts = useAppSelector((state) => state.allPosts.allPosts);
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
   const recommendations = useAppSelector(
-    (state) => state.allPosts.recommendationMovies
+    (state) => state.recommendationMovies.recommendationMovies
   );
 
   const dispatch = useAppDispatch();

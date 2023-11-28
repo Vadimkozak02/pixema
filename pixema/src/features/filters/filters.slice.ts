@@ -9,9 +9,9 @@ export const FilterSlice = createSlice({
       totalPages: 0,
       items: [],
     } as FilterResponse,
-    filtersCurrentPage: 2,
+    filtersCurrentPage: 0,
     filterIsActive: false,
-    isLoading: false,
+    isFilterLoading: false,
     currentFilters: {
       order: 'RATING',
       keyword: '',
@@ -24,7 +24,7 @@ export const FilterSlice = createSlice({
   },
   reducers: {
     getFilters(state, action: { payload: FilterRequest }) {
-      state.isLoading = true;
+      state.isFilterLoading = true;
       state.currentFilters.order = action.payload.order;
       state.currentFilters.keyword = action.payload.keyword;
       state.currentFilters.ratingFrom = action.payload.ratingFrom;
@@ -34,14 +34,14 @@ export const FilterSlice = createSlice({
       state.currentFilters.page = action.payload.page;
     },
     getFiltersSuccess(state, action: { payload: FilterResponse }) {
-      state.isLoading = false;
-      // const itemsArr = [...state.filtersMovie.items, ...action.payload.items];
-      // state.filtersMovie = { ...action.payload, items: itemsArr };
-      state.filtersMovie = action.payload;
-      // console.log('filtersMovie', state.filtersMovie);
+      state.isFilterLoading = false;
+      const itemsArr = [...state.filtersMovie.items, ...action.payload.items];
+      state.filtersMovie = { ...action.payload, items: itemsArr };
+      // state.filtersMovie = action.payload;
+      console.log('filtersMovie', state.filtersMovie);
     },
     getFiltersFailure(state) {
-      state.isLoading = false;
+      state.isFilterLoading = false;
     },
     resetFilter(state) {
       state.filtersMovie.items = [];

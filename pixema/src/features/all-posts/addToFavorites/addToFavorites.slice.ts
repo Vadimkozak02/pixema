@@ -11,7 +11,6 @@ export const addToFavoritesSlice = createSlice({
   reducers: {
     addToFav(state, action: { payload: SelectedKinopoiskMovieResponse }) {
       let selectedMovie = action.payload;
-      console.log('selectedMOvie', selectedMovie);
       if (
         state.arrofFavoritesMovie.some(
           (el) => el.kinopoiskId === selectedMovie.kinopoiskId

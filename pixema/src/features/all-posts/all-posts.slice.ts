@@ -1,47 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AllPostsResponse, KinopoinskAllPostsResponse } from './types';
-
-// const AllPostsSlice = createSlice({
-//   name: 'AllPosts',
-//   initialState: {
-//     allPosts: {} as AllPostsResponse,
-//     currentPage: 1,
-//     isLoading: false,
-//     newPosts: {} as AllPostsResponse,
-//   },
-//   reducers: {
-//     // getAllPosts(state, action: { payload: { pages: [number, number] } }) {
-//     //   state.isLoading = true;
-//     // },
-//     getAllPosts(state, action: { payload: { page: number } }) {
-//       state.isLoading = true;
-//     },
-//     getAllPostsSuccess(state, action: { payload: typeof state.allPosts }) {
-//       state.isLoading = false;
-//       state.allPosts = action.payload;
-//     },
-//     getAllPostsFailure(state) {
-//       state.isLoading = false;
-//     },
-//     changeCurrentPage(state) {
-//       state.currentPage = state.currentPage + 1;
-//     },
-//   },
-// });
-
-// export const {
-//   actions: {
-//     getAllPosts,
-//     getAllPostsSuccess,
-//     getAllPostsFailure,
-//     changeCurrentPage,
-//   },
-//   reducer: AllPostsReducer,
-// } = AllPostsSlice;
-
-// -------------
-// Kinopoisk
-// -------------
+import { KinopoinskAllPostsResponse } from './types';
 
 const AllPostsSlice = createSlice({
   name: 'AllPosts',
@@ -51,43 +9,24 @@ const AllPostsSlice = createSlice({
       totalPages: 0,
       items: [],
     } as KinopoinskAllPostsResponse,
-    recommendationMovies: {
-      total: 0,
-      totalPages: 0,
-      items: [],
-    } as KinopoinskAllPostsResponse,
     currentPage: 2,
     currentScroll: 1300,
-    isLoading: false,
+    allPostsIsLoading: false,
   },
   reducers: {
     getAllPosts(state, action: { payload: { page: number } }) {
-      state.isLoading = true;
+      state.allPostsIsLoading = true;
     },
     getAllPostsSuccess(state, action: { payload: typeof state.allPosts }) {
-      state.isLoading = false;
+      state.allPostsIsLoading = false;
       const itemsArr = [...state.allPosts.items, ...action.payload.items];
       state.allPosts = { ...state.allPosts, items: itemsArr };
     },
     getAllPostsFailure(state) {
-      state.isLoading = false;
+      state.allPostsIsLoading = false;
     },
     changeCurrentPage(state) {
       state.currentPage = state.currentPage + 1;
-    },
-    getRecommendationMovies(
-      state,
-      action: { payload: typeof state.recommendationMovies }
-    ) {
-      state.isLoading = false;
-      const itemsArr = [
-        ...state.recommendationMovies.items,
-        ...action.payload.items,
-      ];
-      state.recommendationMovies = {
-        ...state.recommendationMovies,
-        items: itemsArr,
-      };
     },
     getCurrentScroll(state) {
       state.currentScroll += 1800;
@@ -101,7 +40,6 @@ export const {
     getAllPostsSuccess,
     getAllPostsFailure,
     changeCurrentPage,
-    getRecommendationMovies,
     getCurrentScroll,
   },
   reducer: AllPostsReducer,

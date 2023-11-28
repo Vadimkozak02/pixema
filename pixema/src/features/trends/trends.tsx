@@ -13,9 +13,11 @@ import spinnerImg from './img/spinner.svg';
 import { changeFiltersCurrentPage } from '../filters/filters.slice';
 import { getUserLS } from '../../api/user-localStorage';
 import { setUser } from '../Auth/authorization.slice';
+import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
+  const isLoading = useAppSelector((state) => state.trendsPosts.isLoading);
   const currentPage = useAppSelector((state) => state.trendsPosts.currentPage);
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
@@ -61,72 +63,79 @@ export const Trends: React.FC = () => {
             </Link>
           ))} */}
 
-          {searchedMovies.films.length === 0 ? (
+          {isLoading ? (
+            <ThreeDotsSpinner />
+          ) : (
             <>
-              {filterArr.items.length > 0 ? (
+              {searchedMovies.films.length === 0 ? (
                 <>
-                  {filterArr.items?.map((item, index) => (
-                    <Link to={`/${item.kinopoiskId}`} key={index}>
-                      <MovieCard
-                        key={index}
-                        isAdded={false}
-                        id={item.kinopoiskId}
-                        title={item.nameRu}
-                        genre={item.genres.map((el) => ' - ' + el.genre)}
-                        rating={
-                          item.ratingKinopoisk === null
-                            ? item.ratingImdb
-                            : item.ratingKinopoisk
-                        }
-                        img={<img src={item.posterUrl} alt="movie" />}
-                        onClick={() => {
-                          dispatch(setSelectedMovie(item.kinopoiskId));
-                          window.scrollTo(0, 0);
-                        }}
-                        removeFromFav={() => null}
-                      ></MovieCard>
-                    </Link>
-                  ))}
+                  {filterArr.items.length > 0 ? (
+                    <>
+                      {filterArr.items?.map((item, index) => (
+                        <Link to={`/${item.kinopoiskId}`} key={index}>
+                          <MovieCard
+                            key={index}
+                            isAdded={false}
+                            id={item.kinopoiskId}
+                            title={item.nameRu}
+                            genre={item.genres.map((el) => ' - ' + el.genre)}
+                            rating={
+                              item.ratingKinopoisk === null
+                                ? item.ratingImdb
+                                : item.ratingKinopoisk
+                            }
+                            img={<img src={item.posterUrl} alt="movie" />}
+                            onClick={() => {
+                              dispatch(setSelectedMovie(item.kinopoiskId));
+                              window.scrollTo(0, 0);
+                            }}
+                            removeFromFav={() => null}
+                          ></MovieCard>
+                        </Link>
+                      ))}
+                    </>
+                  ) : (
+                    <>
+                      {trendsPosts.items?.map((item, index) => (
+                        <Link to={`/${item.kinopoiskId}`} key={index}>
+                          <MovieCard
+                            key={index}
+                            isAdded={false}
+                            id={item.kinopoiskId}
+                            title={item.nameRu}
+                            genre={item.genres.map((el) => ' - ' + el.genre)}
+                            rating={
+                              item.ratingKinopoisk === null
+                                ? item.ratingImdb
+                                : item.ratingKinopoisk
+                            }
+                            img={<img src={item.posterUrl} alt="movie" />}
+                            onClick={() => {
+                              dispatch(setSelectedMovie(item.kinopoiskId));
+                              window.scrollTo(0, 0);
+                            }}
+                            removeFromFav={() => null}
+                          ></MovieCard>
+                        </Link>
+                      ))}
+                    </>
+                  )}
                 </>
               ) : (
                 <>
-                  {trendsPosts.items?.map((item, index) => (
-                    <Link to={`/${item.kinopoiskId}`} key={index}>
-                      <MovieCard
-                        key={index}
-                        isAdded={false}
-                        id={item.kinopoiskId}
-                        title={item.nameRu}
-                        genre={item.genres.map((el) => ' - ' + el.genre)}
-                        rating={
-                          item.ratingKinopoisk === null
-                            ? item.ratingImdb
-                            : item.ratingKinopoisk
-                        }
-                        img={<img src={item.posterUrl} alt="movie" />}
-                        onClick={() => {
-                          dispatch(setSelectedMovie(item.kinopoiskId));
-                          window.scrollTo(0, 0);
-                        }}
-                        removeFromFav={() => null}
-                      ></MovieCard>
-                    </Link>
-                  ))}
+                  <SearchTemplate
+                    movie={searchedMovies}
+                    searchedString={searchedText}
+                  ></SearchTemplate>
                 </>
               )}
-            </>
-          ) : (
-            <>
-              <SearchTemplate
-                movie={searchedMovies}
-                searchedString={searchedText}
-              ></SearchTemplate>
             </>
           )}
         </TrendsAllPosts>
         <ShowMoreBtn
           style={{
-            display: searchedMovies.films.length > 0 ? 'none' : 'block',
+            display:
+              searchedMovies.films.length > 0 || isLoading ? 'none' : 'block',
           }}
           onClick={() => {
             dispatch(changeCurrentPage());
@@ -145,6 +154,7 @@ const TrendsWrapper = styled.div`
   display: flex;
   background-color: var(--site-background-color);
   padding-left: 50px;
+  min-height: 1400px;
 `;
 
 const TrendsContentWrapper = styled.div`

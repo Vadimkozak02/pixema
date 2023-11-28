@@ -21,7 +21,6 @@ export const SingUpForm: React.FC = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(({ user }) => {
-        console.log('userSignUp', user);
         dispatch(
           setUser({
             email: user.email,
@@ -29,7 +28,7 @@ export const SingUpForm: React.FC = () => {
             token: user.refreshToken,
           })
         );
-        navigate('/sign-in');
+        navigate('/authorization-success');
       })
       .catch(console.error);
   };
