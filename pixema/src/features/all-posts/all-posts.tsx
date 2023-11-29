@@ -53,9 +53,12 @@ export const AllPosts: React.FC = () => {
 
   useEffect(() => {
     const LSUser = getUserLS();
-    dispatch(
-      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
-    );
+    console.log('LSUser', LSUser);
+    if (LSUser) {
+      dispatch(
+        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+      );
+    }
   }, [dispatch, currentPage]);
 
   let currentScroll = useAppSelector((state) => state.allPosts.currentScroll);
