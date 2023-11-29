@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { SearchMenu } from '../../../features/search/search-menu';
-import { User } from '../../user/user';
+import { User } from '../../../features/user/user';
 
 export const HeaderTemplate: React.FC = () => {
   return (

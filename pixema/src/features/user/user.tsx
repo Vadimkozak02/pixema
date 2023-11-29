@@ -3,7 +3,7 @@ import arrowDown from './img/arrowDownSvg.svg';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAuth } from '../../hooks';
-import { removeUser } from '../../features/Auth/authorization.slice';
+import { removeUser } from '../Auth/authorization.slice';
 import userIco from './img/userIco.svg';
 import arrowRight from './img/arrowRightSvg.svg';
 import { setUserLS } from '../../api/user-localStorage';

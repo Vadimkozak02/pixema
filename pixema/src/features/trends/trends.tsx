@@ -29,9 +29,11 @@ export const Trends: React.FC = () => {
 
   useEffect(() => {
     const LSUser = getUserLS();
-    dispatch(
-      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
-    );
+    if (LSUser) {
+      dispatch(
+        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+      );
+    }
   }, [dispatch, currentPage]);
 
   if (trendsPosts.items.length === 0) {

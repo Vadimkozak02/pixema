@@ -157,9 +157,11 @@ export const SelectedMovie: React.FC = () => {
   useEffect(() => {
     dispatch(getRecommendationMovies({ page: 10 }));
     const LSUser = getUserLS();
-    dispatch(
-      setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
-    );
+    if (LSUser) {
+      dispatch(
+        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+      );
+    }
   }, [dispatch]);
 
   return (

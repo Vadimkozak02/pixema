@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { Input } from '../../ui/input/input';
 import styled from 'styled-components';
 import { Button } from '../../ui/button/button';
@@ -10,12 +10,14 @@ import { setUserLS } from '../../api/user-localStorage';
 
 export const SingInForm: React.FC = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [emailDirty, setEmailDirty] = useState(false);
+  const [emailError, setEmailError] = useState('Поле не может быть пустым');
 
-  // const {email, token, id} = useAppSelector(state => state.authorization)
-  // const emailUser = useAppSelector((state) => state.authorization.email);
-  // const tokenUser = useAppSelector((state) => state.authorization.token);
-  // const uidUser = useAppSelector((state) => state.authorization.id);
+  const [password, setPassword] = useState('');
+  const [passwordDirty, setPasswordDirty] = useState(false);
+  const [passwordError, setPasswordError] = useState(
+    'Поле не может быть пустым'
+  );
 
   const dispatch = useAppDispatch();
 
@@ -43,22 +45,67 @@ export const SingInForm: React.FC = () => {
       .catch(() => alert('Неверный логин или пароль!'));
   };
 
+  interface FocusEvent<T = Element> extends SyntheticEvent<T> {
+    relatedTarget: EventTarget | null;
+    target: EventTarget & T;
+  }
+
+  const emailHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(String(e.target.value).toLowerCase())) {
+      setEmailError('Некорректный емейл');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const passwordHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    if (e.target.value.length < 6) {
+      setPasswordError('Длина пароля должна быть не меньше 6 символов');
+      if (!e.target.value) {
+        setPasswordError('Поле не может быть пустым');
+      }
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const blurHandler = (e: FocusEvent<HTMLInputElement>) => {
+    switch (e.target.name) {
+      case 'email':
+        setEmailDirty(true);
+        break;
+      case 'password':
+        setPasswordDirty(true);
+        break;
+    }
+  };
+
   return (
     <SignInFormWrapper>
       <Input
+        onBlur={(event) => blurHandler(event)}
+        name="email"
         placeholder="Your email"
         type="text"
         labelText="email"
         value={email}
-        onChange={({ currentTarget }) => setEmail(currentTarget.value)}
+        onChange={(event) => emailHandler(event)}
       />
+      {emailDirty && emailError && <Error>{emailError}</Error>}
       <Input
+        onBlur={(event) => blurHandler(event)}
+        name="password"
         placeholder="Your password"
         type="password"
         labelText="password"
         value={password}
-        onChange={({ currentTarget }) => setPassword(currentTarget.value)}
+        onChange={(event) => passwordHandler(event)}
       />
+      {passwordDirty && passwordError && <Error>{passwordError}</Error>}
       <ForgotPasswordWrapper>
         <a href="/sign-in">Forgot password?</a>
       </ForgotPasswordWrapper>
@@ -111,4 +158,9 @@ const GoToSingUpWrapper = styled.div`
       color: var(--text-hover-color);
     }
   }
+`;
+
+const Error = styled.div`
+  color: var(--rating-orange-color);
+  margin: -20px 0 20px;
 `;

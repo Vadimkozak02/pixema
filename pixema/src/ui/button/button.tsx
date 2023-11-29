@@ -26,9 +26,14 @@ const ButtonWrapper = styled.button`
   transition: 0.3s;
 
   &:disabled {
-    cursor: none;
+    cursor: auto;
     opacity: 0.67;
     color: var(--input-background-color);
+    background-color: var(--button-colorMode-off);
+
+    &:hover {
+      background-color: var(--button-colorMode-off);
+    }
   }
 
   &:hover {

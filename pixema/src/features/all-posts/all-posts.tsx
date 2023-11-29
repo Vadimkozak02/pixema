@@ -11,7 +11,7 @@ import { setSelectedMovie } from '../selected-movie/selected-movie.slice';
 import { Link, useNavigate } from 'react-router-dom';
 import { SearchMenu } from '../search/search-menu';
 import spinnerImg from './img/spinner.svg';
-import { User } from '../../ui/user/user';
+import { User } from '../user/user';
 import { MainTemplate } from '../../ui/templates/main-template/main-template';
 import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
 import pointIco from './img/pointIco.svg';
@@ -53,7 +53,6 @@ export const AllPosts: React.FC = () => {
 
   useEffect(() => {
     const LSUser = getUserLS();
-    console.log('LSUser', LSUser);
     if (LSUser) {
       dispatch(
         setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
