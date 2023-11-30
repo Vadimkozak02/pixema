@@ -19,7 +19,9 @@ import { ShowMoreSpinner } from '../../ui/spinner/show-more-spinner';
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
   const isLoading = useAppSelector((state) => state.trendsPosts.isLoading);
-  const currentPage = useAppSelector((state) => state.trendsPosts.currentPage);
+  const trendsCurrentPage = useAppSelector(
+    (state) => state.trendsPosts.currentPage
+  );
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
@@ -35,22 +37,24 @@ export const Trends: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const LSUser = getUserLS();
-    if (LSUser) {
+    const userLs = getUserLS();
+    if (userLs) {
       dispatch(
         setUser({
-          email: LSUser.email,
-          token: LSUser.token,
-          id: LSUser.id,
-          colorMode: LSUser.colorMode,
+          email: userLs.email,
+          token: userLs.token,
+          id: userLs.id,
+          colorMode: userLs.colorMode,
         })
       );
     }
-  }, [dispatch, currentPage]);
+  }, [dispatch]);
 
-  if (trendsPosts.items.length === 0) {
-    dispatch(getTrendsMovie({ page: 1 }));
-  }
+  useEffect(() => {
+    if (trendsPosts.items.length === 0) {
+      dispatch(getTrendsMovie({ page: 1 }));
+    }
+  }, [dispatch, trendsPosts]);
 
   return (
     <TrendsWrapper>
@@ -58,25 +62,6 @@ export const Trends: React.FC = () => {
       <TrendsContentWrapper>
         <HeaderTemplate />
         <TrendsAllPosts>
-          {/* {trendsPosts.items?.map((item, index) => (
-            <Link to={`/${item.kinopoiskId}`} key={index}>
-              <MovieCard
-                key={index}
-                isAdded={false}
-                id={item.kinopoiskId}
-                title={item.nameRu}
-                genre={item.genres.map((el) => ' - ' + el.genre)}
-                rating={
-                  item.ratingKinopoisk === null
-                    ? item.ratingImdb
-                    : item.ratingKinopoisk
-                }
-                img={<img src={item.posterUrl} alt="movie" />}
-                onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
-              ></MovieCard>
-            </Link>
-          ))} */}
-
           {isLoading || isFilterLoadinig || isSearchLoading ? (
             <ThreeDotsSpinner />
           ) : (
@@ -178,7 +163,7 @@ export const Trends: React.FC = () => {
           }}
           onClick={() => {
             dispatch(changeCurrentPage());
-            dispatch(getTrendsMovie({ page: currentPage }));
+            dispatch(getTrendsMovie({ page: trendsCurrentPage }));
           }}
         >
           Show more

@@ -68,41 +68,20 @@ export const AllPosts: React.FC = () => {
     }
   }, [dispatch, currentPage]);
 
-  let currentScroll = useAppSelector((state) => state.allPosts.currentScroll);
+  useEffect(() => {
+    if (allPosts.items.length === 0) {
+      dispatch(getAllPosts({ page: 1 }));
+    }
+  }, [dispatch, allPosts]);
 
-  if (allPosts.items.length === 0) {
-    dispatch(getAllPosts({ page: 1 }));
-  }
+  let currentScroll = useAppSelector((state) => state.allPosts.currentScroll);
 
   return (
     <AllPostsWrapper>
       <MainTemplate />
       <AllPostContentWrapper>
         <HeaderTemplate />
-        <AllPostContent
-        // style={{
-        //   display: searchedMovies.films.length === 0 ? 'flex' : 'none',
-        // }}
-        >
-          {/* {allPosts.items?.map((item, index) => (
-            <Link to={`/${item.kinopoiskId}`} key={index}>
-              <MovieCard
-                key={index}
-                isAdded={false}
-                id={item.kinopoiskId}
-                title={item.nameRu}
-                genre={item.genres.map((el) => ' - ' + el.genre)}
-                rating={
-                  item.ratingKinopoisk === null
-                    ? item.ratingImdb
-                    : item.ratingKinopoisk
-                }
-                img={<img src={item.posterUrl} alt="movie" />}
-                onClick={() => dispatch(setSelectedMovie(item.kinopoiskId))}
-              ></MovieCard>
-            </Link>
-          ))} */}
-
+        <AllPostContent>
           {isLoading || isFilterLoadinig || isSearchLoading ? (
             <ThreeDotsSpinner />
           ) : (
