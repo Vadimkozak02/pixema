@@ -12,20 +12,20 @@ const searchSlice = createSlice({
     } as SearchResponse,
     searchedText: '',
     searchCurrentPage: 1,
-    isInProgress: false,
+    searchIsLoading: false,
     isCompleted: false,
   },
   reducers: {
     search(state, action: { payload: SearchRequest }) {
-      state.isInProgress = true;
+      state.searchIsLoading = true;
     },
     searchSuccess(state, action: { payload: SearchResponse }) {
-      state.isInProgress = false;
+      state.searchIsLoading = false;
       state.isCompleted = true;
       state.searchedPosts = action.payload;
     },
     searchFailure(state) {
-      state.isInProgress = false;
+      state.searchIsLoading = false;
     },
     setSearchedText(state, action: { payload: string }) {
       state.searchedText = action.payload;

@@ -34,6 +34,9 @@ export const AllPosts: React.FC = () => {
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
+  const isSearchLoading = useAppSelector(
+    (state) => state.search.searchIsLoading
+  );
 
   const filterArr = useAppSelector((state) => state.filter.filtersMovie);
   const filterIsActive = useAppSelector((state) => state.filter.filterIsActive);
@@ -55,7 +58,12 @@ export const AllPosts: React.FC = () => {
     const LSUser = getUserLS();
     if (LSUser) {
       dispatch(
-        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+        setUser({
+          email: LSUser.email,
+          token: LSUser.token,
+          id: LSUser.id,
+          colorMode: LSUser.colorMode,
+        })
       );
     }
   }, [dispatch, currentPage]);
@@ -95,7 +103,7 @@ export const AllPosts: React.FC = () => {
             </Link>
           ))} */}
 
-          {isLoading || isFilterLoadinig ? (
+          {isLoading || isFilterLoadinig || isSearchLoading ? (
             <ThreeDotsSpinner />
           ) : (
             <>
@@ -186,7 +194,10 @@ export const AllPosts: React.FC = () => {
         <ShowMoreBtn
           style={{
             display:
-              searchedMovies.films.length > 0 || isLoading || isFilterLoadinig
+              searchedMovies.films.length > 0 ||
+              isLoading ||
+              isFilterLoadinig ||
+              isSearchLoading
                 ? 'none'
                 : 'flex',
           }}

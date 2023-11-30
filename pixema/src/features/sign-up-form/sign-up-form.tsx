@@ -43,6 +43,7 @@ export const SingUpForm: React.FC = () => {
             email: user.email,
             id: user.uid,
             token: user.refreshToken,
+            colorMode: false,
           })
         );
         navigate('/authorization-success');

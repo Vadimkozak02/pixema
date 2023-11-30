@@ -8,9 +8,16 @@ body {
   font-family: 'Exo 2', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--site-background-color);
+  position: absolute;
+  width: 100%;
 }
 
 button {
   font-family: 'Exo 2', sans-serif;
   cursor: pointer;
 }
+
+/* .active-link {
+  color: var(--text-active-color);
+} */

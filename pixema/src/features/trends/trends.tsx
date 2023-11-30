@@ -14,6 +14,7 @@ import { changeFiltersCurrentPage } from '../filters/filters.slice';
 import { getUserLS } from '../../api/user-localStorage';
 import { setUser } from '../Auth/authorization.slice';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
+import { ShowMoreSpinner } from '../../ui/spinner/show-more-spinner';
 
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
@@ -22,8 +23,14 @@ export const Trends: React.FC = () => {
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
   const searchedText = useAppSelector((state) => state.search.searchedText);
+  const isSearchLoading = useAppSelector(
+    (state) => state.search.searchIsLoading
+  );
 
   const filterArr = useAppSelector((state) => state.filter.filtersMovie);
+  const isFilterLoadinig = useAppSelector(
+    (state) => state.filter.isFilterLoading
+  );
 
   const dispatch = useAppDispatch();
 
@@ -31,7 +38,12 @@ export const Trends: React.FC = () => {
     const LSUser = getUserLS();
     if (LSUser) {
       dispatch(
-        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+        setUser({
+          email: LSUser.email,
+          token: LSUser.token,
+          id: LSUser.id,
+          colorMode: LSUser.colorMode,
+        })
       );
     }
   }, [dispatch, currentPage]);
@@ -65,61 +77,81 @@ export const Trends: React.FC = () => {
             </Link>
           ))} */}
 
-          {isLoading ? (
+          {isLoading || isFilterLoadinig || isSearchLoading ? (
             <ThreeDotsSpinner />
           ) : (
             <>
               {searchedMovies.films.length === 0 ? (
                 <>
-                  {filterArr.items.length > 0 ? (
-                    <>
-                      {filterArr.items?.map((item, index) => (
-                        <Link to={`/${item.kinopoiskId}`} key={index}>
-                          <MovieCard
-                            key={index}
-                            isAdded={false}
-                            id={item.kinopoiskId}
-                            title={item.nameRu}
-                            genre={item.genres.map((el) => ' - ' + el.genre)}
-                            rating={
-                              item.ratingKinopoisk === null
-                                ? item.ratingImdb
-                                : item.ratingKinopoisk
-                            }
-                            img={<img src={item.posterUrl} alt="movie" />}
-                            onClick={() => {
-                              dispatch(setSelectedMovie(item.kinopoiskId));
-                              window.scrollTo(0, 0);
-                            }}
-                            removeFromFav={() => null}
-                          ></MovieCard>
-                        </Link>
-                      ))}
-                    </>
+                  {searchedMovies.searchFilmsCountResult === 0 &&
+                  searchedText.length > 0 ? (
+                    <div
+                      style={{
+                        color: 'var(--text-primary-color)',
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        marginBottom: '40px',
+                      }}
+                    >
+                      No movies were found for this request
+                    </div>
                   ) : (
                     <>
-                      {trendsPosts.items?.map((item, index) => (
-                        <Link to={`/${item.kinopoiskId}`} key={index}>
-                          <MovieCard
-                            key={index}
-                            isAdded={false}
-                            id={item.kinopoiskId}
-                            title={item.nameRu}
-                            genre={item.genres.map((el) => ' - ' + el.genre)}
-                            rating={
-                              item.ratingKinopoisk === null
-                                ? item.ratingImdb
-                                : item.ratingKinopoisk
-                            }
-                            img={<img src={item.posterUrl} alt="movie" />}
-                            onClick={() => {
-                              dispatch(setSelectedMovie(item.kinopoiskId));
-                              window.scrollTo(0, 0);
-                            }}
-                            removeFromFav={() => null}
-                          ></MovieCard>
-                        </Link>
-                      ))}
+                      {filterArr.items.length > 0 ? (
+                        <>
+                          {filterArr.items?.map((item, index) => (
+                            <Link to={`/${item.kinopoiskId}`} key={index}>
+                              <MovieCard
+                                key={index}
+                                isAdded={false}
+                                id={item.kinopoiskId}
+                                title={item.nameRu}
+                                genre={item.genres.map(
+                                  (el) => ' - ' + el.genre
+                                )}
+                                rating={
+                                  item.ratingKinopoisk === null
+                                    ? item.ratingImdb
+                                    : item.ratingKinopoisk
+                                }
+                                img={<img src={item.posterUrl} alt="movie" />}
+                                onClick={() => {
+                                  dispatch(setSelectedMovie(item.kinopoiskId));
+                                  window.scrollTo(0, 0);
+                                }}
+                                removeFromFav={() => null}
+                              ></MovieCard>
+                            </Link>
+                          ))}
+                        </>
+                      ) : (
+                        <>
+                          {trendsPosts.items?.map((item, index) => (
+                            <Link to={`/${item.kinopoiskId}`} key={index}>
+                              <MovieCard
+                                key={index}
+                                isAdded={false}
+                                id={item.kinopoiskId}
+                                title={item.nameRu}
+                                genre={item.genres.map(
+                                  (el) => ' - ' + el.genre
+                                )}
+                                rating={
+                                  item.ratingKinopoisk === null
+                                    ? item.ratingImdb
+                                    : item.ratingKinopoisk
+                                }
+                                img={<img src={item.posterUrl} alt="movie" />}
+                                onClick={() => {
+                                  dispatch(setSelectedMovie(item.kinopoiskId));
+                                  window.scrollTo(0, 0);
+                                }}
+                                removeFromFav={() => null}
+                              ></MovieCard>
+                            </Link>
+                          ))}
+                        </>
+                      )}
                     </>
                   )}
                 </>
@@ -137,7 +169,12 @@ export const Trends: React.FC = () => {
         <ShowMoreBtn
           style={{
             display:
-              searchedMovies.films.length > 0 || isLoading ? 'none' : 'block',
+              searchedMovies.films?.length > 0 ||
+              isLoading ||
+              isFilterLoadinig ||
+              isSearchLoading
+                ? 'none'
+                : 'flex',
           }}
           onClick={() => {
             dispatch(changeCurrentPage());
@@ -145,7 +182,11 @@ export const Trends: React.FC = () => {
           }}
         >
           Show more
-          <img src={spinnerImg} alt="spinner" />
+          {isLoading ? (
+            <ShowMoreSpinner />
+          ) : (
+            <img src={spinnerImg} alt="spinner" />
+          )}
         </ShowMoreBtn>
       </TrendsContentWrapper>
     </TrendsWrapper>

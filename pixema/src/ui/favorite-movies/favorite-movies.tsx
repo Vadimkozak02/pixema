@@ -23,7 +23,12 @@ export const FavoriteMovies: React.FC = () => {
     const LSUser = getUserLS();
     if (LSUser) {
       dispatch(
-        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+        setUser({
+          email: LSUser.email,
+          token: LSUser.token,
+          id: LSUser.id,
+          colorMode: LSUser.colorMode,
+        })
       );
     }
   }, [dispatch]);
