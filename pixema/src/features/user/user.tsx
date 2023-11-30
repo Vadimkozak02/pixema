@@ -69,6 +69,7 @@ export const User: React.FC = () => {
               email: '',
               token: '',
               id: '',
+              colorMode: false,
             });
           }}
         >

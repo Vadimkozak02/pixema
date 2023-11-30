@@ -4,6 +4,7 @@ export type UserProps = {
   email: string | null;
   token: string;
   id: string;
+  colorMode: boolean;
 };
 
 const AuthorizationSlice = createSlice({
@@ -12,6 +13,7 @@ const AuthorizationSlice = createSlice({
     email: '',
     token: '',
     id: '',
+    colorMode: false,
     // password: null,
   } as UserProps,
   reducers: {
@@ -19,12 +21,14 @@ const AuthorizationSlice = createSlice({
       state.email = action.payload.email;
       state.token = action.payload.token;
       state.id = action.payload.id;
+      state.colorMode = action.payload.colorMode;
       // state.password = action.payload.password;
     },
     removeUser(state) {
       state.email = '';
       state.token = '';
       state.id = '';
+      state.colorMode = false;
       // state.password = null;
     },
   },

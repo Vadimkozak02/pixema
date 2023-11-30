@@ -23,7 +23,12 @@ export const SettingsPage: React.FC = () => {
     const LSUser = getUserLS();
     if (LSUser) {
       dispatch(
-        setUser({ email: LSUser.email, token: LSUser.token, id: LSUser.id })
+        setUser({
+          email: LSUser.email,
+          token: LSUser.token,
+          id: LSUser.id,
+          colorMode: LSUser.colorMode,
+        })
       );
     }
   }, [dispatch]);
@@ -143,11 +148,12 @@ const SettingsWrapper = styled.div`
 `;
 
 const SettingsContentWrapper = styled.div`
-  width: 925px;
   margin: 25px 0 60px;
 `;
 
-const SettingsBlocks = styled.div``;
+const SettingsBlocks = styled.div`
+  width: 925px;
+`;
 
 const ProfileWrapper = styled.div`
   margin-bottom: 50px;

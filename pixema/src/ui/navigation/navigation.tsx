@@ -3,105 +3,99 @@ import homeIco from './img/site-menu-home.png';
 import trendsIco from './img/site-menu-trends.png';
 import favoritesIco from './img/site-menu-favorites.png';
 import settingsIco from './img/site-menu-settings.png';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { reset } from '../../features/search/search.slice';
 import { useState } from 'react';
 
 export const Navigation: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [isActive, setIsActive] = useState('');
 
   return (
     <NavigationWrapper>
       <NavigationList>
         <NavigationLinkBtn>
-          <NavigationLink
+          <NavLink
             to="/"
             onClick={() => {
               dispatch(reset());
-              setIsActive('1');
               window.scrollTo(0, 0);
             }}
+            style={({ isActive }) => ({
+              color: isActive
+                ? 'var(--text-active-color)'
+                : 'var(--text-primary-color)',
+              display: 'flex',
+            })}
           >
-            <HomeItem
-              style={{
-                color:
-                  isActive === '1'
-                    ? 'var(--text-active-color)'
-                    : 'var(--text-primary-color)',
-              }}
-            >
+            <HomeItem>
               <img src={homeIco} alt="home ico" />
-              <p>Home</p>
             </HomeItem>
-          </NavigationLink>
+            <Name>Home</Name>
+          </NavLink>
         </NavigationLinkBtn>
 
         <NavigationLinkBtn>
-          <NavigationLink
+          <NavLinkBtn
             to="/trends"
             onClick={() => {
               dispatch(reset());
-              setIsActive('2');
               window.scrollTo(0, 0);
             }}
+            style={({ isActive }) => ({
+              color: isActive
+                ? 'var(--text-active-color)'
+                : 'var(--text-primary-color)',
+              display: 'flex',
+            })}
           >
-            <TrendsItem
-              style={{
-                color:
-                  isActive === '2'
-                    ? 'var(--text-active-color)'
-                    : 'var(--text-primary-color)',
-              }}
-            >
-              <img src={trendsIco} alt="trends ico" /> <p>Trends</p>
+            <TrendsItem>
+              <img src={trendsIco} alt="trends ico" />{' '}
             </TrendsItem>
-          </NavigationLink>
+            <Name>Trends</Name>
+          </NavLinkBtn>
         </NavigationLinkBtn>
 
         <NavigationLinkBtn>
-          <NavigationLink
+          <NavLink
             to="/favorites"
             onClick={() => {
               dispatch(reset());
-              setIsActive('3');
               window.scrollTo(0, 0);
             }}
+            style={({ isActive }) => ({
+              color: isActive
+                ? 'var(--text-active-color)'
+                : 'var(--text-primary-color)',
+              display: 'flex',
+            })}
           >
-            <FavoritesItem
-              style={{
-                color:
-                  isActive === '3'
-                    ? 'var(--text-active-color)'
-                    : 'var(--text-primary-color)',
-              }}
-            >
-              <img src={favoritesIco} alt="favorites ico" /> <p>Favorites</p>
+            <FavoritesItem>
+              <img src={favoritesIco} alt="favorites ico" />
             </FavoritesItem>
-          </NavigationLink>
+            <Name>Favorites</Name>
+          </NavLink>
         </NavigationLinkBtn>
 
         <NavigationLinkBtn>
-          <NavigationLink
+          <NavLink
             to="/settingsPage"
             onClick={() => {
               dispatch(reset());
-              setIsActive('4');
               window.scrollTo(0, 0);
             }}
+            style={({ isActive }) => ({
+              color: isActive
+                ? 'var(--text-active-color)'
+                : 'var(--text-primary-color)',
+              display: 'flex',
+            })}
           >
-            <SettingsItem
-              style={{
-                color:
-                  isActive === '4'
-                    ? 'var(--text-active-color)'
-                    : 'var(--text-primary-color)',
-              }}
-            >
-              <img src={settingsIco} alt="settings ico" /> <p>Settings</p>
+            <SettingsItem>
+              <img src={settingsIco} alt="settings ico" />
             </SettingsItem>
-          </NavigationLink>
+            <Name>Settings</Name>
+          </NavLink>
         </NavigationLinkBtn>
       </NavigationList>
     </NavigationWrapper>
@@ -115,7 +109,6 @@ const NavigationList = styled.div`
 `;
 
 const NavigationLinkBtn = styled.button`
-  /* width: 100%; */
   display: block;
   border: none;
   background-color: transparent;
@@ -123,7 +116,6 @@ const NavigationLinkBtn = styled.button`
 
 const HomeItem = styled.div`
   padding-left: 3px;
-  width: 80px;
   display: flex;
   align-items: center;
   font-size: 18px;
@@ -133,13 +125,9 @@ const HomeItem = styled.div`
   border: none;
   transition: 0.3s;
 
-  &:hover {
+  /* &:hover {
     color: var(--text-active-color);
-  }
-
-  &:focus {
-    color: var(--button-bg-primary-color);
-  }
+  } */
 
   img {
     margin-right: 15px;
@@ -148,7 +136,6 @@ const HomeItem = styled.div`
 
 const TrendsItem = styled.div`
   padding-left: 5px;
-  width: 90px;
   display: flex;
   align-items: center;
   font-size: 18px;
@@ -158,13 +145,9 @@ const TrendsItem = styled.div`
   border: none;
   transition: 0.3s;
 
-  &:hover {
+  /* &:hover {
     color: var(--text-active-color);
-  }
-
-  &:focus {
-    color: var(--button-bg-primary-color);
-  }
+  } */
 
   img {
     margin-right: 19px;
@@ -172,7 +155,6 @@ const TrendsItem = styled.div`
 `;
 const FavoritesItem = styled.div`
   padding-left: 5px;
-  width: 120px;
   display: flex;
   align-items: center;
   font-size: 18px;
@@ -182,13 +164,9 @@ const FavoritesItem = styled.div`
   border: none;
   transition: 0.3s;
 
-  &:hover {
+  /* &:hover {
     color: var(--text-active-color);
-  }
-
-  &:focus {
-    color: var(--button-bg-primary-color);
-  }
+  } */
 
   img {
     margin-right: 20px;
@@ -196,7 +174,6 @@ const FavoritesItem = styled.div`
 `;
 const SettingsItem = styled.div`
   padding-left: 0;
-  width: 110px;
   display: flex;
   align-items: center;
   font-size: 18px;
@@ -206,17 +183,21 @@ const SettingsItem = styled.div`
   border: none;
   transition: 0.3s;
 
-  &:hover {
+  /* &:hover {
     color: var(--text-active-color);
-  }
-
-  &:focus {
-    color: var(--button-bg-primary-color);
-  }
+  } */
 
   img {
     margin-right: 15px;
   }
 `;
 
-const NavigationLink = styled(Link)``;
+const NavLinkBtn = styled(NavLink)`
+  display: flex;
+  align-items: center;
+`;
+
+const Name = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+`;

@@ -33,12 +33,14 @@ export const SingInForm: React.FC = () => {
             email: user.email,
             id: user.uid,
             token: user.refreshToken,
+            colorMode: false,
           })
         );
         setUserLS({
           email: user.email,
           token: user.uid,
           id: user.refreshToken,
+          colorMode: false,
         });
         navigate('/');
       })

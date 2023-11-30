@@ -13,6 +13,8 @@ export const AddToFavorites: React.FC = () => {
   const recommendations = useAppSelector(
     (state) => state.recommendationMovies.recommendationMovies
   );
+  const searchMovies = useAppSelector((state) => state.search.searchedPosts);
+  const filterMOvies = useAppSelector((state) => state.filter.filtersMovie);
 
   const dispatch = useAppDispatch();
 
@@ -34,6 +36,22 @@ export const AddToFavorites: React.FC = () => {
   });
 
   recommendations.items?.map((el) => {
+    favoritesMovie.map((item) => {
+      if (el.kinopoiskId === item.kinopoiskId) {
+        isTrue = true;
+      }
+    });
+  });
+
+  searchMovies.films?.map((el) => {
+    favoritesMovie.map((item) => {
+      if (el.filmId === item.kinopoiskId) {
+        isTrue = true;
+      }
+    });
+  });
+
+  filterMOvies.items?.map((el) => {
     favoritesMovie.map((item) => {
       if (el.kinopoiskId === item.kinopoiskId) {
         isTrue = true;
