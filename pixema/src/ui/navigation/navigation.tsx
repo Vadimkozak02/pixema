@@ -3,10 +3,9 @@ import homeIco from './img/site-menu-home.png';
 import trendsIco from './img/site-menu-trends.png';
 import favoritesIco from './img/site-menu-favorites.png';
 import settingsIco from './img/site-menu-settings.png';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks';
 import { reset } from '../../features/search/search.slice';
-import { useState } from 'react';
 
 export const Navigation: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -112,6 +111,10 @@ const NavigationLinkBtn = styled.button`
   display: block;
   border: none;
   background-color: transparent;
+
+  &:hover {
+    color: var(--text-hover-color);
+  }
 `;
 
 const HomeItem = styled.div`
@@ -195,9 +198,20 @@ const SettingsItem = styled.div`
 const NavLinkBtn = styled(NavLink)`
   display: flex;
   align-items: center;
+
+  p {
+    &:hover {
+      color: var(--text-active-color);
+    }
+  }
 `;
 
 const Name = styled.p`
   font-size: 18px;
   font-weight: 600;
+  transition: 0.3s;
+
+  &:hover {
+    color: var(--text-hover-color);
+  }
 `;

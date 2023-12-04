@@ -23,6 +23,7 @@ import { setUser } from '../Auth/authorization.slice';
 import { changeFiltersCurrentPage, getFilters } from '../filters/filters.slice';
 import { ShowMoreSpinner } from '../../ui/spinner/show-more-spinner';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
+import dotIco from './img/dotIco.svg';
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -139,7 +140,7 @@ export const AllPosts: React.FC = () => {
                                 id={item.kinopoiskId}
                                 title={item.nameRu}
                                 genre={item.genres.map(
-                                  (el) => ' - ' + el.genre
+                                  (el) => el.genre + ' - '
                                 )}
                                 rating={
                                   item.ratingKinopoisk === null
@@ -251,4 +252,10 @@ const ShowMoreBtn = styled.button`
   font-weight: 500;
   cursor: pointer;
   margin: auto;
+`;
+
+const DotIco = styled.div`
+  width: 5px;
+  height: 5px;
+  background-color: var(--dotIco-color);
 `;

@@ -18,6 +18,7 @@ import { getUserLS } from '../../api/user-localStorage';
 import { setUser } from '../Auth/authorization.slice';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import { getRecommendationMovies } from '../recommendation-movies/recommendation-movies.slice';
+import { write } from 'fs';
 
 export const SelectedMovie: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -58,10 +59,11 @@ export const SelectedMovie: React.FC = () => {
   let worldBoxOffice;
   let rusBoxOffice;
   objOfBoxOffice.items?.map((el) => {
+    console.log('box', el);
     if (el.type === 'WORLD') {
-      worldBoxOffice = el.amount;
+      worldBoxOffice = new Intl.NumberFormat('ru-RU').format(el.amount);
     } else if (el.type === 'RUS') {
-      rusBoxOffice = el.amount;
+      rusBoxOffice = new Intl.NumberFormat('ru-RU').format(el.amount);
     }
   });
 
@@ -86,6 +88,8 @@ export const SelectedMovie: React.FC = () => {
       producers.splice(3, producers.length - 3);
     }
   });
+
+  const producersArr = producers.filter((el) => el.nameRu !== '');
 
   // Favorite
   let addToFavorite = () => {
@@ -194,14 +198,28 @@ export const SelectedMovie: React.FC = () => {
               runtime={selectedPost.filmLength + ' min'}
               year={selectedPost.year}
               released={release ? release : '2019-15-08'}
-              boxOffice={
-                worldBoxOffice ? `$${worldBoxOffice}` : `$${rusBoxOffice}`
-              }
-              country={selectedPost.countries?.map((el) => el.country + ' ')}
-              producers={producers.map((el) => el.nameRu + ' ')}
-              actors={actors.map((el) => el.nameRu + ' ')}
+              boxOffice={worldBoxOffice ? worldBoxOffice : rusBoxOffice}
+              country={selectedPost.countries?.map((el) =>
+                el === selectedPost.countries[selectedPost.countries.length - 1]
+                  ? el.country + ''
+                  : el.country + ', '
+              )}
+              producers={producersArr.map((el) =>
+                el === producersArr[producersArr.length - 1]
+                  ? el.nameRu + ''
+                  : el.nameRu + ', '
+              )}
+              actors={actors.map((el) =>
+                el === actors[actors.length - 1]
+                  ? el.nameRu + ''
+                  : el.nameRu + ', '
+              )}
               director={director}
-              writers={writers.map((el) => el.nameRu)}
+              writers={writers.map((el) =>
+                el === writers[writers.length - 1]
+                  ? el.nameRu + ''
+                  : el.nameRu + ', '
+              )}
               offset={offset}
               maxOffset={maxOffset}
               addToFavorite={() => addToFavorite()}

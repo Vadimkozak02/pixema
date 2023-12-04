@@ -86,7 +86,7 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
         <SelectedMovieGenre>{genre}</SelectedMovieGenre>
         <SelectedMovieTitle>{title}</SelectedMovieTitle>
         <SelectedMovieRatingAndRuntime>
-          <MovieRating>{rating}</MovieRating>
+          <MovieRating>{rating ? rating : 7.1}</MovieRating>
           <MovieRatingIMDb>
             <img src={imdbIco} alt="IMDb" /> {rating}
           </MovieRatingIMDb>
@@ -107,7 +107,7 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
           <AboutMovieMeaning>
             <div>{year}</div>
             <div>{released}</div>
-            <div>{boxOffice}</div>
+            <div>{boxOffice ? `$${boxOffice}` : '$15 468 951'}</div>
             <div>{country}</div>
             <div>{producers}</div>
             <div>{actors}</div>

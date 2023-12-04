@@ -31,7 +31,11 @@ export const User: React.FC = () => {
   return (
     <UserWrapper>
       <UserNameWrapper>
-        <UserInitials>
+        <UserInitials
+          onClick={() =>
+            isAuth ? setEditMenu(!editMenu) : navigate('/sign-in')
+          }
+        >
           {isAuth ? <p>{initials}</p> : <img src={userIco} alt="person logo" />}
         </UserInitials>
 
@@ -94,6 +98,7 @@ const UserInitials = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+  cursor: pointer;
 
   p {
     text-transform: capitalize;
