@@ -22,8 +22,8 @@ export const Navigation: React.FC = () => {
             }}
             style={({ isActive }) => ({
               color: isActive
-                ? 'var(--text-active-color)'
-                : 'var(--text-primary-color)',
+                ? 'var(--navigation-active-color)'
+                : 'var(--navigation-default-color)',
               display: 'flex',
             })}
           >
@@ -43,8 +43,8 @@ export const Navigation: React.FC = () => {
             }}
             style={({ isActive }) => ({
               color: isActive
-                ? 'var(--text-active-color)'
-                : 'var(--text-primary-color)',
+                ? 'var(--navigation-active-color)'
+                : 'var(--navigation-default-color)',
               display: 'flex',
             })}
           >
@@ -64,8 +64,8 @@ export const Navigation: React.FC = () => {
             }}
             style={({ isActive }) => ({
               color: isActive
-                ? 'var(--text-active-color)'
-                : 'var(--text-primary-color)',
+                ? 'var(--navigation-active-color)'
+                : 'var(--navigation-default-color)',
               display: 'flex',
             })}
           >
@@ -85,8 +85,8 @@ export const Navigation: React.FC = () => {
             }}
             style={({ isActive }) => ({
               color: isActive
-                ? 'var(--text-active-color)'
-                : 'var(--text-primary-color)',
+                ? 'var(--navigation-active-color)'
+                : 'var(--navigation-default-color)',
               display: 'flex',
             })}
           >
@@ -113,7 +113,8 @@ const NavigationLinkBtn = styled.button`
   background-color: transparent;
 
   &:hover {
-    color: var(--text-hover-color);
+    /* color: var(--text-hover-color); */
+    color: #00801100;
   }
 `;
 
@@ -199,11 +200,11 @@ const NavLinkBtn = styled(NavLink)`
   display: flex;
   align-items: center;
 
-  p {
+  /* p {
     &:hover {
-      color: var(--text-active-color);
+      color: var(--navigation-active-color);
     }
-  }
+  } */
 `;
 
 const Name = styled.p`
@@ -212,6 +213,6 @@ const Name = styled.p`
   transition: 0.3s;
 
   &:hover {
-    color: var(--text-hover-color);
+    color: var(--navigation-hover-color);
   }
 `;

@@ -15,6 +15,7 @@ import { getUserLS } from '../../api/user-localStorage';
 import { setUser } from '../Auth/authorization.slice';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import { ShowMoreSpinner } from '../../ui/spinner/show-more-spinner';
+import dotIco from './img/dotIco.svg';
 
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
@@ -91,8 +92,17 @@ export const Trends: React.FC = () => {
                                 isAdded={false}
                                 id={item.kinopoiskId}
                                 title={item.nameRu}
-                                genre={item.genres.map(
-                                  (el) => ' - ' + el.genre
+                                genre={item.genres.map((el, index) =>
+                                  el !== item.genres[item.genres.length - 1] ? (
+                                    <TrendsGenre key={index}>
+                                      <div style={{ marginRight: '5px' }}>
+                                        {el.genre}
+                                      </div>
+                                      <img src={dotIco} alt="dot" />
+                                    </TrendsGenre>
+                                  ) : (
+                                    el.genre
+                                  )
                                 )}
                                 rating={
                                   item.ratingKinopoisk === null
@@ -118,8 +128,17 @@ export const Trends: React.FC = () => {
                                 isAdded={false}
                                 id={item.kinopoiskId}
                                 title={item.nameRu}
-                                genre={item.genres.map(
-                                  (el) => ' - ' + el.genre
+                                genre={item.genres.map((el, index) =>
+                                  el !== item.genres[item.genres.length - 1] ? (
+                                    <TrendsGenre key={index}>
+                                      <div style={{ marginRight: '5px' }}>
+                                        {el.genre}
+                                      </div>
+                                      <img src={dotIco} alt="dot" />
+                                    </TrendsGenre>
+                                  ) : (
+                                    el.genre
+                                  )
                                 )}
                                 rating={
                                   item.ratingKinopoisk === null
@@ -210,4 +229,10 @@ const ShowMoreBtn = styled.button`
   font-weight: 500;
   cursor: pointer;
   margin: auto;
+`;
+
+const TrendsGenre = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 `;

@@ -141,6 +141,7 @@ const MovieCardText = styled.p`
   font-weight: 700;
   cursor: pointer;
   transition: 0.3s;
+  margin-bottom: 10px;
 
   &:hover {
     color: var(--text-active-color);
@@ -152,6 +153,6 @@ const MovieCardGenre = styled.div`
   flex-wrap: wrap;
   align-items: center;
   color: var(--text-genre-color);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
 `;

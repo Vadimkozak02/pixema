@@ -18,7 +18,7 @@ import { getUserLS } from '../../api/user-localStorage';
 import { setUser } from '../Auth/authorization.slice';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import { getRecommendationMovies } from '../recommendation-movies/recommendation-movies.slice';
-import { write } from 'fs';
+import dotIco from '../../ui/templates/selected-movie-templates/img/dotIco.svg';
 
 export const SelectedMovie: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -59,7 +59,6 @@ export const SelectedMovie: React.FC = () => {
   let worldBoxOffice;
   let rusBoxOffice;
   objOfBoxOffice.items?.map((el) => {
-    console.log('box', el);
     if (el.type === 'WORLD') {
       worldBoxOffice = new Intl.NumberFormat('ru-RU').format(el.amount);
     } else if (el.type === 'RUS') {
@@ -173,6 +172,10 @@ export const SelectedMovie: React.FC = () => {
     }
   }, [dispatch]);
 
+  // const genreArr = selectedPost.genres.map(el => {
+  //   el +
+  // })
+
   return (
     <>
       <SelectedMovieWrapper>
@@ -187,7 +190,16 @@ export const SelectedMovie: React.FC = () => {
             <SelectedMovieTemplate
               img={<img src={selectedPost.posterUrl} alt="movieImg" />}
               isAdded={isAdded}
-              genre={selectedPost.genres?.map((el) => el.genre + ' ')}
+              genre={selectedPost.genres?.map((el, index) =>
+                el !== selectedPost.genres[selectedPost.genres.length - 1] ? (
+                  <SelectedGenre key={index}>
+                    <div style={{ marginRight: '5px' }}>{el.genre}</div>
+                    <img src={dotIco} alt="dot" />
+                  </SelectedGenre>
+                ) : (
+                  el.genre
+                )
+              )}
               title={selectedPost.nameRu}
               description={selectedPost.description}
               rating={
@@ -233,7 +245,16 @@ export const SelectedMovie: React.FC = () => {
                       isAdded={false}
                       id={item.kinopoiskId}
                       title={item.nameRu}
-                      genre={item.genres.map((el) => ' - ' + el.genre)}
+                      genre={item.genres.map((el, index) =>
+                        el !== item.genres[item.genres.length - 1] ? (
+                          <RecommendationGenre key={index}>
+                            <div style={{ marginRight: '5px' }}>{el.genre}</div>
+                            <img src={dotIco} alt="dot" />
+                          </RecommendationGenre>
+                        ) : (
+                          el.genre
+                        )
+                      )}
                       rating={
                         item.ratingKinopoisk === null
                           ? item.ratingImdb
@@ -275,4 +296,16 @@ const SelectedMovieContentWrapper = styled.div`
 
 const IsLoadingWrapper = styled.div`
   margin: 0 auto;
+`;
+
+const SelectedGenre = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+`;
+
+const RecommendationGenre = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 `;

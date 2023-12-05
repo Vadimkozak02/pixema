@@ -9,6 +9,7 @@ import leftArrowWhite from './img/left-arrow-white.svg';
 import rightArrowGrey from './img/right-arrow-grey.svg';
 import rightArrowWhite from './img/right-arrow-white.svg';
 import { useAppSelector } from '../../../hooks';
+import dotIco from './img/dotIco.svg';
 
 type Props = {
   img: React.ReactNode;
@@ -255,6 +256,8 @@ const SelectedMovieContentWrapper = styled.div`
 `;
 
 const SelectedMovieGenre = styled.div`
+  display: flex;
+  align-items: center;
   color: var(--text-genre-color);
 `;
 

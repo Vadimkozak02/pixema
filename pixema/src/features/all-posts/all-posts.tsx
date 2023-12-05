@@ -112,8 +112,17 @@ export const AllPosts: React.FC = () => {
                                 isAdded={false}
                                 id={item.kinopoiskId}
                                 title={item.nameRu}
-                                genre={item.genres.map(
-                                  (el) => ' - ' + el.genre
+                                genre={item.genres.map((el, index) =>
+                                  el !== item.genres[item.genres.length - 1] ? (
+                                    <AllPostsGenre key={index}>
+                                      <div style={{ marginRight: '5px' }}>
+                                        {el.genre}
+                                      </div>
+                                      <img src={dotIco} alt="dot" />
+                                    </AllPostsGenre>
+                                  ) : (
+                                    el.genre
+                                  )
                                 )}
                                 rating={
                                   item.ratingKinopoisk === null
@@ -139,8 +148,17 @@ export const AllPosts: React.FC = () => {
                                 isAdded={false}
                                 id={item.kinopoiskId}
                                 title={item.nameRu}
-                                genre={item.genres.map(
-                                  (el) => el.genre + ' - '
+                                genre={item.genres.map((el, index) =>
+                                  el !== item.genres[item.genres.length - 1] ? (
+                                    <AllPostsGenre key={index}>
+                                      <div style={{ marginRight: '5px' }}>
+                                        {el.genre}
+                                      </div>
+                                      <img src={dotIco} alt="dot" />
+                                    </AllPostsGenre>
+                                  ) : (
+                                    el.genre
+                                  )
                                 )}
                                 rating={
                                   item.ratingKinopoisk === null
@@ -258,4 +276,10 @@ const DotIco = styled.div`
   width: 5px;
   height: 5px;
   background-color: var(--dotIco-color);
+`;
+
+const AllPostsGenre = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
 `;

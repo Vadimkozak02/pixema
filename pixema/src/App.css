@@ -22,6 +22,10 @@
   --button-colorMode-hoverColor: #917CFF;
   --circle-colorMode-color: #FFFFFF;
 
+  --navigation-default-color: #80858B;
+  --navigation-active-color: #7B61FF;
+  --navigation-hover-color: #917CFF;
+
   --dotIco-color: #AFB2B6;
 
   --rating-green-color: #00A340;
@@ -57,6 +61,11 @@
     --button-colorMode-off: #80858B;
     --button-colorMode-hoverColor: #917CFF;
     --circle-colorMode-color: #FFFFFF;
+
+    --navigation-default-color: #80858B;
+    --navigation-active-color: #7B61FF;
+    --navigation-hover-color: #917CFF;
+
 
     --dotIco-color: #AFB2B6;
 
