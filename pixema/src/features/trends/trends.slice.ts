@@ -21,8 +21,9 @@ const TrendsSlice = createSlice({
       action: { payload: typeof state.trendsMovie }
     ) {
       state.isLoading = false;
-      const itemsArr = [...state.trendsMovie.items, ...action.payload.items];
-      state.trendsMovie = { ...state.trendsMovie, items: itemsArr };
+      // const itemsArr = [...state.trendsMovie.items, ...action.payload.items];
+      const totalPage = action.payload.totalPages;
+      state.trendsMovie = { ...action.payload, totalPages: totalPage };
     },
     getTrendsMovieFailure(state) {
       state.isLoading = false;

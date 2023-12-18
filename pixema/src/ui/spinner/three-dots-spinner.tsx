@@ -26,5 +26,5 @@ export const ThreeDotsSpinner: React.FC = () => {
 };
 
 const BallTriangleSpinnerWrapper = styled.div`
-  margin: 100px 0 0 400px;
+  margin: 200px 0 0 400px;
 `;

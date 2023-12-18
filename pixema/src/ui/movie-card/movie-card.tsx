@@ -44,12 +44,12 @@ export const MovieCard: React.FC<Props> = ({
           </AddedToFavorite>
         </MovieCardImg>
         <MovieCardRating
-        // style={{
-        //   backgroundColor:
-        //     rating > 7
-        //       ? 'var(--rating-green-color)'
-        //       : 'var(--rating-yellow-color)',
-        // }}
+          style={{
+            backgroundColor:
+              rating > 6.5
+                ? 'var(--rating-green-color)'
+                : 'var(--rating-yellow-color)',
+          }}
         >
           {rating ? rating : 7.1}
         </MovieCardRating>

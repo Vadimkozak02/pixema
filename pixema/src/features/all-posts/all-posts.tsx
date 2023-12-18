@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
@@ -24,6 +24,17 @@ import { changeFiltersCurrentPage, getFilters } from '../filters/filters.slice';
 import { ShowMoreSpinner } from '../../ui/spinner/show-more-spinner';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import dotIco from './img/dotIco.svg';
+import {
+  Container,
+  Stack,
+  Pagination,
+  PaginationItem,
+  createTheme,
+} from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
+// import { ArrowBackIcon }
 
 export const AllPosts: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +59,6 @@ export const AllPosts: React.FC = () => {
   const filtersCurrentPage = useAppSelector(
     (state) => state.filter.filtersCurrentPage
   );
-  console.log('filtersCurrentPage', filtersCurrentPage);
 
   let moreThanTotalPages = false;
   if (filterArr.totalPages <= filtersCurrentPage) {
@@ -69,13 +79,17 @@ export const AllPosts: React.FC = () => {
     }
   }, [dispatch, currentPage]);
 
-  useEffect(() => {
-    if (allPosts.items.length === 0) {
-      dispatch(getAllPosts({ page: 1 }));
-    }
-  }, [dispatch, allPosts]);
+  const [page, setPage] = useState(1);
+  const pageQty = useAppSelector((state) => state.allPosts.allPosts.totalPages);
 
-  let currentScroll = useAppSelector((state) => state.allPosts.currentScroll);
+  useEffect(() => {
+    dispatch(getAllPosts({ page: page }));
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [dispatch, page]);
 
   return (
     <AllPostsWrapper>
@@ -189,7 +203,7 @@ export const AllPosts: React.FC = () => {
           )}
         </AllPostContent>
         {/* <ShowMore changeCurrentPage={changeCurrentPage} /> */}
-        <ShowMoreBtn
+        {/* <ShowMoreBtn
           style={{
             display:
               searchedMovies.films.length > 0 ||
@@ -233,7 +247,43 @@ export const AllPosts: React.FC = () => {
           ) : (
             <img src={spinnerImg} alt="spinner" />
           )}
-        </ShowMoreBtn>
+        </ShowMoreBtn> */}
+
+        {!isLoading && (
+          <Container
+            style={{
+              width: '390px',
+              margin: '0 auto',
+            }}
+          >
+            <Stack spacing={2}>
+              {!!pageQty && (
+                <MyPagination
+                  count={pageQty}
+                  page={page}
+                  // color="primary"
+                  sx={{
+                    '& .Mui-selected': {
+                      backgroundColor: 'green',
+                    },
+                  }}
+                  onChange={(_, num) => {
+                    setPage(num);
+                  }}
+                  renderItem={(item) => (
+                    <PaginationItem
+                      slots={{
+                        previous: ArrowBackIcon,
+                        next: ArrowForwardIcon,
+                      }}
+                      {...item}
+                    />
+                  )}
+                ></MyPagination>
+              )}
+            </Stack>
+          </Container>
+        )}
       </AllPostContentWrapper>
     </AllPostsWrapper>
   );
@@ -282,4 +332,28 @@ const AllPostsGenre = styled.div`
   display: flex;
   align-items: center;
   margin-right: 5px;
+`;
+
+const MyPagination = styled(Pagination)`
+  ul {
+    li {
+      button {
+        color: var(--text-primary-color);
+        transition: 0.5s;
+        &:hover {
+          background-color: var(--navigation-hover-color);
+        }
+      }
+      div {
+        color: var(--text-primary-color);
+      }
+    }
+  }
+  .css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    background-color: var(--navigation-active-color);
+
+    &:hover {
+      background-color: var(--navigation-hover-color);
+    }
+  }
 `;

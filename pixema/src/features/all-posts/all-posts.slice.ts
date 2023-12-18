@@ -19,8 +19,13 @@ const AllPostsSlice = createSlice({
     },
     getAllPostsSuccess(state, action: { payload: typeof state.allPosts }) {
       state.allPostsIsLoading = false;
-      const itemsArr = [...state.allPosts.items, ...action.payload.items];
-      state.allPosts = { ...state.allPosts, items: itemsArr };
+      // const itemsArr = [...state.allPosts.items, ...action.payload.items];
+      const totalPage = action.payload.totalPages;
+      state.allPosts = {
+        ...action.payload,
+        totalPages: totalPage,
+        // items: itemsArr,
+      };
     },
     getAllPostsFailure(state) {
       state.allPostsIsLoading = false;

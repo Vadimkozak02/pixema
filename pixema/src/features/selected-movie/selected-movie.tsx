@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector, useAuth } from '../../hooks';
 import { SelectedMovieTemplate } from '../../ui/templates/selected-movie-templates/selected-movie-template';
 import { MainTemplate } from '../../ui/templates/main-template/main-template';
 import { HeaderTemplate } from '../../ui/templates/header-template/header-template';
@@ -7,7 +7,7 @@ import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from './selected-movie.slice';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Staff } from './types';
+import { SelectedKinopoiskMovieResponse, Staff } from './types';
 import {
   addIdPage,
   addToFav,
@@ -19,6 +19,7 @@ import { setUser } from '../Auth/authorization.slice';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import { getRecommendationMovies } from '../recommendation-movies/recommendation-movies.slice';
 import dotIco from '../../ui/templates/selected-movie-templates/img/dotIco.svg';
+import { getDatabase, ref, set } from 'firebase/database';
 
 export const SelectedMovie: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -91,12 +92,6 @@ export const SelectedMovie: React.FC = () => {
   const producersArr = producers.filter((el) => el.nameRu !== '');
 
   // Favorite
-  let addToFavorite = () => {
-    setIsClicked(!isClicked);
-    dispatch(addToFav(selectedPost));
-    dispatch(addIdPage(Number(postId)));
-  };
-
   const addedToFav = useAppSelector(
     (state) => state.addToFav.arrofFavoritesMovie
   );
@@ -106,6 +101,31 @@ export const SelectedMovie: React.FC = () => {
       isAdded = true;
     }
   });
+
+  let addToFavorite = () => {
+    setIsClicked(!isClicked);
+    dispatch(addToFav(selectedPost));
+    dispatch(addIdPage(Number(postId)));
+  };
+
+  const { email, id } = useAuth();
+  // let allFavPosts = [] as Array<SelectedKinopoiskMovieResponse>;
+  const addInFirebase = () => {
+    // allFavPosts.push(selectedPost);
+    const db = getDatabase();
+    set(ref(db, `/${id}`), {
+      selectedPost,
+      id: `${selectedPost.kinopoiskId}`,
+    });
+  };
+
+  // useEffect(() => {
+  //   const db = getDatabase();
+  //   set(ref(db, 'selectedPost'), {
+  //     uid: email,
+  //     favPosts: addedToFav,
+  //   });
+  // }, [addedToFav, email]);
 
   // Recommendations
   let allPosts = useAppSelector((state) => state.allPosts.allPosts);
@@ -234,7 +254,10 @@ export const SelectedMovie: React.FC = () => {
               )}
               offset={offset}
               maxOffset={maxOffset}
-              addToFavorite={() => addToFavorite()}
+              addToFavorite={() => {
+                addToFavorite();
+                addInFirebase();
+              }}
               leftTap={() => leftTap()}
               rightTap={() => rightTap()}
               recommendationMovie={allPostsWithoutSelected.map(

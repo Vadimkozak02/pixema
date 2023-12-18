@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { MovieCard } from '../../ui/movie-card/movie-card';
 import { setSelectedMovie } from '../selected-movie/selected-movie.slice';
 import { allPostsItem } from '../all-posts/types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { changeCurrentPage, getTrendsMovie } from './trends.slice';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 import spinnerImg from './img/spinner.svg';
@@ -16,6 +16,9 @@ import { setUser } from '../Auth/authorization.slice';
 import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import { ShowMoreSpinner } from '../../ui/spinner/show-more-spinner';
 import dotIco from './img/dotIco.svg';
+import { Container, Pagination, PaginationItem, Stack } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export const Trends: React.FC = () => {
   const trendsPosts = useAppSelector((state) => state.trendsPosts.trendsMovie);
@@ -51,11 +54,19 @@ export const Trends: React.FC = () => {
     }
   }, [dispatch]);
 
+  const [page, setPage] = useState(1);
+  const pageQty = useAppSelector(
+    (state) => state.trendsPosts.trendsMovie.totalPages
+  );
+
   useEffect(() => {
-    if (trendsPosts.items.length === 0) {
-      dispatch(getTrendsMovie({ page: 1 }));
-    }
-  }, [dispatch, trendsPosts]);
+    dispatch(getTrendsMovie({ page: page }));
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, [dispatch, page]);
 
   return (
     <TrendsWrapper>
@@ -170,7 +181,7 @@ export const Trends: React.FC = () => {
             </>
           )}
         </TrendsAllPosts>
-        <ShowMoreBtn
+        {/* <ShowMoreBtn
           style={{
             display:
               searchedMovies.films?.length > 0 ||
@@ -191,7 +202,43 @@ export const Trends: React.FC = () => {
           ) : (
             <img src={spinnerImg} alt="spinner" />
           )}
-        </ShowMoreBtn>
+        </ShowMoreBtn> */}
+
+        {!isLoading && (
+          <Container
+            style={{
+              width: '390px',
+              margin: '0 auto',
+            }}
+          >
+            <Stack spacing={2}>
+              {!!pageQty && (
+                <MyPagination
+                  count={pageQty}
+                  page={page}
+                  // color="primary"
+                  sx={{
+                    '& .Mui-selected': {
+                      backgroundColor: 'green',
+                    },
+                  }}
+                  onChange={(_, num) => {
+                    setPage(num);
+                  }}
+                  renderItem={(item) => (
+                    <PaginationItem
+                      slots={{
+                        previous: ArrowBackIcon,
+                        next: ArrowForwardIcon,
+                      }}
+                      {...item}
+                    />
+                  )}
+                ></MyPagination>
+              )}
+            </Stack>
+          </Container>
+        )}
       </TrendsContentWrapper>
     </TrendsWrapper>
   );
@@ -235,4 +282,28 @@ const TrendsGenre = styled.div`
   display: flex;
   align-items: center;
   margin-right: 5px;
+`;
+
+const MyPagination = styled(Pagination)`
+  ul {
+    li {
+      button {
+        color: var(--text-primary-color);
+        transition: 0.5s;
+        &:hover {
+          background-color: var(--navigation-hover-color);
+        }
+      }
+      div {
+        color: var(--text-primary-color);
+      }
+    }
+  }
+  .css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    background-color: var(--navigation-active-color);
+
+    &:hover {
+      background-color: var(--navigation-hover-color);
+    }
+  }
 `;

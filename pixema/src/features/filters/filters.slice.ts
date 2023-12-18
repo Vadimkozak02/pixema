@@ -37,8 +37,6 @@ export const FilterSlice = createSlice({
       state.isFilterLoading = false;
       const itemsArr = [...state.filtersMovie.items, ...action.payload.items];
       state.filtersMovie = { ...action.payload, items: itemsArr };
-      // state.filtersMovie = action.payload;
-      console.log('filtersMovie', state.filtersMovie);
     },
     getFiltersFailure(state) {
       state.isFilterLoading = false;
