@@ -111,11 +111,23 @@ export const SearchMenu: React.FC = () => {
 const SearchWrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 1500px) {
+    margin-right: 28px;
+  }
 `;
 
 const SearchMenuWrapper = styled.div`
   position: relative;
   width: 925px;
+
+  @media (max-width: 1500px) {
+    width: 690px;
+  }
+
+  @media (max-width: 1250px) {
+    width: 445px;
+  }
 `;
 
 const SearchMenuInput = styled.input`
@@ -133,6 +145,14 @@ const SearchMenuInput = styled.input`
     color: var(--text-secondary-color);
     font-size: 16px;
     font-weight: 500;
+  }
+
+  @media (max-width: 1500px) {
+    width: 96%;
+  }
+
+  @media (max-width: 1250px) {
+    width: 95%;
   }
 `;
 

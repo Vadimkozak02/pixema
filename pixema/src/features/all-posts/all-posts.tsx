@@ -202,88 +202,46 @@ export const AllPosts: React.FC = () => {
             </>
           )}
         </AllPostContent>
-        {/* <ShowMore changeCurrentPage={changeCurrentPage} /> */}
-        {/* <ShowMoreBtn
-          style={{
-            display:
-              searchedMovies.films.length > 0 ||
-              isLoading ||
-              isFilterLoadinig ||
-              isSearchLoading
-                ? 'none'
-                : 'flex',
-          }}
-          onClick={
-            filterIsActive
-              ? () => {
-                  dispatch(changeFiltersCurrentPage());
-                  dispatch(
-                    getFilters({
-                      order: currentFilters.order,
-                      keyword: currentFilters.keyword,
-                      ratingFrom: currentFilters.ratingFrom,
-                      ratingTo: currentFilters.ratingTo,
-                      yearFrom: currentFilters.yearFrom,
-                      yearTo: currentFilters.yearTo,
-                      page: filtersCurrentPage,
-                    })
-                  );
-                }
-              : () => {
-                  dispatch(changeCurrentPage());
-                  dispatch(getAllPosts({ page: currentPage }));
-                  dispatch(getCurrentScroll());
-                  window.scrollTo({
-                    top: currentScroll,
-                    left: 0,
-                    behavior: 'smooth',
-                  });
-                }
-          }
-        >
-          Show more
-          {isLoading ? (
-            <ShowMoreSpinner />
-          ) : (
-            <img src={spinnerImg} alt="spinner" />
-          )}
-        </ShowMoreBtn> */}
 
-        {!isLoading && (
-          <Container
-            style={{
-              width: '390px',
-              margin: '0 auto',
-            }}
-          >
-            <Stack spacing={2}>
-              {!!pageQty && (
-                <MyPagination
-                  count={pageQty}
-                  page={page}
-                  // color="primary"
-                  sx={{
-                    '& .Mui-selected': {
-                      backgroundColor: 'green',
-                    },
-                  }}
-                  onChange={(_, num) => {
-                    setPage(num);
-                  }}
-                  renderItem={(item) => (
-                    <PaginationItem
-                      slots={{
-                        previous: ArrowBackIcon,
-                        next: ArrowForwardIcon,
-                      }}
-                      {...item}
-                    />
-                  )}
-                ></MyPagination>
-              )}
-            </Stack>
-          </Container>
-        )}
+        {!isLoading &&
+          !isSearchLoading &&
+          !isFilterLoadinig &&
+          searchedMovies.films.length === 0 &&
+          filterArr.items.length === 0 && (
+            <Container
+              style={{
+                width: '390px',
+                margin: '0 auto',
+              }}
+            >
+              <Stack spacing={2}>
+                {!!pageQty && (
+                  <MyPagination
+                    count={pageQty}
+                    page={page}
+                    // color="primary"
+                    sx={{
+                      '& .Mui-selected': {
+                        backgroundColor: 'green',
+                      },
+                    }}
+                    onChange={(_, num) => {
+                      setPage(num);
+                    }}
+                    renderItem={(item) => (
+                      <PaginationItem
+                        slots={{
+                          previous: ArrowBackIcon,
+                          next: ArrowForwardIcon,
+                        }}
+                        {...item}
+                      />
+                    )}
+                  ></MyPagination>
+                )}
+              </Stack>
+            </Container>
+          )}
       </AllPostContentWrapper>
     </AllPostsWrapper>
   );
@@ -294,6 +252,10 @@ const AllPostsWrapper = styled.div`
   background-color: var(--site-background-color);
   padding-left: 50px;
   min-height: 1400px;
+
+  @media (max-width: 1500px) {
+    justify-content: center;
+  }
 `;
 
 const AllPostContentWrapper = styled.div`
@@ -304,6 +266,14 @@ const AllPostContent = styled.div`
   max-width: 1200px;
   display: flex;
   flex-wrap: wrap;
+
+  @media (max-width: 1500px) {
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 720px;
+  }
 `;
 
 const ShowMoreBtn = styled.button`

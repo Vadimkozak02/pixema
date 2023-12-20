@@ -126,6 +126,10 @@ const UserName = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-around;
+
+  @media (max-width: 1500px) {
+    width: 160px;
+  }
 `;
 
 const UserNameArrow = styled.div``;

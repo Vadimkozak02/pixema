@@ -204,41 +204,43 @@ export const Trends: React.FC = () => {
           )}
         </ShowMoreBtn> */}
 
-        {!isLoading && (
-          <Container
-            style={{
-              width: '390px',
-              margin: '0 auto',
-            }}
-          >
-            <Stack spacing={2}>
-              {!!pageQty && (
-                <MyPagination
-                  count={pageQty}
-                  page={page}
-                  // color="primary"
-                  sx={{
-                    '& .Mui-selected': {
-                      backgroundColor: 'green',
-                    },
-                  }}
-                  onChange={(_, num) => {
-                    setPage(num);
-                  }}
-                  renderItem={(item) => (
-                    <PaginationItem
-                      slots={{
-                        previous: ArrowBackIcon,
-                        next: ArrowForwardIcon,
-                      }}
-                      {...item}
-                    />
-                  )}
-                ></MyPagination>
-              )}
-            </Stack>
-          </Container>
-        )}
+        {!isLoading &&
+          !isSearchLoading &&
+          searchedMovies.films.length === 0 && (
+            <Container
+              style={{
+                width: '390px',
+                margin: '0 auto',
+              }}
+            >
+              <Stack spacing={2}>
+                {!!pageQty && (
+                  <MyPagination
+                    count={pageQty}
+                    page={page}
+                    // color="primary"
+                    sx={{
+                      '& .Mui-selected': {
+                        backgroundColor: 'green',
+                      },
+                    }}
+                    onChange={(_, num) => {
+                      setPage(num);
+                    }}
+                    renderItem={(item) => (
+                      <PaginationItem
+                        slots={{
+                          previous: ArrowBackIcon,
+                          next: ArrowForwardIcon,
+                        }}
+                        {...item}
+                      />
+                    )}
+                  ></MyPagination>
+                )}
+              </Stack>
+            </Container>
+          )}
       </TrendsContentWrapper>
     </TrendsWrapper>
   );
@@ -249,10 +251,14 @@ const TrendsWrapper = styled.div`
   background-color: var(--site-background-color);
   padding-left: 50px;
   min-height: 1400px;
+
+  @media (max-width: 1500px) {
+    justify-content: center;
+  }
 `;
 
 const TrendsContentWrapper = styled.div`
-  width: 1200px;
+  /* width: 1200px; */
   margin: 25px 0 60px;
 `;
 
@@ -260,6 +266,14 @@ const TrendsAllPosts = styled.div`
   max-width: 1200px;
   display: flex;
   flex-wrap: wrap;
+
+  @media (max-width: 1500px) {
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 720px;
+  }
 `;
 
 const ShowMoreBtn = styled.button`

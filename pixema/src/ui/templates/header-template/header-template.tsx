@@ -18,4 +18,10 @@ const AllPostHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 50px;
+
+  @media (max-width: 1500px) {
+    width: 690px;
+
+    justify-content: flex-start;
+  }
 `;

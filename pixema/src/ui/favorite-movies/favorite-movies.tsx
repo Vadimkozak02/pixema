@@ -39,27 +39,29 @@ export const FavoriteMovies: React.FC = () => {
         <MainTemplate />
         <FavoriteMoviesContentWrapper>
           <HeaderTemplate />
-          {searchedMovies.films.length === 0 ? (
-            <>
-              {isEmpty ? (
-                <FavoriteMoviesContent>
-                  <AddToFavorites />
-                </FavoriteMoviesContent>
-              ) : (
-                <EmptyFavorites>
-                  <img src={emptyFav} alt="empty favorites" />
-                  <p>No favorite movies</p>
-                </EmptyFavorites>
-              )}
-            </>
-          ) : (
-            <>
-              <SearchTemplate
-                movie={searchedMovies}
-                searchedString={searchedText}
-              ></SearchTemplate>
-            </>
-          )}
+          <FavoriteMoviesContent>
+            {searchedMovies.films.length === 0 ? (
+              <>
+                {isEmpty ? (
+                  <FavoriteMoviesContent>
+                    <AddToFavorites />
+                  </FavoriteMoviesContent>
+                ) : (
+                  <EmptyFavorites>
+                    <img src={emptyFav} alt="empty favorites" />
+                    <p>No favorite movies</p>
+                  </EmptyFavorites>
+                )}
+              </>
+            ) : (
+              <>
+                <SearchTemplate
+                  movie={searchedMovies}
+                  searchedString={searchedText}
+                ></SearchTemplate>
+              </>
+            )}
+          </FavoriteMoviesContent>
         </FavoriteMoviesContentWrapper>
       </FavoriteMoviesWrappes>
     </>
@@ -72,13 +74,14 @@ const FavoriteMoviesWrappes = styled.div`
   padding-left: 50px;
   /* padding-top: 0; */
   min-height: 800px;
+
+  @media (max-width: 1500px) {
+    justify-content: center;
+  }
 `;
 
 const FavoriteMoviesContentWrapper = styled.div`
-  width: 1200px;
   margin: 25px 0 60px;
-  /* display: flex;
-  flex-wrap: wrap; */
 `;
 
 const EmptyFavorites = styled.div`
@@ -101,4 +104,12 @@ const EmptyFavorites = styled.div`
 const FavoriteMoviesContent = styled.div`
   display: flex;
   flex-wrap: wrap;
+
+  @media (max-width: 1500px) {
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 720px;
+  }
 `;

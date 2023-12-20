@@ -20,6 +20,7 @@ import { ThreeDotsSpinner } from '../../ui/spinner/three-dots-spinner';
 import { getRecommendationMovies } from '../recommendation-movies/recommendation-movies.slice';
 import dotIco from '../../ui/templates/selected-movie-templates/img/dotIco.svg';
 import { getDatabase, ref, set } from 'firebase/database';
+import { SearchTemplate } from '../../ui/templates/search-template/search-template';
 
 export const SelectedMovie: React.FC = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -36,6 +37,12 @@ export const SelectedMovie: React.FC = () => {
 
   const idSelectedMovie = useAppSelector(
     (state) => state.selectedMovie.idSelectedMovie
+  );
+
+  const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
+  const searchedText = useAppSelector((state) => state.search.searchedText);
+  const isSearchLoading = useAppSelector(
+    (state) => state.search.searchIsLoading
   );
 
   const dispatch = useAppDispatch();
@@ -109,9 +116,7 @@ export const SelectedMovie: React.FC = () => {
   };
 
   const { email, id } = useAuth();
-  // let allFavPosts = [] as Array<SelectedKinopoiskMovieResponse>;
   const addInFirebase = () => {
-    // allFavPosts.push(selectedPost);
     const db = getDatabase();
     set(ref(db, `/${id}`), {
       selectedPost,
@@ -202,102 +207,225 @@ export const SelectedMovie: React.FC = () => {
         <MainTemplate />
         <SelectedMovieContentWrapper>
           <HeaderTemplate />
-          {isSelectedPostsLoading ? (
+          {isSelectedPostsLoading || isSearchLoading ? (
             <IsLoadingWrapper>
               <ThreeDotsSpinner />
             </IsLoadingWrapper>
           ) : (
-            <SelectedMovieTemplate
-              img={<img src={selectedPost.posterUrl} alt="movieImg" />}
-              isAdded={isAdded}
-              genre={selectedPost.genres?.map((el, index) =>
-                el !== selectedPost.genres[selectedPost.genres.length - 1] ? (
-                  <SelectedGenre key={index}>
-                    <div style={{ marginRight: '5px' }}>{el.genre}</div>
-                    <img src={dotIco} alt="dot" />
-                  </SelectedGenre>
-                ) : (
-                  el.genre
-                )
-              )}
-              title={selectedPost.nameRu}
-              description={selectedPost.description}
-              rating={
-                selectedPost.ratingKinopoisk === null
-                  ? selectedPost.ratingImdb
-                  : selectedPost.ratingKinopoisk
-              }
-              runtime={selectedPost.filmLength + ' min'}
-              year={selectedPost.year}
-              released={release ? release : '2019-15-08'}
-              boxOffice={worldBoxOffice ? worldBoxOffice : rusBoxOffice}
-              country={selectedPost.countries?.map((el) =>
-                el === selectedPost.countries[selectedPost.countries.length - 1]
-                  ? el.country + ''
-                  : el.country + ', '
-              )}
-              producers={producersArr.map((el) =>
-                el === producersArr[producersArr.length - 1]
-                  ? el.nameRu + ''
-                  : el.nameRu + ', '
-              )}
-              actors={actors.map((el) =>
-                el === actors[actors.length - 1]
-                  ? el.nameRu + ''
-                  : el.nameRu + ', '
-              )}
-              director={director}
-              writers={writers.map((el) =>
-                el === writers[writers.length - 1]
-                  ? el.nameRu + ''
-                  : el.nameRu + ', '
-              )}
-              offset={offset}
-              maxOffset={maxOffset}
-              addToFavorite={() => {
-                addToFavorite();
-                addInFirebase();
-              }}
-              leftTap={() => leftTap()}
-              rightTap={() => rightTap()}
-              recommendationMovie={allPostsWithoutSelected.map(
-                (item, index) => (
-                  <Link to={`/${item.kinopoiskId}`} key={index}>
-                    <MovieCard
-                      key={index}
-                      isAdded={false}
-                      id={item.kinopoiskId}
-                      title={item.nameRu}
-                      genre={item.genres.map((el, index) =>
-                        el !== item.genres[item.genres.length - 1] ? (
-                          <RecommendationGenre key={index}>
+            <>
+              {searchedMovies.films.length === 0 ? (
+                <>
+                  {searchedMovies.searchFilmsCountResult === 0 &&
+                  searchedText.length > 0 ? (
+                    <div
+                      style={{
+                        color: 'var(--text-primary-color)',
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        marginBottom: '40px',
+                      }}
+                    >
+                      No movies were found for this request
+                    </div>
+                  ) : (
+                    <SelectedMovieTemplate
+                      img={<img src={selectedPost.posterUrl} alt="movieImg" />}
+                      isAdded={isAdded}
+                      genre={selectedPost.genres?.map((el, index) =>
+                        el !==
+                        selectedPost.genres[selectedPost.genres.length - 1] ? (
+                          <SelectedGenre key={index}>
                             <div style={{ marginRight: '5px' }}>{el.genre}</div>
                             <img src={dotIco} alt="dot" />
-                          </RecommendationGenre>
+                          </SelectedGenre>
                         ) : (
                           el.genre
                         )
                       )}
+                      title={selectedPost.nameRu}
+                      description={selectedPost.description}
                       rating={
-                        item.ratingKinopoisk === null
-                          ? item.ratingImdb
-                          : item.ratingKinopoisk
+                        selectedPost.ratingKinopoisk === null
+                          ? selectedPost.ratingImdb
+                          : selectedPost.ratingKinopoisk
                       }
-                      img={<img src={item.posterUrl} alt="movie" />}
-                      onClick={() => {
-                        dispatch(setSelectedMovie(item.kinopoiskId));
-                        window.scrollTo({
-                          top: 0,
-                          left: 0,
-                          behavior: 'smooth',
-                        });
+                      runtime={selectedPost.filmLength + ' min'}
+                      year={selectedPost.year}
+                      released={release ? release : '2019-15-08'}
+                      boxOffice={worldBoxOffice ? worldBoxOffice : rusBoxOffice}
+                      country={selectedPost.countries?.map((el) =>
+                        el ===
+                        selectedPost.countries[
+                          selectedPost.countries.length - 1
+                        ]
+                          ? el.country + ''
+                          : el.country + ', '
+                      )}
+                      producers={producersArr.map((el) =>
+                        el === producersArr[producersArr.length - 1]
+                          ? el.nameRu + ''
+                          : el.nameRu + ', '
+                      )}
+                      actors={actors.map((el) =>
+                        el === actors[actors.length - 1]
+                          ? el.nameRu + ''
+                          : el.nameRu + ', '
+                      )}
+                      director={director}
+                      writers={writers.map((el) =>
+                        el === writers[writers.length - 1]
+                          ? el.nameRu + ''
+                          : el.nameRu + ', '
+                      )}
+                      offset={offset}
+                      maxOffset={maxOffset}
+                      addToFavorite={() => {
+                        addToFavorite();
+                        addInFirebase();
                       }}
-                      removeFromFav={() => null}
-                    ></MovieCard>
-                  </Link>
-                )
+                      leftTap={() => leftTap()}
+                      rightTap={() => rightTap()}
+                      recommendationMovie={allPostsWithoutSelected.map(
+                        (item, index) => (
+                          <Link to={`/${item.kinopoiskId}`} key={index}>
+                            <MovieCard
+                              key={index}
+                              isAdded={false}
+                              id={item.kinopoiskId}
+                              title={item.nameRu}
+                              genre={item.genres.map((el, index) =>
+                                el !== item.genres[item.genres.length - 1] ? (
+                                  <RecommendationGenre key={index}>
+                                    <div style={{ marginRight: '5px' }}>
+                                      {el.genre}
+                                    </div>
+                                    <img src={dotIco} alt="dot" />
+                                  </RecommendationGenre>
+                                ) : (
+                                  el.genre
+                                )
+                              )}
+                              rating={
+                                item.ratingKinopoisk === null
+                                  ? item.ratingImdb
+                                  : item.ratingKinopoisk
+                              }
+                              img={<img src={item.posterUrl} alt="movie" />}
+                              onClick={() => {
+                                dispatch(setSelectedMovie(item.kinopoiskId));
+                                window.scrollTo({
+                                  top: 0,
+                                  left: 0,
+                                  behavior: 'smooth',
+                                });
+                              }}
+                              removeFromFav={() => null}
+                            ></MovieCard>
+                          </Link>
+                        )
+                      )}
+                    ></SelectedMovieTemplate>
+                  )}
+                </>
+              ) : (
+                <SearchTemplate
+                  movie={searchedMovies}
+                  searchedString={searchedText}
+                ></SearchTemplate>
               )}
-            ></SelectedMovieTemplate>
+            </>
+
+            // <SelectedMovieTemplate
+            //   img={<img src={selectedPost.posterUrl} alt="movieImg" />}
+            //   isAdded={isAdded}
+            //   genre={selectedPost.genres?.map((el, index) =>
+            //     el !== selectedPost.genres[selectedPost.genres.length - 1] ? (
+            //       <SelectedGenre key={index}>
+            //         <div style={{ marginRight: '5px' }}>{el.genre}</div>
+            //         <img src={dotIco} alt="dot" />
+            //       </SelectedGenre>
+            //     ) : (
+            //       el.genre
+            //     )
+            //   )}
+            //   title={selectedPost.nameRu}
+            //   description={selectedPost.description}
+            //   rating={
+            //     selectedPost.ratingKinopoisk === null
+            //       ? selectedPost.ratingImdb
+            //       : selectedPost.ratingKinopoisk
+            //   }
+            //   runtime={selectedPost.filmLength + ' min'}
+            //   year={selectedPost.year}
+            //   released={release ? release : '2019-15-08'}
+            //   boxOffice={worldBoxOffice ? worldBoxOffice : rusBoxOffice}
+            //   country={selectedPost.countries?.map((el) =>
+            //     el === selectedPost.countries[selectedPost.countries.length - 1]
+            //       ? el.country + ''
+            //       : el.country + ', '
+            //   )}
+            //   producers={producersArr.map((el) =>
+            //     el === producersArr[producersArr.length - 1]
+            //       ? el.nameRu + ''
+            //       : el.nameRu + ', '
+            //   )}
+            //   actors={actors.map((el) =>
+            //     el === actors[actors.length - 1]
+            //       ? el.nameRu + ''
+            //       : el.nameRu + ', '
+            //   )}
+            //   director={director}
+            //   writers={writers.map((el) =>
+            //     el === writers[writers.length - 1]
+            //       ? el.nameRu + ''
+            //       : el.nameRu + ', '
+            //   )}
+            //   offset={offset}
+            //   maxOffset={maxOffset}
+            //   addToFavorite={() => {
+            //     addToFavorite();
+            //     addInFirebase();
+            //   }}
+            //   leftTap={() => leftTap()}
+            //   rightTap={() => rightTap()}
+            //   recommendationMovie={allPostsWithoutSelected.map(
+            //     (item, index) => (
+            //       <Link to={`/${item.kinopoiskId}`} key={index}>
+            //         <MovieCard
+            //           key={index}
+            //           isAdded={false}
+            //           id={item.kinopoiskId}
+            //           title={item.nameRu}
+            //           genre={item.genres.map((el, index) =>
+            //             el !== item.genres[item.genres.length - 1] ? (
+            //               <RecommendationGenre key={index}>
+            //                 <div style={{ marginRight: '5px' }}>{el.genre}</div>
+            //                 <img src={dotIco} alt="dot" />
+            //               </RecommendationGenre>
+            //             ) : (
+            //               el.genre
+            //             )
+            //           )}
+            //           rating={
+            //             item.ratingKinopoisk === null
+            //               ? item.ratingImdb
+            //               : item.ratingKinopoisk
+            //           }
+            //           img={<img src={item.posterUrl} alt="movie" />}
+            //           onClick={() => {
+            //             dispatch(setSelectedMovie(item.kinopoiskId));
+            //             window.scrollTo({
+            //               top: 0,
+            //               left: 0,
+            //               behavior: 'smooth',
+            //             });
+            //           }}
+            //           removeFromFav={() => null}
+            //         ></MovieCard>
+            //       </Link>
+            //     )
+            //   )}
+            // ></SelectedMovieTemplate>
           )}
         </SelectedMovieContentWrapper>
       </SelectedMovieWrapper>

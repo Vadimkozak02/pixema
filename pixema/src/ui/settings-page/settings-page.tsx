@@ -145,6 +145,10 @@ const SettingsWrapper = styled.div`
   display: flex;
   background-color: var(--site-background-color);
   padding-left: 50px;
+
+  @media (max-width: 1500px) {
+    justify-content: center;
+  }
 `;
 
 const SettingsContentWrapper = styled.div`
@@ -153,6 +157,14 @@ const SettingsContentWrapper = styled.div`
 
 const SettingsBlocks = styled.div`
   width: 925px;
+
+  @media (max-width: 1500px) {
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 720px;
+  }
 `;
 
 const ProfileWrapper = styled.div`

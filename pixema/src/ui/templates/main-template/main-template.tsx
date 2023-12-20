@@ -27,6 +27,10 @@ const AllPostMenuWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: 1500px) {
+    margin-right: 10px;
+  }
 `;
 
 const SiteTopWrapper = styled.div`
