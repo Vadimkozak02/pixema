@@ -39,15 +39,17 @@ export const SiteMenu: React.FC = () => {
   return (
     <>
       <SiteMenuWrapper>
-        {items.map(({ id, title, img }) => (
-          <SiteItem
-            key={id}
-            title={title}
-            image={<img src={img} alt="img"></img>}
-            setActive={() => dispatch(setActiveTab(id))}
-            active={activeId === id}
-          ></SiteItem>
-        ))}
+        <>
+          {items.map(({ id, title, img }) => (
+            <SiteItem
+              key={id}
+              title={title}
+              image={<img src={img} alt="img"></img>}
+              setActive={() => dispatch(setActiveTab(id))}
+              active={activeId === id}
+            ></SiteItem>
+          ))}
+        </>
       </SiteMenuWrapper>
     </>
   );

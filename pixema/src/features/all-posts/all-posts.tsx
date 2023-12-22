@@ -93,7 +93,9 @@ export const AllPosts: React.FC = () => {
 
   return (
     <AllPostsWrapper>
-      <MainTemplate />
+      <MainTemplateDesktop>
+        <MainTemplate />
+      </MainTemplateDesktop>
       <AllPostContentWrapper>
         <HeaderTemplate />
         <AllPostContent>
@@ -256,6 +258,18 @@ const AllPostsWrapper = styled.div`
   @media (max-width: 1500px) {
     justify-content: center;
   }
+
+  @media (max-width: 980px) {
+    display: flex;
+  }
+`;
+
+const MainTemplateDesktop = styled.div`
+  display: flex;
+
+  @media (max-width: 980px) {
+    display: none;
+  }
 `;
 
 const AllPostContentWrapper = styled.div`
@@ -273,6 +287,10 @@ const AllPostContent = styled.div`
 
   @media (max-width: 1250px) {
     max-width: 720px;
+  }
+
+  @media (max-width: 980px) {
+    justify-content: center;
   }
 `;
 

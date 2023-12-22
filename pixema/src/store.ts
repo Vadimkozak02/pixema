@@ -10,6 +10,7 @@ import { searchReducer } from './features/search/search.slice';
 import { FilterReducer } from './features/filters/filters.slice';
 import { AuthorizationReducer } from './features/Auth/authorization.slice';
 import { RecommendationMoviesReducer } from './features/recommendation-movies/recommendation-movies.slice';
+import { NavigationReducer } from './ui/navigation/navigation.slice';
 
 let sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
@@ -20,6 +21,7 @@ export const store = configureStore({
     allPosts: AllPostsReducer,
     authorization: AuthorizationReducer,
     filter: FilterReducer,
+    navigation: NavigationReducer,
     recommendationMovies: RecommendationMoviesReducer,
     trendsPosts: TrendsReducer,
     search: searchReducer,

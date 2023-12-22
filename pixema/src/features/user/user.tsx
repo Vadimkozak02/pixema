@@ -2,14 +2,19 @@ import styled from 'styled-components';
 import arrowDown from './img/arrowDownSvg.svg';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAuth } from '../../hooks';
+import { useAppDispatch, useAppSelector, useAuth } from '../../hooks';
 import { removeUser } from '../Auth/authorization.slice';
 import userIco from './img/userIco.svg';
 import arrowRight from './img/arrowRightSvg.svg';
 import { setUserLS } from '../../api/user-localStorage';
+import { setIsOpen } from '../../ui/navigation/navigation.slice';
+import burgerMenu from './img/burgerMenu.svg';
+import closeBurgerMenu from './img/closeBurgerMenu.svg';
 
 export const User: React.FC = () => {
   const [editMenu, setEditMenu] = useState(false);
+
+  const isOpen = useAppSelector((state) => state.navigation.isOpen);
 
   const dispatch = useAppDispatch();
 
@@ -29,58 +34,71 @@ export const User: React.FC = () => {
   const initials = name[0];
 
   return (
-    <UserWrapper>
-      <UserNameWrapper>
-        <UserInitials
-          onClick={() =>
-            isAuth ? setEditMenu(!editMenu) : navigate('/sign-in')
-          }
-        >
-          {isAuth ? <p>{initials}</p> : <img src={userIco} alt="person logo" />}
-        </UserInitials>
-
-        <UserName
-          onClick={() =>
-            isAuth ? setEditMenu(!editMenu) : navigate('/sign-in')
-          }
-        >
-          {isAuth ? <p>{name}</p> : <p>Sign In</p>}
-
-          <UserNameArrow>
+    <>
+      <UserWrapper>
+        <UserNameWrapper>
+          <UserInitials
+            onClick={() =>
+              isAuth ? setEditMenu(!editMenu) : navigate('/sign-in')
+            }
+          >
             {isAuth ? (
-              <img src={arrowDown} alt="arrow" />
+              <p>{initials}</p>
             ) : (
-              <img src={arrowRight} alt="right arrow" />
+              <img src={userIco} alt="person logo" />
             )}
-          </UserNameArrow>
-        </UserName>
-      </UserNameWrapper>
-      <UserSelect
-        style={{
-          display: isAuth ? 'block' : 'none',
-          transform: editMenu ? 'translateY(10px)' : 'translateY(0)',
-          visibility: editMenu ? 'visible' : 'hidden',
-          opacity: editMenu ? '1' : '0',
-        }}
-      >
-        <UserEditProfile>
-          <Link to="/settingsPage">Edit profile</Link>
-        </UserEditProfile>
-        <UserLogOut
-          onClick={() => {
-            dispatch(removeUser());
-            setUserLS({
-              email: '',
-              token: '',
-              id: '',
-              colorMode: false,
-            });
+          </UserInitials>
+
+          <UserName
+            onClick={() =>
+              isAuth ? setEditMenu(!editMenu) : navigate('/sign-in')
+            }
+          >
+            {isAuth ? <p>{name}</p> : <p>Sign In</p>}
+
+            <UserNameArrow>
+              {isAuth ? (
+                <img src={arrowDown} alt="arrow" />
+              ) : (
+                <img src={arrowRight} alt="right arrow" />
+              )}
+            </UserNameArrow>
+          </UserName>
+        </UserNameWrapper>
+        <UserSelect
+          style={{
+            display: isAuth ? 'block' : 'none',
+            transform: editMenu ? 'translateY(10px)' : 'translateY(0)',
+            visibility: editMenu ? 'visible' : 'hidden',
+            opacity: editMenu ? '1' : '0',
           }}
         >
-          <Link to="/sign-in">Log Out</Link>
-        </UserLogOut>
-      </UserSelect>
-    </UserWrapper>
+          <UserEditProfile>
+            <Link to="/settingsPage">Edit profile</Link>
+          </UserEditProfile>
+          <UserLogOut
+            onClick={() => {
+              dispatch(removeUser());
+              setUserLS({
+                email: '',
+                token: '',
+                id: '',
+                colorMode: false,
+              });
+            }}
+          >
+            <Link to="/sign-in">Log Out</Link>
+          </UserLogOut>
+        </UserSelect>
+      </UserWrapper>
+      <SiteBurgerWrapper
+        onClick={() => {
+          dispatch(setIsOpen(!isOpen));
+        }}
+      >
+        <img src={isOpen ? closeBurgerMenu : burgerMenu} alt="open menu" />
+      </SiteBurgerWrapper>
+    </>
   );
 };
 
@@ -88,6 +106,10 @@ const UserWrapper = styled.div`
   position: relative;
   width: 240px;
   z-index: 1;
+
+  @media (max-width: 980px) {
+    display: none;
+  }
 `;
 
 const UserInitials = styled.div`
@@ -126,6 +148,7 @@ const UserName = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  transition: 0.3s;
 
   @media (max-width: 1500px) {
     width: 160px;
@@ -196,5 +219,39 @@ const UserLogOut = styled.button`
     justify-content: center;
     width: 100%;
     height: 100%;
+  }
+`;
+
+const SiteBurgerWrapper = styled.button`
+  position: relative;
+  width: 58px;
+  height: 58px;
+  background-color: var(--button-bg-primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: transparent;
+  cursor: pointer;
+  transition: 0.3s;
+  display: none;
+  z-index: 10;
+
+  img {
+    width: 100%;
+    height: 100%;
+    padding-top: 1px;
+  }
+
+  &:hover {
+    background-color: var(--button-bg-hover-color);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: 980px) {
+    display: block;
   }
 `;

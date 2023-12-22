@@ -5,6 +5,7 @@ import { Filters } from '../filters/filters';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { search, setSearchedText } from './search.slice';
 import { SearchTemplate } from '../../ui/templates/search-template/search-template';
+import { SiteLogo } from '../../ui/site-logo/site-logo';
 
 export const SearchMenu: React.FC = () => {
   // const isOpenRef = useRef<HTMLInputElement>(null);
@@ -40,7 +41,7 @@ export const SearchMenu: React.FC = () => {
   //   };
   // }, [isOpen, setIsOpen]);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   // const [searchedText, setSearchedText] = useState<string>('');
 
   const searchedMovies = useAppSelector((state) => state.search.searchedPosts);
@@ -69,7 +70,7 @@ export const SearchMenu: React.FC = () => {
             );
           }}
         ></SearchMenuInput>
-        <SearchMenuFilter onClick={() => setIsOpen(!isOpen)}>
+        <SearchMenuFilter onClick={() => setIsFilterOpen(!isFilterOpen)}>
           <img src={filterImg} alt="menuFilter" />
           <SearchMenuCircle
             style={{
@@ -80,12 +81,15 @@ export const SearchMenu: React.FC = () => {
           ></SearchMenuCircle>
         </SearchMenuFilter>
         <FiltersWrapper /*ref={isOpenRef}*/>
-          <Filters isActive={isOpen} closeFilter={() => setIsOpen(!isOpen)} />
+          <Filters
+            isActive={isFilterOpen}
+            closeFilter={() => setIsFilterOpen(!isFilterOpen)}
+          />
         </FiltersWrapper>
         <DarkBg
           style={{
-            opacity: isOpen ? '0.8' : '0',
-            zIndex: isOpen ? '5' : '-1',
+            opacity: isFilterOpen ? '0.8' : '0',
+            zIndex: isFilterOpen ? '5' : '-1',
           }}
         ></DarkBg>
       </SearchMenuWrapper>
@@ -115,11 +119,16 @@ const SearchWrapper = styled.div`
   @media (max-width: 1500px) {
     margin-right: 28px;
   }
+
+  @media (max-width: 980px) {
+    margin-right: 0;
+  }
 `;
 
 const SearchMenuWrapper = styled.div`
   position: relative;
   width: 925px;
+  transition: 0.3s;
 
   @media (max-width: 1500px) {
     width: 690px;
@@ -127,6 +136,18 @@ const SearchMenuWrapper = styled.div`
 
   @media (max-width: 1250px) {
     width: 445px;
+  }
+
+  @media (max-width: 980px) {
+    max-width: 360px;
+  }
+`;
+
+const SiteLogoWrapper = styled.div`
+  display: none;
+
+  @media (max-width: 980px) {
+    display: block;
   }
 `;
 
@@ -153,6 +174,10 @@ const SearchMenuInput = styled.input`
 
   @media (max-width: 1250px) {
     width: 95%;
+  }
+
+  @media (max-width: 980px) {
+    width: 94%;
   }
 `;
 

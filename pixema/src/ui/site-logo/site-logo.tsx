@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { reset } from '../../features/search/search.slice';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export const SiteLogo: React.FC = () => {
+  const isOpen = useAppSelector((state) => state.navigation.isOpen);
+
   const dispatch = useAppDispatch();
 
   return (
     <LogoLink to="/" onClick={() => dispatch(reset())}>
-      <SiteLogoWrapper>
+      <SiteLogoWrapper
+      // style={{ display: isOpen ? 'none' : 'flex' }}
+      >
         <SiteNameStart>pix</SiteNameStart>
         <SiteNameEnd>ema</SiteNameEnd>
       </SiteLogoWrapper>
@@ -31,7 +35,12 @@ const SiteLogoWrapper = styled.div`
   &:active {
     transform: scale(0.98);
   }
+
+  @media (max-width: 980px) {
+    margin-right: 50px;
+  }
 `;
+
 const SiteNameStart = styled.h1`
   font-size: 46px;
   color: var(--site-logo-color);

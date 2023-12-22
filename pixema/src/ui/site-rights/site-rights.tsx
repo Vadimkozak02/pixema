@@ -14,4 +14,8 @@ const SiteRightsWrapper = styled.div`
     font-weight: 500;
     color: var(--text-secondary-color);
   }
+
+  @media (max-width: 980px) {
+    display: none;
+  }
 `;

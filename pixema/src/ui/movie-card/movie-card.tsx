@@ -74,6 +74,7 @@ export const MovieCard: React.FC<Props> = ({
 const MovieCardWrapper = styled.div`
   width: 205px;
   padding: 0 35px 45px 0;
+  transition: 0.3s;
 `;
 
 const MovieCardImgWrapper = styled.div`
@@ -83,6 +84,8 @@ const MovieCardImgWrapper = styled.div`
 const MovieCardImg = styled.div`
   width: 205px;
   height: 307px;
+  border-radius: 20px;
+  overflow: hidden;
   cursor: pointer;
 
   & img {
