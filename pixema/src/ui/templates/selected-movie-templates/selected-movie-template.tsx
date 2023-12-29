@@ -157,11 +157,31 @@ export const SelectedMovieTemplate: React.FC<Props> = ({
 
 const SelectedMovieWrapper = styled.div`
   display: flex;
+
+  @media (max-width: 645px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const SelectedMovieImgWrapper = styled.div`
   width: 205px;
-  margin-right: 50px;
+  /* margin-right: 50px; */
+  padding: 0 35px 45px 0;
+
+  @media (max-width: 768px) {
+    width: 165px;
+    margin: 0px 25px 0 0;
+    padding: 0 0 45px 0;
+  }
+
+  @media (max-width: 645px) {
+    width: 272px;
+  }
+
+  @media (max-width: 400px) {
+    width: 205px;
+  }
 `;
 
 const SelectedMovieImg = styled.div`
@@ -174,6 +194,21 @@ const SelectedMovieImg = styled.div`
     width: 100%;
     height: 100%;
     border-radius: 20px;
+  }
+
+  @media (max-width: 768px) {
+    width: 165px;
+    height: 230px;
+  }
+
+  @media (max-width: 645px) {
+    width: 272px;
+    height: 365px;
+  }
+
+  @media (max-width: 400px) {
+    width: 205px;
+    height: 307px;
   }
 `;
 
@@ -254,6 +289,22 @@ const SelectedMovieImgShare = styled.button`
 
 const SelectedMovieContentWrapper = styled.div`
   width: 680px;
+
+  @media (max-width: 1250px) {
+    width: 445px;
+  }
+
+  @media (max-width: 768px) {
+    width: 410px;
+  }
+
+  @media (max-width: 500px) {
+    width: 375px;
+  }
+
+  @media (max-width: 400px) {
+    width: 320px;
+  }
 `;
 
 const SelectedMovieGenre = styled.div`
@@ -345,6 +396,26 @@ const AboutMovieMeaning = styled.div`
 
 const RecommendationsMovieWrapper = styled.div`
   width: 935px;
+
+  @media (max-width: 1500px) {
+    width: 695px;
+  }
+
+  @media (max-width: 1250px) {
+    width: 455px;
+  }
+
+  @media (max-width: 768px) {
+    width: 405px;
+  }
+
+  @media (max-width: 500px) {
+    width: 375px;
+  }
+
+  @media (max-width: 400px) {
+    width: 320px;
+  }
 `;
 
 const RecommendationsHeader = styled.div`

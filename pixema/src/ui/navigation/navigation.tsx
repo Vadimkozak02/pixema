@@ -19,10 +19,10 @@ export const Navigation: React.FC = () => {
     <>
       <NavigationWrapper
         style={{
-          transform: isOpen ? 'translateX(-10px)' : 'translateX(0)',
-          right: isOpen ? '25px' : '-300px',
-          // visibility: isOpen ? 'visible' : 'hidden',
-          // opacity: isOpen ? '1' : '0',
+          // transform: isOpen ? 'translateX(-10px)' : 'translateX(0)',
+          // right: isOpen ? '25px' : '-300px',
+          visibility: isOpen ? 'visible' : 'hidden',
+          opacity: isOpen ? '1' : '0',
         }}
       >
         <NavigationList>
@@ -128,19 +128,23 @@ export const Navigation: React.FC = () => {
 
 const NavigationWrapper = styled.div`
   display: block;
+  visibility: visible;
+  opacity: 1;
 
   @media (max-width: 980px) {
     position: absolute;
     width: 13%;
     height: 100%;
     top: 0;
-    right: -300px;
+    right: 0;
     z-index: 10;
     padding: 105px 40px 30px 25px;
     background-color: var(--site-background-color);
     overflow: hidden;
     transition: 0.3s;
-    transform: translateX(10px);
+    /* transform: translateX(10px); */
+    /* visibility: hidden;
+    opacity: 0; */
   }
 `;
 

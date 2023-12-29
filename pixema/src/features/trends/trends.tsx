@@ -70,7 +70,9 @@ export const Trends: React.FC = () => {
 
   return (
     <TrendsWrapper>
-      <MainTemplate />
+      <MainTemplateDesktop>
+        <MainTemplate />
+      </MainTemplateDesktop>
       <TrendsContentWrapper>
         <HeaderTemplate />
         <TrendsAllPosts>
@@ -207,7 +209,7 @@ export const Trends: React.FC = () => {
         {!isLoading &&
           !isSearchLoading &&
           searchedMovies.films.length === 0 && (
-            <Container
+            <MyContainer
               style={{
                 width: '390px',
                 margin: '0 auto',
@@ -239,7 +241,7 @@ export const Trends: React.FC = () => {
                   ></MyPagination>
                 )}
               </Stack>
-            </Container>
+            </MyContainer>
           )}
       </TrendsContentWrapper>
     </TrendsWrapper>
@@ -254,6 +256,26 @@ const TrendsWrapper = styled.div`
 
   @media (max-width: 1500px) {
     justify-content: center;
+  }
+
+  @media (max-width: 980px) {
+    display: flex;
+  }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+  }
+
+  @media (max-width: 320px) {
+    width: 80%;
+  }
+`;
+
+const MainTemplateDesktop = styled.div`
+  display: flex;
+
+  @media (max-width: 980px) {
+    display: none;
   }
 `;
 
@@ -273,6 +295,10 @@ const TrendsAllPosts = styled.div`
 
   @media (max-width: 1250px) {
     max-width: 720px;
+  }
+
+  @media (max-width: 980px) {
+    justify-content: center;
   }
 `;
 
@@ -296,6 +322,14 @@ const TrendsGenre = styled.div`
   display: flex;
   align-items: center;
   margin-right: 5px;
+`;
+
+const MyContainer = styled(Container)`
+  .css-1sazv7p-MuiStack-root {
+    @media (max-width: 320px) {
+      width: 100%;
+    }
+  }
 `;
 
 const MyPagination = styled(Pagination)`

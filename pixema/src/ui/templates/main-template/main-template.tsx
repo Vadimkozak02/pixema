@@ -31,6 +31,10 @@ const AllPostMenuWrapper = styled.div`
   @media (max-width: 1500px) {
     margin-right: 10px;
   }
+
+  @media (max-width: 980px) {
+    display: none;
+  }
 `;
 
 const SiteTopWrapper = styled.div`

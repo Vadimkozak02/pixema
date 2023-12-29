@@ -202,11 +202,13 @@ export const SelectedMovie: React.FC = () => {
   // })
 
   return (
-    <>
-      <SelectedMovieWrapper>
+    <SelectedMovieWrapper>
+      <MainTemplateDesktop>
         <MainTemplate />
-        <SelectedMovieContentWrapper>
-          <HeaderTemplate />
+      </MainTemplateDesktop>
+      <SelectedMovieContentWrapper>
+        <HeaderTemplate />
+        <SelectedAllPosts>
           {isSelectedPostsLoading || isSearchLoading ? (
             <IsLoadingWrapper>
               <ThreeDotsSpinner />
@@ -427,9 +429,9 @@ export const SelectedMovie: React.FC = () => {
             //   )}
             // ></SelectedMovieTemplate>
           )}
-        </SelectedMovieContentWrapper>
-      </SelectedMovieWrapper>
-    </>
+        </SelectedAllPosts>
+      </SelectedMovieContentWrapper>
+    </SelectedMovieWrapper>
   );
 };
 
@@ -438,11 +440,60 @@ const SelectedMovieWrapper = styled.div`
   background-color: var(--site-background-color);
   padding-left: 50px;
   min-height: 1400px;
+
+  @media (max-width: 1500px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 980px) {
+    display: flex;
+    padding-left: 0;
+  }
+
+  @media (max-width: 320px) {
+    width: 80%;
+  }
+`;
+
+const MainTemplateDesktop = styled.div`
+  display: flex;
+
+  @media (max-width: 980px) {
+    display: none;
+  }
 `;
 
 const SelectedMovieContentWrapper = styled.div`
-  width: 1200px;
   margin: 25px 0 60px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const SelectedAllPosts = styled.div`
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+
+  @media (max-width: 1500px) {
+    max-width: 1000px;
+  }
+
+  @media (max-width: 1250px) {
+    max-width: 720px;
+  }
+
+  @media (max-width: 980px) {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 600px;
+    justify-content: space-between;
+  }
 `;
 
 const IsLoadingWrapper = styled.div`

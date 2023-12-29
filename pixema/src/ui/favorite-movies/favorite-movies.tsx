@@ -77,6 +77,7 @@ const FavoriteMoviesWrappes = styled.div`
 
   @media (max-width: 1500px) {
     justify-content: center;
+    padding-left: 0;
   }
 `;
 
@@ -98,6 +99,36 @@ const EmptyFavorites = styled.div`
     font-size: 20px;
     font-weight: 600;
     text-align: center;
+  }
+
+  @media (max-width: 980px) {
+    img {
+      width: 45%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 40%;
+    }
+  }
+
+  @media (max-width: 680px) {
+    img {
+      width: 35%;
+    }
+  }
+
+  @media (max-width: 400px) {
+    img {
+      width: 30%;
+    }
+  }
+
+  @media (max-width: 320px) {
+    img {
+      width: 20%;
+    }
   }
 `;
 

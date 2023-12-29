@@ -75,6 +75,20 @@ const MovieCardWrapper = styled.div`
   width: 205px;
   padding: 0 35px 45px 0;
   transition: 0.3s;
+
+  @media (max-width: 768px) {
+    width: 165px;
+    margin: 0px 25px;
+    padding: 0 0 45px 0;
+  }
+
+  @media (max-width: 645px) {
+    width: 272px;
+  }
+
+  @media (max-width: 400px) {
+    width: 205px;
+  }
 `;
 
 const MovieCardImgWrapper = styled.div`
@@ -91,6 +105,21 @@ const MovieCardImg = styled.div`
   & img {
     width: 100%;
     height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    width: 165px;
+    height: 230px;
+  }
+
+  @media (max-width: 645px) {
+    width: 272px;
+    height: 365px;
+  }
+
+  @media (max-width: 400px) {
+    width: 205px;
+    height: 307px;
   }
 `;
 

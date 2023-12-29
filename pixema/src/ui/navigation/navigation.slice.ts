@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const NavigationSlice = createSlice({
   name: 'NavigationSlice',
   initialState: {
-    isOpen: false,
+    isOpen: true,
   },
   reducers: {
     setIsOpen(state, action: { payload: boolean }) {

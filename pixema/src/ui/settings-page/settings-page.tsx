@@ -149,6 +149,10 @@ const SettingsWrapper = styled.div`
   @media (max-width: 1500px) {
     justify-content: center;
   }
+
+  @media (max-width: 980px) {
+    padding-left: 0;
+  }
 `;
 
 const SettingsContentWrapper = styled.div`
@@ -163,7 +167,23 @@ const SettingsBlocks = styled.div`
   }
 
   @media (max-width: 1250px) {
-    max-width: 720px;
+    max-width: 680px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 600px;
+  }
+
+  @media (max-width: 645px) {
+    max-width: 375px;
+  }
+
+  @media (max-width: 400px) {
+    max-width: 320px;
+  }
+
+  @media (max-width: 320px) {
+    max-width: 272px;
   }
 `;
 
@@ -186,6 +206,42 @@ const ProfileContentWrapper = styled.div`
   input {
     width: 360px;
     border: 2px solid var(--input-border-color);
+  }
+
+  @media (max-width: 1250px) {
+    flex-direction: column;
+
+    input {
+      width: 565px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    input {
+      width: 485px;
+    }
+  }
+
+  @media (max-width: 645px) {
+    padding: 30px 30px 10px;
+
+    input {
+      width: 280px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    input {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 320px) {
+    padding: 20px 20px 0px;
+
+    input {
+      width: 87%;
+    }
   }
 `;
 
@@ -229,6 +285,42 @@ const PasswordContentWrapper = styled.div`
   input {
     width: 360px;
     border: 2px solid var(--input-border-color);
+  }
+
+  @media (max-width: 1250px) {
+    flex-direction: column;
+
+    input {
+      width: 565px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    input {
+      width: 485px;
+    }
+  }
+
+  @media (max-width: 645px) {
+    padding: 30px 30px 10px;
+
+    input {
+      width: 280px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    input {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 320px) {
+    padding: 20px 20px 0px;
+
+    input {
+      width: 87%;
+    }
   }
 `;
 

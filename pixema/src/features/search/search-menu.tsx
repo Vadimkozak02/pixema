@@ -123,6 +123,14 @@ const SearchWrapper = styled.div`
   @media (max-width: 980px) {
     margin-right: 0;
   }
+
+  @media (max-width: 645px) {
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 320px) {
+    width: 100%;
+  }
 `;
 
 const SearchMenuWrapper = styled.div`
@@ -140,6 +148,23 @@ const SearchMenuWrapper = styled.div`
 
   @media (max-width: 980px) {
     max-width: 360px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 280px;
+  }
+
+  @media (max-width: 645px) {
+    max-width: 375px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 400px) {
+    max-width: 320px;
+  }
+
+  @media (max-width: 320px) {
+    max-width: 272px;
   }
 `;
 
@@ -177,7 +202,15 @@ const SearchMenuInput = styled.input`
   }
 
   @media (max-width: 980px) {
-    width: 94%;
+    width: 93%;
+  }
+
+  @media (max-width: 400px) {
+    width: 92%;
+  }
+
+  @media (max-width: 320px) {
+    width: 89%;
   }
 `;
 

@@ -210,7 +210,7 @@ export const AllPosts: React.FC = () => {
           !isFilterLoadinig &&
           searchedMovies.films.length === 0 &&
           filterArr.items.length === 0 && (
-            <Container
+            <MyContainer
               style={{
                 width: '390px',
                 margin: '0 auto',
@@ -242,7 +242,7 @@ export const AllPosts: React.FC = () => {
                   ></MyPagination>
                 )}
               </Stack>
-            </Container>
+            </MyContainer>
           )}
       </AllPostContentWrapper>
     </AllPostsWrapper>
@@ -262,6 +262,14 @@ const AllPostsWrapper = styled.div`
   @media (max-width: 980px) {
     display: flex;
   }
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+  }
+
+  @media (max-width: 320px) {
+    width: 80%;
+  }
 `;
 
 const MainTemplateDesktop = styled.div`
@@ -274,6 +282,12 @@ const MainTemplateDesktop = styled.div`
 
 const AllPostContentWrapper = styled.div`
   margin: 25px 0 60px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const AllPostContent = styled.div`
@@ -320,6 +334,14 @@ const AllPostsGenre = styled.div`
   display: flex;
   align-items: center;
   margin-right: 5px;
+`;
+
+const MyContainer = styled(Container)`
+  .css-1sazv7p-MuiStack-root {
+    @media (max-width: 320px) {
+      width: 100%;
+    }
+  }
 `;
 
 const MyPagination = styled(Pagination)`
