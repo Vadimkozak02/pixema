@@ -19,10 +19,10 @@ export const Navigation: React.FC = () => {
     <>
       <NavigationWrapper
         style={{
-          // transform: isOpen ? 'translateX(-10px)' : 'translateX(0)',
-          // right: isOpen ? '25px' : '-300px',
-          visibility: isOpen ? 'visible' : 'hidden',
-          opacity: isOpen ? '1' : '0',
+          transform: isOpen ? 'translateX(0)' : 'translateX(0)',
+          right: isOpen ? '25px' : '-300px',
+          // visibility: isOpen ? 'visible' : 'hidden',
+          // opacity: isOpen ? '1' : '0',
         }}
       >
         <NavigationList>
@@ -142,9 +142,9 @@ const NavigationWrapper = styled.div`
     background-color: var(--site-background-color);
     overflow: hidden;
     transition: 0.3s;
-    /* transform: translateX(10px); */
-    /* visibility: hidden;
-    opacity: 0; */
+    transform: translateX(10px);
+    visibility: hidden;
+    opacity: 0;
   }
 `;
 
